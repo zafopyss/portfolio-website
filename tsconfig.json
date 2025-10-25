@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "baseUrl": "./src",
+    "paths": {
+      "@components": ["components"],    
+      "@components/*": ["components/*"], 
+      "@hooks": ["hooks"],             
+      "@hooks/*": ["hooks/*"],
+      "@pages": ["Pages"],
+      "@pages/*": ["Pages/*"]
+    }
+  },
+  "include": ["src"]
+}
