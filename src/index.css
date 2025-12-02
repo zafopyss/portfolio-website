@@ -14,4 +14,45 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  button {
+    cursor: pointer;
+  }
+}
+
+/* App theme colors */
+:root {
+  --color-silver: #D0C9C4;
+  --color-silver-rgb: 208 201 196;
+
+  --color-blue-python: #3776AB;
+  --color-yellow-python: #FFD43B;
+}
+
+.text-silver {
+  color: rgb(var(--color-silver-rgb) / var(--tw-text-opacity, 1));
+}
+
+.text-blue-python { color: var(--color-blue-python); }
+.text-yellow-python { color: var(--color-yellow-python); }
+.bg-blue-python { background-color: var(--color-blue-python); }
+.bg-yellow-python { background-color: var(--color-yellow-python); }
+.bg-silver { background-color: var(--color-silver); color: rgba(0,0,0,0.87); }
+
+.text-gradient-blue-yellow {
+  background-image: linear-gradient(90deg, var(--color-blue-python), var(--color-yellow-python));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+.text-gradient-silver-blue {
+  background-image: linear-gradient(90deg, var(--color-silver), var(--color-blue-python));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+.bg-gradient-blue-yellow {
+  background-image: linear-gradient(90deg, var(--color-blue-python), var(--color-yellow-python));
 }
