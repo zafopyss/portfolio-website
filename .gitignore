@@ -23,3 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 *.env
+
+
+# personal files
+*.env
+document.txt 
+todo.txt
+mine

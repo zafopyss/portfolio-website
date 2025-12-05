@@ -1,63 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import { Button, Greeting, CounterApp } from './components';
-import Home from '@pages/Home';
 import About from '@pages/About';
+import Home from '@pages/Home';
+import { useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
-
+import { Button, CounterApp, GradientTitle, Greeting, Header, ScrollToTop } from './components';
+import { TechSection } from "./sections";
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo}  />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} />
-        </a>
-      </div>
+    <div className='px-3 mt-3 md:px-6 lg:px-20 md:mt-4 flex flex-col gap-4'>
+      {/* <CursorTrail /> */}
+      <Header />
       <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test hs
-        </p>
-      </div>
-      <p className="text-3xl text-amber-50">
-        Click on the Vite and React logos to learn more
-      </p>
-
+      <GradientTitle text="Welcome to My App" className='text-center' />
       <Greeting name="Alice" className={"underline"} />
       <Greeting name="Bob" />
 
       <Button label="Click Me" onClick={() => alert('Button clicked!')} />
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+      </div>
       <div>
 
-      <CounterApp />
- 
+        <div className='mb-15'>
+            <TechSection />
+        </div>
+
+
+
+
+        <CounterApp />
+
       </div>
+      <ScrollToTop />
       <div>
         <h1>OTHERS PAGES</h1>
         <div>
-      <nav style={{ marginBottom: '20px' }}>
-          <Link to="/" style={{ marginRight: '10px' }}>Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
+          <nav className='flex mb-5 gap-1'>
+            <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
+          </nav>
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-    </div>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </div>
       </div>
+    </div >
 
-    </>
 
   )
 }
