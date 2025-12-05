@@ -1,32 +1,39 @@
 import React, { JSX } from 'react';
 
-type GradientTitleProps = {
-    text: string;
-    sizeClass?: string; // Tailwind text size class like "text-4xl"
-    fontSize?: number; // fallback pixel size when Tailwind class does not cover it
+type GradientTextProps = {
+    children?: React.ReactNode;
+    text?: string; // alternative à children
+    sizeClass?: string; // optionnel : classe Tailwind pour la taille
+    fontSize?: number; // fallback en px si besoin
     gradientStart?: string;
     gradientEnd?: string;
-    direction?: number; // degrees for the gradient direction
+    direction?: number; // degrés pour la direction du gradient
     as?: keyof JSX.IntrinsicElements;
     className?: string;
+    style?: React.CSSProperties; // pour overrider ou ajouter des styles
 };
 
-export default function GradientTitle({
+export default function GradientText({
+    children,
     text,
-    sizeClass = 'text-4xl',
+    sizeClass,
     fontSize,
     gradientStart = 'var(--color-blue-python, #3776AB)',
     gradientEnd = 'var(--color-yellow-python, #FFD43B)',
-    direction = 50,
-    as: Tag = 'h1',
+    direction = 0,
+    as: Tag = 'span',
     className = '',
-}: GradientTitleProps) {
+    style = {},
+}: GradientTextProps) {
+    const content = children ?? text;
+
     const gradientStyle: React.CSSProperties = {
         backgroundImage: `linear-gradient(${direction}deg, ${gradientStart}, ${gradientEnd})`,
         WebkitBackgroundClip: 'text',
         backgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
         display: 'inline-block',
+        ...style,
     };
 
     if (fontSize) {
@@ -34,12 +41,11 @@ export default function GradientTitle({
         gradientStyle.lineHeight = 1.1;
     }
 
+    const allClasses = `${sizeClass ? sizeClass + ' ' : ''}${className}`.trim();
+
     return (
-        <Tag
-            className={`${sizeClass} font-extrabold tracking-tight ${className}`}
-            style={gradientStyle}
-        >
-            {text}
+        <Tag className={allClasses} style={gradientStyle}>
+            {content}
         </Tag>
     );
 }

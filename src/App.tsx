@@ -2,8 +2,8 @@ import About from '@pages/About';
 import Home from '@pages/Home';
 import { useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
-import { GradientTitle, Header, ScrollToTop } from './components';
-import { TechSection } from "./sections";
+import { GradientText, Header, ScrollToTop } from './components';
+import { AboutSection, TechSection } from "./sections";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,8 +12,14 @@ function App() {
     <div className='px-3 mt-3 md:px-6 lg:px-20 md:mt-4 flex flex-col gap-4'>
       {/* <CursorTrail /> */}
       <Header />
-      <h1>Vite + React</h1>
-      <GradientTitle text="Welcome to My App" className='text-center' />
+
+      <AboutSection />
+
+
+      <div style={{ marginBottom: '1000px' }}>
+      </div>
+      <GradientText text="Welcome to My App" className='text-center' />
+
 
       <div className='mb-15'>
           <TechSection />
@@ -21,7 +27,7 @@ function App() {
 
 
 
-
+        
 
       <ScrollToTop />
       <div>
