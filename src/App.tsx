@@ -2,7 +2,7 @@ import About from '@pages/About';
 import Home from '@pages/Home';
 import { useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
-import { Button, CounterApp, GradientTitle, Greeting, Header, ScrollToTop } from './components';
+import { GradientTitle, Header, ScrollToTop } from './components';
 import { TechSection } from "./sections";
 
 function App() {
@@ -14,27 +14,15 @@ function App() {
       <Header />
       <h1>Vite + React</h1>
       <GradientTitle text="Welcome to My App" className='text-center' />
-      <Greeting name="Alice" className={"underline"} />
-      <Greeting name="Bob" />
 
-      <Button label="Click Me" onClick={() => alert('Button clicked!')} />
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+      <div className='mb-15'>
+          <TechSection />
       </div>
-      <div>
-
-        <div className='mb-15'>
-            <TechSection />
-        </div>
 
 
 
 
-        <CounterApp />
 
-      </div>
       <ScrollToTop />
       <div>
         <h1>OTHERS PAGES</h1>
