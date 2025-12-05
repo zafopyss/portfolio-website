@@ -13,7 +13,7 @@ export default function CursorSpotlight({
     children,
     color = '#C0C0C0', 
     size = 32,
-    opacity = 0.60,
+    opacity = 0.55,
     borderRadius = 'rounded-full',
     clipBorderRadius,
 }: CursorSpotlightProps) {
