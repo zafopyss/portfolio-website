@@ -1,15 +1,21 @@
-
+import { Contacts } from '@enums/ContactsEnum';
 import GithubLogo from '../assets/github-logo.svg';
 import LinkedinLogo from '../assets/linkedin-logo.svg';
 
 
-export const contacts = {
+type ContactEntry = {
+    url: string;
+    icon?: string;
+};
+
+
+export const contacts: Record<'linkedin' | 'github', ContactEntry> = {
     linkedin: {
-        url: 'https://www.linkedin.com/',
+        url: Contacts.LinkedIn,
         icon: LinkedinLogo,
     },
     github: {
-        url: 'https://github.com/',
+        url: Contacts.GitHub,
         icon: GithubLogo,
     },
 };

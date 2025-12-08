@@ -1,8 +1,7 @@
-
 export interface ContactBubbleProps {
   contact: {
     url: string;
-    icon: string;
+    icon?: string;
   };
   label: string;
 }
@@ -17,12 +16,18 @@ export default function ContactBubble({ contact, label }: ContactBubbleProps) {
         rel="noreferrer"
         title={label}
     >
-        <img
+        {contact.icon ? (
+          <img
             src={contact.icon}
             alt={`${label} logo`}
             className="w-4 h-4 transition duration-300 group-hover:scale-105"
-            aria-hidden="false"
-        />
+            aria-hidden="true"
+          />
+        ) : (
+          <span className="text-xs font-semibold uppercase tracking-[0.3em]" aria-hidden="true">
+            {label[0]}
+          </span>
+        )}
     </a>
   );
 }
