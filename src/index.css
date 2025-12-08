@@ -46,13 +46,22 @@
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
+
 .text-gradient-silver-blue {
-  background-image: linear-gradient(90deg, var(--color-silver), var(--color-blue-python));
+  background-image: linear-gradient(90deg,  var(--color-blue-python), var(--color-silver));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
+
+.text-gradient-silver-blue:hover {
+  background-image: linear-gradient(90deg, var(--color-silver), var(--color-blue-python));
+}
+
+
+
+
 .bg-gradient-blue-yellow {
   background-image: linear-gradient(90deg, var(--color-blue-python), var(--color-yellow-python));
 }
