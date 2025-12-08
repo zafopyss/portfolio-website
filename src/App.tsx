@@ -4,7 +4,7 @@ import About from '@pages/About';
 import Home from '@pages/Home';
 import { Link, Route, Routes } from 'react-router-dom';
 import { Header } from './components';
-import { AboutSection, TechSection } from './sections';
+import { AboutSection, ExperienceSection, TechSection } from './sections';
 
 function App() {
   return (
@@ -13,11 +13,12 @@ function App() {
       <SectionSidebar />
       {/* <CursorTrail /> */}
       <Header />
+      <ExperienceSection />
 
       <AboutSection />
 
       <div style={{ height: "1000px" }}></div>
-
+      
 
       <div className="mb-15">
         <TechSection />
