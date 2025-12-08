@@ -1,81 +1,50 @@
-import ContactBubble from '@components/design/ContactBubble';
 import GradientText from '@components/design/GradientText';
-import { contacts } from '../data/contacts';
-
+import montagne from '../assets/851-jma-montagne.jpeg';
 const personalCopy = [
   "Depuis début 2025, je travaille chez Mantu d' pour architecturer des expériences digitales qui tiennent autant au détail visuel qu'à la fiabilité du back-end.",
+  "Je suis actuellement ingénieur logiciel chez M.",
+  "Mes domaines d'intérêt comprennent la résolution de problèmes, l'infrastructure cloud.",
+  "Soucieux du détail, j'aime créer des solutions simples mais efficaces pour améliorer les performances des applications, faciliter la maintenance et améliorer l'expérience utilisateur."
 ];
 
 const profileFacts = [
   { label: 'Métier', value: 'Full Stack Developer — React & Node.js' },
 ];
 
-const contactLabels: Record<string, string> = {
-  linkedin: 'LinkedIn',
-  github: 'GitHub',
-};
-
 export default function AboutSection() {
   return (
-    <section className="p-10 ">
-      <div>
-      <h1 className='text-3xl mb-6'>Walter Eliot</h1>
-      <GradientText
-        as="h2"
-        text="Full Stack Software Engineer"
-        gradientStart="var(--color-silver)"
-        gradientEnd="var(--color-blue-python)"
-        sizeClass="text-5xl font-bold"
-        className="text-center pb-8"
-      />
-        <div className='mb-8 text-sm text-slate-100 leading-relaxed'>
-
-          {personalCopy.map((sentence) => (
-            <p key={sentence}>{sentence}</p>
-          ))}
-        </div>
-
-
-            <div className='mt-4 flex gap-4 items-center mb-4'>
-              <a
+    <section className="px-6 py-12 lg:px-20 lg:py-10">
+      <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:items-center">
+        <div className="space-y-8 text-white">
+          <div>
+            <h1 className="mt-2 text-4xl font-semibold text-white sm:text-3xl">Walter Eliot</h1>
+            <GradientText
+              as="h2"
+              text="Full Stack Software Engineer"
+              gradientStart="var(--color-silver)"
+              gradientEnd="var(--color-blue-python)"
+              sizeClass="text-5xl font-bold"
+              className="mt-2 pb-4"
+            />
+          </div>
+          <div className="space-y-2 text-sm leading-relaxed text-slate-100">
+            {personalCopy.map((sentence) => (
+              <p key={sentence}>{sentence}</p>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-4">
+            <a
               href="https://drive.google.com/"
               target="_blank"
               rel="noopener noreferrer"
               download="Walter-Eliot-CV.pdf"
               aria-label="Télécharger mon CV"
-              className="inline-flex items-center gap-3 bg-transparent rounded-full border border-white/20 px-4 py-4 text-sm font-medium hover:bg-white/10 transition"
-              >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-                className="text-white"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              Télécharger mon CV
-              </a>
-              {Object.entries(contacts).map(([key, contact]) => (
-                <ContactBubble key={key} contact={contact} label={contactLabels[key] ?? key} />
-              ))}
+              className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/5 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:border-blue-400 hover:text-blue-400"
+            >
+              Résumé
+            </a>
           </div>
-      </div>
-      <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr]">
-        <div className="space-y-4 ">
-              test
-        </div>
-
-        <div className="space-y-8">
-          <div className="grid gap-3">
+          {/* <div className="grid gap-3">
             {profileFacts.map((fact) => (
               <div
                 key={fact.label}
@@ -86,6 +55,20 @@ export default function AboutSection() {
                 <p className="text-base font-semibold text-white">{fact.value}</p>
               </div>
             ))}
+          </div> */}
+        </div>
+
+        <div className="flex items-center justify-center">
+          <div className="relative aspect-square w-full max-w-sm border border-white/20 bg-gradient-to-br from-neutral-900/90 to-neutral-900/30 shadow-2xl">
+            <div
+              className="absolute inset-0 translate-x-20 translate-y-25 bg-white/5 z-0 pointer-events-none"
+              aria-hidden
+            />
+            <img
+              src={montagne}
+              alt="Illustration of Walter Eliot"
+              className="relative h-full w-full z-10"
+            />
           </div>
         </div>
       </div>

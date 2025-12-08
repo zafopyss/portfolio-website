@@ -11,6 +11,7 @@ const sections = [
 
 export default function SectionSidebar() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [showScrollHint, setShowScrollHint] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
@@ -18,6 +19,15 @@ export default function SectionSidebar() {
     const foundIndex = sections.findIndex((section) => section.hash === hash);
     setActiveIndex(foundIndex === -1 ? 0 : foundIndex);
   }, [location.hash]);
+
+  useEffect(() => {
+    const handle = () => {
+      setShowScrollHint(window.scrollY <= 20);
+    };
+    handle();
+    window.addEventListener('scroll', handle, { passive: true });
+    return () => window.removeEventListener('scroll', handle);
+  }, []);
 
   const indicatorClasses = (active: boolean) =>
     `block h-[3px] origin-left rounded-full transition-all duration-300 ${
@@ -48,6 +58,15 @@ export default function SectionSidebar() {
           </a>
         ))}
       </div>
+      <div
+        className={`fixed bottom-[0%] mt-2 flex flex-col items-center gap-y-15 text-md uppercase text-white transition-all duration-1200 ${
+          showScrollHint ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-80'
+        }`}
+      >
+        <span className="rotate-90 whitespace-nowrap">scroll down</span>
+        <span className="h-30 w-[1px] bg-white/90" />
+      </div>
+
     </aside>
   );
 }
