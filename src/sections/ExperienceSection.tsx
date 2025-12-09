@@ -1,5 +1,9 @@
 import GradientText from '@components/design/GradientText';
+import TechCard from '@components/design/TechCard/TechCard';
+import { techs } from '@data/techs';
 import { useEffect, useRef, useState } from 'react';
+
+type Tech = (typeof techs)[number];
 
 type Experience = {
   company: string;
@@ -9,7 +13,13 @@ type Experience = {
   description: string;
   highlights?: string[];
   image?: string;
+  techStack: Tech[];
 };
+
+const techMap = techs.reduce<Record<string, Tech>>((acc, tech) => {
+  acc[tech.name] = tech;
+  return acc;
+}, {} as Record<string, Tech>);
 
 const experiences: Experience[] = [
   {
@@ -19,6 +29,7 @@ const experiences: Experience[] = [
     location: 'Strasbourg, France',
     description:
       "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
+    techStack: [techMap.React, techMap.TypeScript, techMap.Django],
   },
   {
     company: 'Freelance',
@@ -27,6 +38,7 @@ const experiences: Experience[] = [
     location: 'Remote — Europe',
     description:
       "Accompagnement de PME et startups sur la création d’expériences web premium : prototypes, animations scrollytelling et intégration React.",
+    techStack: [techMap.Tailwind, techMap.React, techMap['JavaScript']],
   },
   {
     company: 'Studio Nova',
@@ -35,6 +47,7 @@ const experiences: Experience[] = [
     location: 'Strasbourg, France',
     description:
       "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
+    techStack: [techMap.React, techMap.PostgreSQL, techMap.AWS],
   },
   {
     company: 'Freelance',
@@ -43,6 +56,7 @@ const experiences: Experience[] = [
     location: 'Remote — Europe',
     description:
       "Accompagnement de PME et startups sur la création d’expériences web premium : prototypes, animations scrollytelling et intégration React.",
+    techStack: [techMap.Tailwind, techMap.Django, techMap.Python],
   },
 ];
 
@@ -55,18 +69,16 @@ const TEXT_OFFSET = LINE_LEFT_PX + DOT_SIZE + 12;
 export default function ExperienceSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const [lineHeight, setLineHeight] = useState(LINE_EXTENSION);
-  const articleRefs = useRef<(HTMLArticleElement | null)[]>([]);
+  const articleRefs = useRef<(HTMLElement | null)[]>([]);
   const articlesColumnRef = useRef<HTMLDivElement | null>(null);
   const [activeExperienceIndex, setActiveExperienceIndex] = useState(0);
   const [entryMetrics, setEntryMetrics] = useState<{ offset: number; height: number }[]>([]);
   const estimatedSpacing = 150;
   const roleRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [rolePositions, setRolePositions] = useState<number[]>([]);
-
-  const lastMetric = entryMetrics[entryMetrics.length - 1];
   const timelineContainerHeight = entryMetrics.reduce((total, metric) => {
     return total + metric.height;
-  }, DOT_SIZE + 40); // Ajoute un padding
+  }, DOT_SIZE + 40);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -186,10 +198,10 @@ useEffect(() => {
               >
                 {experiences.map((experience, index) => {
                   const isActive = index === activeExperienceIndex;
-                  const metric = entryMetrics[index];
-const dotTop = rolePositions[index]
-  ? rolePositions[index] - DOT_SIZE / 2
-  : index * estimatedSpacing;
+                  const isPrimary = index === 0;
+                  const dotTop = rolePositions[index]
+                    ? rolePositions[index] - DOT_SIZE / 2
+                    : index * estimatedSpacing;
 
                   return (
                     <div
@@ -203,8 +215,12 @@ const dotTop = rolePositions[index]
                       >
                         <span className="relative h-8 w-8 rounded-full bg-white">
                           <span
-                            className={`absolute inset-0 m-auto h-4 w-4 rounded-full transition-all duration-800 ${
-                              isActive ? 'bg-blue-400 animate-pulse' : 'bg-black/20'
+                            className={`absolute inset-0 m-auto h-4 w-4 rounded-full transition-all duration-700 ${
+                              isPrimary
+                                ? 'bg-green-active'
+                                : isActive
+                                ? 'bg-blue-400'
+                                : 'bg-black/20'
                             }`}
                           />
                         </span>
@@ -243,9 +259,18 @@ const dotTop = rolePositions[index]
                 </span>
                   <h3 className="text-2xl font-semibold text-white">{experience.company}</h3>
                 </div>
-                <p className="mt-3 text-white/80"  aria-label={`Description pour ${experience.company}`}>
+                <p className="mt-3 text-white/80" style={{ height: "200px" }} aria-label={`Description pour ${experience.company}`}>
                   {experience.description}
                 </p>
+                <div className="mt-6 flex flex-wrap gap-4">
+                  {experience.techStack.map((tech) => (
+                    <TechCard
+                      key={`${experience.company}-${tech.name}`}
+                      name={tech.name}
+                      icon={tech.icon}
+                    />
+                  ))}
+                </div>
               </article>
             ))}
           </div>
