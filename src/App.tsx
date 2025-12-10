@@ -13,9 +13,13 @@ function App() {
       <SectionSidebar />
       {/* <CursorTrail /> */}
       <Header />
-      <ExperienceSection />
+
+      
 
       <AboutSection />
+            <div style={{ height: "1000px" }}></div>
+
+      <ExperienceSection />
 
       <div style={{ height: "1000px" }}></div>
       
@@ -23,6 +27,9 @@ function App() {
       <div className="mb-15">
         <TechSection />
       </div>
+
+
+
 
       {/* <ScrollToTop /> */}
 

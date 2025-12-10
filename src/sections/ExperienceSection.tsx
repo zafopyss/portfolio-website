@@ -10,7 +10,7 @@ type Experience = {
   role: string;
   date: string;
   location: string;
-  description: string;
+  description: Array<string> | string;
   highlights?: string[];
   image?: string;
   techStack: Tech[];
@@ -27,9 +27,11 @@ const experiences: Experience[] = [
     role: 'Lead Front-end Engineer',
     date: '2025 — Présent',
     location: 'Strasbourg, France',
-    description:
+    description: [
       "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
-    techStack: [techMap.React, techMap.TypeScript, techMap.Django],
+      "test"
+    ],
+    techStack: [techMap.Python, techMap.Django, techMap.Tailwind, techMap.PostgreSQL, techMap.Docker, techMap.MinIO],
   },
   {
     company: 'Freelance',
@@ -38,7 +40,7 @@ const experiences: Experience[] = [
     location: 'Remote — Europe',
     description:
       "Accompagnement de PME et startups sur la création d’expériences web premium : prototypes, animations scrollytelling et intégration React.",
-    techStack: [techMap.Tailwind, techMap.React, techMap['JavaScript']],
+    techStack: [techMap.Tailwind, techMap.React, techMap.JavaScript],
   },
   {
     company: 'Studio Nova',
@@ -68,44 +70,77 @@ const TEXT_OFFSET = LINE_LEFT_PX + DOT_SIZE + 12;
 
 export default function ExperienceSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [lineHeight, setLineHeight] = useState(LINE_EXTENSION);
+  const lineRef = useRef<HTMLDivElement | null>(null);
   const articleRefs = useRef<(HTMLElement | null)[]>([]);
   const articlesColumnRef = useRef<HTMLDivElement | null>(null);
   const [activeExperienceIndex, setActiveExperienceIndex] = useState(0);
   const [entryMetrics, setEntryMetrics] = useState<{ offset: number; height: number }[]>([]);
   const estimatedSpacing = 150;
-  const roleRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const [rolePositions, setRolePositions] = useState<number[]>([]);
-  const timelineContainerHeight = entryMetrics.reduce((total, metric) => {
-    return total + metric.height;
-  }, DOT_SIZE + 40);
+
+  const timelineContainerHeight = entryMetrics.length
+    ? Math.max(...entryMetrics.map((metric) => metric.offset + metric.height)) + 40
+    : experiences.length * estimatedSpacing;
+
+  useEffect(() => {
+    const measureEntries = () => {
+      if (!articlesColumnRef.current) return;
+      const columnTop = articlesColumnRef.current.getBoundingClientRect().top + window.scrollY;
+      const metrics = articleRefs.current.map((article) => {
+        if (!article) return { offset: 0, height: estimatedSpacing };
+        const rect = article.getBoundingClientRect();
+        const articleTop = rect.top + window.scrollY;
+        return {
+          offset: articleTop - columnTop,
+          height: rect.height,
+        };
+      });
+      setEntryMetrics(metrics);
+    };
+
+    const frame = requestAnimationFrame(() => {
+      measureEntries();
+      requestAnimationFrame(measureEntries);
+    });
+
+    window.addEventListener('resize', measureEntries);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('resize', measureEntries);
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
     const handleScroll = () => {
-      if (!sectionRef.current || !articlesColumnRef.current) return;
-      const viewportHeight = window.innerHeight;
-      const columnRect = articlesColumnRef.current.getBoundingClientRect();
-      const columnHeight = columnRect.height;
-      const columnTop = columnRect.top;
+      if (!sectionRef.current || !articlesColumnRef.current || !lineRef.current) return;
 
-      let currentIndex = 0;
-      articleRefs.current.forEach((article, index) => {
-        if (!article) return;
-        const rect = article.getBoundingClientRect();
-        if (rect.top <= viewportHeight * 0.6) {
-          currentIndex = index;
-        }
+      const sectionRect = sectionRef.current.getBoundingClientRect();
+      const sectionTop = sectionRect.top + window.scrollY;
+      const sectionHeight = sectionRect.height;
+      const viewportBottom = window.scrollY + window.innerHeight;
+      
+      // Calculate scroll progress through the section
+      const scrollStart = sectionTop;
+      const scrollEnd = sectionTop + sectionHeight;
+      const scrollProgress = Math.max(0, Math.min(100, ((viewportBottom - scrollStart) / (scrollEnd - scrollStart)) * 100));
+      
+      // Update timeline gradient
+      lineRef.current.style.background = `linear-gradient(to bottom, #3B82F6 ${scrollProgress}%, rgba(55, 65, 81, 0.3) ${scrollProgress}%)`;
+
+      // Determine active experience based on viewport center
+      const viewportCenter = window.scrollY + window.innerHeight * 0.5;
+      const columnTop = articlesColumnRef.current.getBoundingClientRect().top + window.scrollY;
+      
+      const nextActiveIndex = experiences.findIndex((_, index) => {
+        const start = columnTop + (entryMetrics[index]?.offset ?? index * estimatedSpacing);
+        const height = entryMetrics[index]?.height ?? estimatedSpacing;
+        return viewportCenter >= start && viewportCenter <= start + height;
       });
-
-      const clampedProgress = Math.min(1, Math.max(0, (viewportHeight - columnTop) / (viewportHeight + columnHeight)));
-      const extension = columnHeight * clampedProgress;
-      const computedMaxLineHeight = LINE_EXTENSION + columnHeight + DOT_SIZE;
-      const targetHeight = LINE_EXTENSION + extension + DOT_SIZE;
-
-      setActiveExperienceIndex(currentIndex);
-      setLineHeight(Math.min(computedMaxLineHeight, Math.max(LINE_EXTENSION, targetHeight)));
+      
+      if (nextActiveIndex !== -1) {
+        setActiveExperienceIndex(nextActiveIndex);
+      }
     };
 
     handleScroll();
@@ -115,54 +150,7 @@ export default function ExperienceSection() {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
     };
-  }, []);
-
-useEffect(() => {
-  const updateOffsets = () => {
-    if (!articlesColumnRef.current) return;
-    const columnTop = articlesColumnRef.current.getBoundingClientRect().top;
-    const metrics = articleRefs.current.map((article) => {
-      if (!article) return { offset: 0, height: estimatedSpacing };
-      const rect = article.getBoundingClientRect();
-      return {
-        offset: rect.top - columnTop,
-        height: rect.height,
-      };
-    });
-    setEntryMetrics(metrics);
-  };
-
-  const frame = requestAnimationFrame(() => {
-    updateOffsets();
-    requestAnimationFrame(updateOffsets);
-  });
-
-  window.addEventListener('resize', updateOffsets);
-  return () => {
-    cancelAnimationFrame(frame);
-    window.removeEventListener('resize', updateOffsets);
-  };
-}, []);
-useEffect(() => {
-  const updateRolePositions = () => {
-    const positions = roleRefs.current.map((ref) =>
-      ref ? ref.getBoundingClientRect().top : 0
-    );
-    const columnTop = articlesColumnRef.current?.getBoundingClientRect().top || 0;
-    setRolePositions(positions.map(pos => pos - columnTop));
-  };
-
-  const frame = requestAnimationFrame(() => {
-    updateRolePositions();
-    requestAnimationFrame(updateRolePositions);
-  });
-
-  window.addEventListener('resize', updateRolePositions);
-  return () => {
-    cancelAnimationFrame(frame);
-    window.removeEventListener('resize', updateRolePositions);
-  };
-}, []);
+  }, [entryMetrics]);
 
 
   return (
@@ -183,12 +171,13 @@ useEffect(() => {
           <div className="relative">
             <div className="relative">
               <div
-                className="absolute w-[2px] rounded-full bg-gradient-to-b from-blue-400 via-blue-500/60 to-transparent"
+                ref={lineRef}
+                className="absolute w-[2px] rounded-full transition-all duration-300"
                 style={{
-                  height: `${lineHeight}px`,
+                  height: `${timelineContainerHeight}px`,
                   left: `30px`,
                   top: `${LINE_MARGIN_TOP}px`,
-                  transition: 'height 0.25s ease-out',
+                  background: 'linear-gradient(to bottom, #3B82F6 0%, rgba(55, 65, 81, 0.3) 0%)',
                 }}
               />
               <div
@@ -197,42 +186,22 @@ useEffect(() => {
                 aria-hidden="true"
               >
                 {experiences.map((experience, index) => {
+                  const startOffset = entryMetrics[index]?.offset ?? index * estimatedSpacing;
                   const isActive = index === activeExperienceIndex;
-                  const isPrimary = index === 0;
-                  const dotTop = rolePositions[index]
-                    ? rolePositions[index] - DOT_SIZE / 2
-                    : index * estimatedSpacing;
-
                   return (
                     <div
                       key={`${experience.company}-${index}`}
                       className="absolute left-0 w-full"
-                      style={{ top: `${dotTop}px` }}
+                      style={{ top: `${startOffset - DOT_SIZE / 2}px` }}
                     >
-                      <div
-                        className="absolute flex items-center justify-center"
-                        style={{ left: `15px`, top: '50%' }}
-                      >
-                        <span className="relative h-8 w-8 rounded-full bg-white">
-                          <span
-                            className={`absolute inset-0 m-auto h-4 w-4 rounded-full transition-all duration-700 ${
-                              isPrimary
-                                ? 'bg-green-active'
-                                : isActive
-                                ? 'bg-blue-400'
-                                : 'bg-black/20'
-                            }`}
-                          />
-                        </span>
-                      </div>
                       <div
                         className="flex flex-col text-sm whitespace-nowrap uppercase"
                         style={{ marginLeft: `${TEXT_OFFSET}px` }}
                       >
-                        <span className={isActive ? 'text-white' : 'text-white/70'}>{experience.date}</span>
-                        <span
-                          className="text-[0.55rem] tracking-[0.20em] text-white/40"
-                        >
+                        <span className={isActive ? 'text-white font-semibold' : 'text-white/70'}>
+                          {experience.date}
+                        </span>
+                        <span className="text-[0.55rem] tracking-[0.20em] text-white/40">
                           {experience.location}
                         </span>
                       </div>
@@ -248,21 +217,60 @@ useEffect(() => {
               <article
                 key={`${experience.company}-${index}`}
                 ref={(node) => (articleRefs.current[index] = node)}
-                className="rounded-3xl border border-white/10 bg-black/30 p-6"
+                className={`rounded-3xl border transition-all duration-300 p-6 relative ${
+                  index === activeExperienceIndex
+                    ? 'border-blue-400/50 bg-black/40 shadow-lg shadow-blue-500/10'
+                    : 'border-white/10 bg-black/30'
+                }`}
               >
-                <div className="flex flex-col text-white/70">
-                <span
-                  ref={(node) => (roleRefs.current[index] = node)}
-                  className="text-sm uppercase tracking-[0.4em] text-blue-400"
+                {/* Sticky dot container */}
+                <div 
+                  className="absolute left-0 top-0 bottom-0 hidden lg:block"
+                  style={{ 
+                    marginLeft: `calc(-180px + ${LINE_LEFT_PX - DOT_SIZE / 2}px)`,
+                  }}
                 >
-                  {experience.role}
-                </span>
+                  <div 
+                    className="sticky flex items-center justify-center"
+                    style={{ 
+                      top: '50vh',
+                      height: `${DOT_SIZE}px`,
+                    }}
+                  >
+                    <span className="relative h-8 w-8 rounded-full bg-white shadow-lg">
+                      <span 
+                        className={`absolute inset-0 m-auto h-4 w-4 rounded-full transition-colors duration-300 ${
+                          index === 0
+                            ? 'bg-green-active'
+                            : index === activeExperienceIndex
+                            ? 'bg-blue-400'
+                            : index < activeExperienceIndex
+                            ? 'bg-blue-400'
+                            : 'bg-gray-600'
+                        }`} 
+                      />
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col text-white/70">
+                  <span className="text-sm uppercase tracking-[0.4em] text-blue-400">
+                    {experience.role}
+                  </span>
                   <h3 className="text-2xl font-semibold text-white">{experience.company}</h3>
                 </div>
-                <p className="mt-3 text-white/80" style={{ height: "200px" }} aria-label={`Description pour ${experience.company}`}>
-                  {experience.description}
-                </p>
-                <div className="mt-6 flex flex-wrap gap-4">
+                {/* TODO : add bold part of text */}
+                <div className="mt-3 text-white/80" aria-label={`Description pour ${experience.company}`}>
+                  {Array.isArray(experience.description) ? (
+                    experience.description.map((sentence) => (
+                    <p key={sentence}>{sentence}</p>
+                    ))
+                  ) : (
+                    <p>{experience.description}</p>
+                  )}
+                </div>
+
+                <div className="mt-6 flex gap-4 flex-wrap w-full" aria-label={`Technologies utilisées chez ${experience.company}`}>
                   {experience.techStack.map((tech) => (
                     <TechCard
                       key={`${experience.company}-${tech.name}`}
