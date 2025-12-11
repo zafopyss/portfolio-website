@@ -1,11 +1,8 @@
 import ContactSidebar from '@components/interface/ContactSidebar';
 import SectionSidebar from '@components/interface/SectionSidebar';
 import { SectionNavigationProvider } from '@hooks/SectionNavigationContext';
-import About from '@pages/About';
-import Home from '@pages/Home';
 import Lenis from 'lenis';
 import { useEffect } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
 import { Header } from './components';
 import { AboutSection, ContactSection, ExperienceSection, TechSection } from './sections';
 
@@ -50,26 +47,10 @@ function App() {
 
         <ContactSection />
 
+
+        <div className="text-center" style={{ height: '300px' }}>ending section to build</div>
+
         {/* <ScrollToTop /> */}
-
-        <div>
-          <h1>OTHERS PAGES</h1>
-          <div>
-            <nav className="flex mb-5 gap-2">
-              <Link className="text-blue-400 underline" to="/">
-                Home
-              </Link>
-              <Link className="text-blue-400 underline" to="/about">
-                About
-              </Link>
-            </nav>
-
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-            </Routes>
-          </div>
-        </div>
       </div>
     </SectionNavigationProvider>
   );
