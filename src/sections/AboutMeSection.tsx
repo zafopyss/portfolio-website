@@ -13,7 +13,7 @@ const profileFacts = [
 
 export default function AboutSection() {
   return (
-    <section id="profile" className="scroll-mt-24 px-6 py-12 lg:px-20 lg:py-10">
+    <section id="profile" className="scroll-mt-24 px-6 py-12 lg:px-15 lg:py-10">
       <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:items-center">
         <div className="space-y-8 text-white">
           <div>

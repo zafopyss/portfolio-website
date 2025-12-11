@@ -31,7 +31,7 @@ function App() {
 
   return (
     <SectionNavigationProvider>
-      <div className="relative px-3 mt-3 md:px-6 lg:px-20 md:mt-4 flex flex-col gap-6">
+      <div className="relative mx-5 mt-3 md:px-6 lg:px-20 md:mt-4 flex flex-col gap-6">
         <ContactSidebar />
         <SectionSidebar />
         {/* <CursorTrail /> */}
@@ -47,7 +47,6 @@ function App() {
           <TechSection />
         </div>
 
-        <div style={{ height: '500px' }}></div>
 
         <ContactSection />
 

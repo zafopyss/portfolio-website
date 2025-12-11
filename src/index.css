@@ -26,6 +26,7 @@
     cursor: pointer;
   }
 
+  
 }
 
 body {
@@ -82,3 +83,4 @@ body::-webkit-scrollbar {
 .bg-gradient-blue-yellow {
   background-image: linear-gradient(90deg, var(--color-blue-python), var(--color-yellow-python));
 }
+

@@ -34,7 +34,7 @@ export default function SectionSidebar() {
       <div className="fixed flex-1 flex flex-col items-start top-[45%]">
         {sectionTargets.map((section, index) => (
             <a
-              key={section.hash}
+                key={section.hash}
               href={section.hash}
               aria-label={`Go to ${section.label}`}
               className="group focus-visible:outline-none"
