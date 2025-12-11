@@ -1,0 +1,287 @@
+import GradientText from '@components/design/GradientText';
+import TechCard from '@components/design/TechCard/TechCard';
+import { techs } from '@data/techs';
+import { useEffect, useRef, useState } from 'react';
+
+type Tech = (typeof techs)[number];
+
+type Experience = {
+  company: string;
+  role: string;
+  date: string;
+  location: string;
+  description: Array<string> | string;
+  highlights?: string[];
+  image?: string;
+  techStack: Tech[];
+};
+
+const techMap = techs.reduce<Record<string, Tech>>((acc, tech) => {
+  acc[tech.name] = tech;
+  return acc;
+}, {} as Record<string, Tech>);
+
+const experiences: Experience[] = [
+  {
+    company: 'Studio Nova',
+    role: 'Lead Front-end Engineer',
+    date: '2025 — Présent',
+    location: 'Strasbourg, France',
+    description: [
+      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
+      "test",
+      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
+      "test",
+      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
+      "test",
+    ],
+    techStack: [techMap.Python, techMap.Django, techMap.Tailwind, techMap.PostgreSQL, techMap.Docker, techMap.MinIO],
+  },
+  {
+    company: 'Freelance',
+    role: 'Lead Front-end Designer',
+    date: '2020 — 2023',
+    location: 'Remote — Europe',
+    description:
+      "Accompagnement de PME et startups sur la création d’expériences web premium : prototypes, animations scrollytelling et intégration React.",
+    techStack: [techMap.Tailwind, techMap.React, techMap.JavaScript],
+  },
+  {
+    company: 'Studio Nova',
+    role: 'Lead Front-end Engineer',
+    date: '2025 — Présent',
+    location: 'Strasbourg, France',
+    description:
+      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
+    techStack: [techMap.React, techMap.PostgreSQL, techMap.AWS],
+  },
+  {
+    company: 'Freelance',
+    role: 'Lead Front-end Designer',
+    date: '2020 — 2023',
+    location: 'Remote — Europe',
+    description:
+      "Accompagnement de PME et startups sur la création d’expériences web premium : prototypes, animations scrollytelling et intégration React.",
+    techStack: [techMap.Tailwind, techMap.Django, techMap.Python],
+  },
+];
+
+const LINE_MARGIN_TOP = -20;
+const LINE_LEFT_PX = 32;
+const DOT_SIZE = 32;
+const TEXT_OFFSET = LINE_LEFT_PX + DOT_SIZE + 12;
+
+export default function ExperienceSection() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const lineRef = useRef<HTMLDivElement | null>(null);
+  const articleRefs = useRef<(HTMLElement | null)[]>([]);
+  const articlesColumnRef = useRef<HTMLDivElement | null>(null);
+  const [activeExperienceIndex, setActiveExperienceIndex] = useState(0);
+  const [entryMetrics, setEntryMetrics] = useState<{ offset: number; height: number }[]>([]);
+  const estimatedSpacing = 150;
+
+  const timelineContainerHeight = entryMetrics.length
+    ? Math.max(...entryMetrics.map((metric) => metric.offset + metric.height)) + 40
+    : experiences.length * estimatedSpacing;
+
+  useEffect(() => {
+    const measureEntries = () => {
+      if (!articlesColumnRef.current) return;
+      const columnTop = articlesColumnRef.current.getBoundingClientRect().top + window.scrollY;
+      const metrics = articleRefs.current.map((article) => {
+        if (!article) return { offset: 0, height: estimatedSpacing };
+        const rect = article.getBoundingClientRect();
+        const articleTop = rect.top + window.scrollY;
+        return {
+          offset: articleTop - columnTop,
+          height: rect.height,
+        };
+      });
+      setEntryMetrics(metrics);
+    };
+
+    const frame = requestAnimationFrame(() => {
+      measureEntries();
+      requestAnimationFrame(measureEntries);
+    });
+
+    window.addEventListener('resize', measureEntries);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('resize', measureEntries);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleScroll = () => {
+      if (!sectionRef.current || !articlesColumnRef.current || !lineRef.current) return;
+
+      const columnTop = articlesColumnRef.current.getBoundingClientRect().top + window.scrollY;
+      const viewportCenter = window.scrollY + window.innerHeight * 0.5;
+      const timelinePoint = viewportCenter + 60;
+      const timelineHeight = Math.max(0, timelinePoint - columnTop - LINE_MARGIN_TOP);
+      const maxTimelineHeight = timelineContainerHeight;
+      const fillPercentage = Math.min(100, (timelineHeight / maxTimelineHeight) * 100);
+      
+      lineRef.current.style.background = `linear-gradient(to bottom, #3B82F6 ${fillPercentage}%, rgba(55, 65, 81, 0.3) ${fillPercentage}%)`;
+      
+      const nextActiveIndex = experiences.findIndex((_, index) => {
+        const start = columnTop + (entryMetrics[index]?.offset ?? index * estimatedSpacing);
+        const height = entryMetrics[index]?.height ?? estimatedSpacing;
+        return viewportCenter >= start && viewportCenter <= start + height;
+      });
+      
+      if (nextActiveIndex !== -1) {
+        setActiveExperienceIndex(nextActiveIndex);
+      }
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [entryMetrics]);
+
+
+  return (
+    <section id="experiences" ref={sectionRef} className="scroll-mt-28" aria-label="Expériences professionnelles">
+      <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6">
+        <div className="text-center">
+          <GradientText
+            as="h2"
+            text="Mes Expériences"
+            gradientStart="var(--color-silver)"
+            gradientEnd="var(--color-blue-python)"
+            sizeClass="text-4xl sm:text-5xl font-bold"
+            className="mt-2 pb-3"
+          />
+        </div>
+
+        <div className="mt-10 grid gap-10 lg:grid-cols-[180px_minmax(0,1fr)] items-start">
+          <div className="relative">
+            <div className="relative">
+              {/* timeline */}
+              <div
+                ref={lineRef}
+                className="absolute w-[2px] rounded-full transition-all duration-300"
+                style={{
+                  height: `${timelineContainerHeight}px`,
+                  left: `30px`,
+                  top: `${LINE_MARGIN_TOP}px`,
+                  background: 'linear-gradient(to bottom, #3B82F6 0%, rgba(55, 65, 81, 0.3) 0%)',
+                }}
+              />
+              <div
+                className="relative"
+                style={{ minHeight: `${timelineContainerHeight}px` }}
+                aria-hidden="true"
+              >
+                {/* date and location */}
+                {experiences.map((experience, index) => {
+                  const startOffset = entryMetrics[index]?.offset ?? index * estimatedSpacing;
+                  const isActive = index === activeExperienceIndex;
+                  return (
+                    <div
+                      key={`${experience.company}-${index}`}
+                      className="absolute left-0 w-full"
+                      style={{ top: `${startOffset - DOT_SIZE / 2}px` }}
+                    >
+                      <div
+                        className="flex flex-col text-sm whitespace-nowrap uppercase"
+                        style={{ marginLeft: `${TEXT_OFFSET}px` }}
+                      >
+                        <span className={isActive ? 'text-white font-semibold' : 'text-white/70'}>
+                          {experience.date}
+                        </span>
+                        <span className="text-[0.55rem] tracking-[0.20em] text-white/40">
+                          {experience.location}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-5" ref={articlesColumnRef}>
+            {experiences.map((experience, index) => (
+              <article
+                key={`${experience.company}-${index}`}
+                ref={(node) => (articleRefs.current[index] = node)}
+                className={`rounded-3xl border transition-all duration-300 p-6 relative ${
+                  index === activeExperienceIndex
+                    ? 'border-blue-400/50 bg-black/40 shadow-lg shadow-blue-500/10'
+                    : 'border-white/10 bg-black/30'
+                }`}
+              >
+                {/* Sticky dot container */}
+                {/* TODO: enlever -205 en dur et faire un calcul taille écran */}
+                <div 
+                  className="absolute left-0 top-5 bottom-5 "
+                  style={{ 
+                    marginLeft: `calc(-205px + ${LINE_LEFT_PX - DOT_SIZE}px)`,
+                  }}
+                >
+                  <div 
+                    className="sticky flex items-center justify-center"
+                    style={{ 
+                      top: '50vh',
+                      height: `${DOT_SIZE}px`,
+                    }}
+                  >
+                    <span className="relative h-8 w-8 rounded-full bg-white shadow-lg">
+                      <span 
+                        className={`absolute inset-0 m-auto h-4 w-4 rounded-full transition-colors duration-300 ${
+                          index === 0
+                            ? 'bg-green-active'
+                            : index === activeExperienceIndex
+                            ? 'bg-blue-400'
+                            : index < activeExperienceIndex
+                            ? 'bg-blue-400'
+                            : 'bg-gray-600'
+                        }`} 
+                      />
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col text-white/70">
+                  <span className="text-sm uppercase tracking-[0.4em] text-blue-400">
+                    {experience.role}
+                  </span>
+                  <h3 className="text-2xl font-semibold text-white">{experience.company}</h3>
+                </div>
+                {/* TODO : add bold part of text */}
+                <div className="mt-3 text-white/80" aria-label={`Description pour ${experience.company}`}>
+                  {Array.isArray(experience.description) ? (
+                    experience.description.map((sentence) => (
+                    <p key={sentence}>{sentence}</p>
+                    ))
+                  ) : (
+                    <p>{experience.description}</p>
+                  )}
+                </div>
+
+                <div className="mt-6 flex gap-4 flex-wrap w-full" aria-label={`Technologies utilisées chez ${experience.company}`}>
+                  {experience.techStack.map((tech) => (
+                    <TechCard
+                      key={`${experience.company}-${tech.name}`}
+                      name={tech.name}
+                      icon={tech.icon}
+                    />
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

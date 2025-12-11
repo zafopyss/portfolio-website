@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import personmodel from '../../../assets/person_model.svg';
 
-type NavLink = { to: string; label: string };
+type NavLink = { to: string; label: string; hash?: string };
 
 type HeaderProps = {
   logo?: string;
@@ -13,12 +13,22 @@ export default function Header({ logo = personmodel, links }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const defaultLinks: NavLink[] = [
     { to: '/', label: 'Profile' },
-    { to: '/experiences', label: 'Experiences' },
-    { to: '/#projects', label: 'Projects' },
-    { to: '/#contact', label: 'Contact' },
-
+    { to: '/', label: 'Experiences', hash: '#experiences' },
+    { to: '/', label: 'Projects', hash: '#projects' },
+    { to: '/', label: 'Contact', hash: '#contact' },
   ];
   const navLinks = links ?? defaultLinks;
+
+  const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, link: NavLink) => {
+    if (!link.hash) return;
+    event.preventDefault();
+    if (typeof document === 'undefined' || typeof window === 'undefined') return;
+    const target = document.querySelector(link.hash);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.history.replaceState(null, '', link.hash);
+    }
+  };
 
   return (
     <header className="w-full py-4">
@@ -40,9 +50,10 @@ export default function Header({ logo = personmodel, links }: HeaderProps) {
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map((l) => (
             <Link
-              key={l.to}
+              key={`${l.to}-${l.hash ?? 'nohash'}`}
               to={l.to}
               className="group relative inline-block text-md font-medium hover:text-blue-400 focus-visible:outline-none"
+              onClick={(event) => handleNavClick(event, l)}
             >
               {l.label}
               <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-blue-400 transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100" />
