@@ -19,8 +19,7 @@ export default function Header({ logo = personmodel }: HeaderProps) {
   return (
     <header className="w-full py-4">
       {/* justify between */}
-      <div className="px-3 md:px-6 lg:px-14 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="px-3 lg:px-8 flex items-center justify-end">
           {/* <Link to="/" aria-label="Home">
             <img src={logo} alt="logo" className="w-10 h-10" />
           </Link>
@@ -31,7 +30,6 @@ export default function Header({ logo = personmodel }: HeaderProps) {
           >
             {Contacts.Email}
           </a> */}
-        </div>
 
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (

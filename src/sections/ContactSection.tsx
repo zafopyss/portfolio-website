@@ -1,3 +1,5 @@
+import ContactBubble from '@components/design/ContactBubble/ContactBubble';
+import CursorSpotlight from '@components/design/CursorSpotlight/CursorSpotlight';
 import GradientText from '@components/design/GradientText/GradientText';
 import { contacts } from '@data/contacts';
 import { Contacts } from '@enums/ContactsEnum';
@@ -6,38 +8,46 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      aria-label="Section contact"
-      className='scroll-mt-24 px-6 py-12 lg:px-15 lg:py-10'
+      aria-label="Contact"
+      className="scroll-mt-24 px-6 py-12 lg:px-20 lg:py-14"
     >
-        <div  className="mb-15" style={{ height: '500px' }}></div>
-
-      <div className="flex flex-col sm:gap-6 text-center border border-4 border-yellow-400 ">
-            <GradientText as="a" text="Contact !" sizeClass="text-3xl font-bold mb-10" gradientStart="var(--color-silver)" gradientEnd="var(--color-blue-python)" className="text-left" />
-        <a
+      <CursorSpotlight borderRadius="rounded-3xl" className="mx-auto max-w-3xl">
+        <div className="relative mx-auto max-w-3xl space-y-4 rounded-3xl border border-white/10 bg-white/5 p-8 text-white">
+        <GradientText
+          as="h2"
+          text="Contact !"
+          gradientStart="var(--color-silver)"
+          gradientEnd="var(--color-blue-python)"
+          sizeClass="text-3xl font-bold"
+        />
+        <p className="text-sm text-white/70 mt-4">
+          N’hésitez pas à me contacter pour travailler sur un projet, poser une question ou simplement échanger.
+        </p>
+        {/* <a
           href={Contacts.EmailAdressWithTo}
-          className="inline-block text-lg font-medium  transition-all duration-200 transform"
-          aria-label={`Envoyer un mail à ${Contacts.Email}`}
+          className="inline-flex items-center justify-center rounded-full text-md font-semibold undercase text-blue-200 transition hover:border-blue-300"
         >
-            a contact me 
-        </a>
-        <div className="flex items-center justify-center gap-6">
+          {Contacts.Email}
+        </a> */}
+          <a
+            href={Contacts.EmailAdressWithTo}
+            className="inline-flex flex-col items-center"
+          >
+            <span className="text-md font-semibold lowercase text-blue-200">
+              {Contacts.Email}
+            </span>
+            <span className="block w-full h-px bg-blue-200 mt-0.5"></span>
+          </a>
+
+
+
+        <div className="flex gap-4 text-white/60">
           {Object.entries(contacts).map(([key, entry]) => (
-            <a
-              key={key}
-              href={entry.url}
-              target="_blank"
-              rel="noreferrer"
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/40 transition hover:border-blue-400"
-            >
-              {entry.icon ? (
-                <img src={entry.icon} alt={`${key} icon`} className="h-6 w-6" />
-              ) : (
-                key
-              )}
-            </a>
+            <ContactBubble key={key} contact={entry} label={key} />
           ))}
         </div>
-      </div>
+        </div>
+      </CursorSpotlight>
     </section>
   );
 }
