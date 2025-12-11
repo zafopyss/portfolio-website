@@ -47,6 +47,12 @@
       ],
       "@data/*": [
         "data/*"
+      ],
+      "@utils": [
+        "utils"
+      ],
+      "@utils/*": [
+        "utils/*"
       ]
     }
   },
