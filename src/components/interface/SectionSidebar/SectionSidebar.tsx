@@ -1,24 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { sectionTargets } from '@data/sections';
+import { useSectionNavigation } from '@hooks/SectionNavigationContext';
+import { MouseEvent, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import personmodel from '../../../assets/person_model.svg';
 
-const sections = [
-  { label: 'Profile', hash: '#profile' },
-  { label: 'Experiences', hash: '#experiences' },
-  { label: 'Projects', hash: '#projects' },
-  { label: 'Contact', hash: '#contact' },
-];
-
 export default function SectionSidebar() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const { activeHash, goToSection } = useSectionNavigation();
   const [showScrollHint, setShowScrollHint] = useState(true);
-  const location = useLocation();
-
-  useEffect(() => {
-    const hash = location.hash || sections[0].hash;
-    const foundIndex = sections.findIndex((section) => section.hash === hash);
-    setActiveIndex(foundIndex === -1 ? 0 : foundIndex);
-  }, [location.hash]);
+  const activeIndex = sectionTargets.findIndex((section) => section.hash === activeHash);
 
   useEffect(() => {
     const handle = () => {
@@ -43,14 +32,17 @@ export default function SectionSidebar() {
       </Link>
 
       <div className="fixed flex-1 flex flex-col items-start top-[45%]">
-        {sections.map((section, index) => (
-          <a
-            key={section.hash}
-            href={section.hash}
-            aria-label={`Go to ${section.label}`}
-            className="group focus-visible:outline-none"
-            onClick={() => setActiveIndex(index)}
-          >
+        {sectionTargets.map((section, index) => (
+            <a
+              key={section.hash}
+              href={section.hash}
+              aria-label={`Go to ${section.label}`}
+              className="group focus-visible:outline-none"
+              onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+                event.preventDefault();
+                goToSection(section.hash);
+              }}
+            >
             <div className="flex h-5 w-10 items-center">
               <span className={indicatorClasses(activeIndex === index)} />
               <span className="sr-only">{section.label}</span>
