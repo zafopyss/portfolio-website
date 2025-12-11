@@ -2,11 +2,32 @@ import ContactSidebar from '@components/interface/ContactSidebar';
 import SectionSidebar from '@components/interface/SectionSidebar';
 import About from '@pages/About';
 import Home from '@pages/Home';
+import Lenis from 'lenis';
+import { useEffect } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { Header } from './components';
 import { AboutSection, ExperienceSection, TechSection } from './sections';
 
 function App() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
   return (
     <div className="relative px-3 mt-3 md:px-6 lg:px-20 md:mt-4 flex flex-col gap-6">
       <ContactSidebar />

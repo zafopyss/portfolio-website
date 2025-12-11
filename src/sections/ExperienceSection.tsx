@@ -29,7 +29,11 @@ const experiences: Experience[] = [
     location: 'Strasbourg, France',
     description: [
       "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
-      "test"
+      "test",
+      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
+      "test",
+      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
+      "test",
     ],
     techStack: [techMap.Python, techMap.Django, techMap.Tailwind, techMap.PostgreSQL, techMap.Docker, techMap.MinIO],
   },
@@ -63,7 +67,6 @@ const experiences: Experience[] = [
 ];
 
 const LINE_MARGIN_TOP = -20;
-const LINE_EXTENSION = 140;
 const LINE_LEFT_PX = 32;
 const DOT_SIZE = 32;
 const TEXT_OFFSET = LINE_LEFT_PX + DOT_SIZE + 12;
@@ -115,22 +118,14 @@ export default function ExperienceSection() {
     const handleScroll = () => {
       if (!sectionRef.current || !articlesColumnRef.current || !lineRef.current) return;
 
-      const sectionRect = sectionRef.current.getBoundingClientRect();
-      const sectionTop = sectionRect.top + window.scrollY;
-      const sectionHeight = sectionRect.height;
-      const viewportBottom = window.scrollY + window.innerHeight;
-      
-      // Calculate scroll progress through the section
-      const scrollStart = sectionTop;
-      const scrollEnd = sectionTop + sectionHeight;
-      const scrollProgress = Math.max(0, Math.min(100, ((viewportBottom - scrollStart) / (scrollEnd - scrollStart)) * 100));
-      
-      // Update timeline gradient
-      lineRef.current.style.background = `linear-gradient(to bottom, #3B82F6 ${scrollProgress}%, rgba(55, 65, 81, 0.3) ${scrollProgress}%)`;
-
-      // Determine active experience based on viewport center
-      const viewportCenter = window.scrollY + window.innerHeight * 0.5;
       const columnTop = articlesColumnRef.current.getBoundingClientRect().top + window.scrollY;
+      const viewportCenter = window.scrollY + window.innerHeight * 0.5;
+      const timelinePoint = viewportCenter + 60;
+      const timelineHeight = Math.max(0, timelinePoint - columnTop - LINE_MARGIN_TOP);
+      const maxTimelineHeight = timelineContainerHeight;
+      const fillPercentage = Math.min(100, (timelineHeight / maxTimelineHeight) * 100);
+      
+      lineRef.current.style.background = `linear-gradient(to bottom, #3B82F6 ${fillPercentage}%, rgba(55, 65, 81, 0.3) ${fillPercentage}%)`;
       
       const nextActiveIndex = experiences.findIndex((_, index) => {
         const start = columnTop + (entryMetrics[index]?.offset ?? index * estimatedSpacing);
@@ -170,6 +165,7 @@ export default function ExperienceSection() {
         <div className="mt-10 grid gap-10 lg:grid-cols-[180px_minmax(0,1fr)] items-start">
           <div className="relative">
             <div className="relative">
+              {/* timeline */}
               <div
                 ref={lineRef}
                 className="absolute w-[2px] rounded-full transition-all duration-300"
@@ -185,6 +181,7 @@ export default function ExperienceSection() {
                 style={{ minHeight: `${timelineContainerHeight}px` }}
                 aria-hidden="true"
               >
+                {/* date and location */}
                 {experiences.map((experience, index) => {
                   const startOffset = entryMetrics[index]?.offset ?? index * estimatedSpacing;
                   const isActive = index === activeExperienceIndex;
@@ -224,10 +221,11 @@ export default function ExperienceSection() {
                 }`}
               >
                 {/* Sticky dot container */}
+                {/* TODO: enlever -205 en dur et faire un calcul taille écran */}
                 <div 
-                  className="absolute left-0 top-0 bottom-0 hidden lg:block"
+                  className="absolute left-0 top-5 bottom-5 "
                   style={{ 
-                    marginLeft: `calc(-180px + ${LINE_LEFT_PX - DOT_SIZE / 2}px)`,
+                    marginLeft: `calc(-205px + ${LINE_LEFT_PX - DOT_SIZE}px)`,
                   }}
                 >
                   <div 
