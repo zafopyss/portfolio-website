@@ -47,7 +47,7 @@ function App() {
 
         <ContactSection />
 
-        <footer className="py-12 text-center text-sm text-white/60">
+        <footer className="mx-60 pb-12 pt-12 border-t border-white/20 text-center text-xs text-white/60">
           Handcrafted by Walter Eliot — © 2025.
         </footer>
 
