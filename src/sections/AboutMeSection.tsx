@@ -13,7 +13,7 @@ const profileFacts = [
 
 export default function AboutSection() {
   return (
-    <section id="profile" className="scroll-mt-24 px-6 py-12 lg:px-20 lg:py-10">
+    <section id="profile" className="scroll-mt-24 px-6 py-12 lg:px-15 lg:py-10">
       <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:items-center">
         <div className="space-y-8 text-white">
           <div>
@@ -61,7 +61,7 @@ export default function AboutSection() {
         <div className="flex items-center justify-center">
           <div className="relative aspect-square w-full max-w-sm border border-white/20 bg-gradient-to-br from-neutral-900/90 to-neutral-900/30 shadow-2xl">
             <div
-              className="absolute inset-0 translate-x-20 translate-y-25 bg-white/5 z-0 pointer-events-none"
+              className="absolute inset-0 translate-x-20 translate-y-22 bg-white/5 z-0 pointer-events-none"
               aria-hidden
             />
             <img

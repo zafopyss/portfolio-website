@@ -7,6 +7,7 @@ interface CursorSpotlightProps {
     opacity?: number; 
     borderRadius?: string;
     clipBorderRadius?: string;
+    className?: string;
 }
 
 export default function CursorSpotlight({
@@ -16,6 +17,7 @@ export default function CursorSpotlight({
     opacity = 0.55,
     borderRadius = 'rounded-full',
     clipBorderRadius,
+    className,
 }: CursorSpotlightProps) {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [isHovering, setIsHovering] = useState(false);
@@ -34,7 +36,7 @@ export default function CursorSpotlight({
 
     return (
         <div
-            className={`relative overflow-hidden ${maskRadius}`}
+            className={`relative overflow-hidden ${maskRadius} ${className ?? ''}`}
             onMouseMove={handleMouseMove}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
