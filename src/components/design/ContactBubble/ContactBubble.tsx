@@ -20,7 +20,7 @@ export default function ContactBubble({ contact, label }: ContactBubbleProps) {
           <img
             src={contact.icon}
             alt={`${label} logo`}
-            className="w-4 h-4 transition duration-300 group-hover:scale-105"
+            className="w-4 h-4 transition duration-300 group-hover:scale-105 filter brightness-0 invert"
             aria-hidden="true"
           />
         ) : (

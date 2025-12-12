@@ -47,8 +47,9 @@ function App() {
 
         <ContactSection />
 
-
-        <div className="text-center" style={{ height: '300px' }}>ending section to build</div>
+        <footer className="py-12 text-center text-sm text-white/60">
+          Handcrafted by Walter Eliot — © 2025.
+        </footer>
 
         {/* <ScrollToTop /> */}
       </div>

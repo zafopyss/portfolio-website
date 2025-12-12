@@ -11,7 +11,7 @@ export default function ContactSection() {
       aria-label="Contact"
       className="scroll-mt-24 px-6 py-12 lg:px-20 lg:py-14"
     >
-      <CursorSpotlight borderRadius="rounded-3xl" className="mx-auto max-w-3xl">
+      <CursorSpotlight size={52} opacity={0.25} borderRadius="rounded-3xl" className="mx-auto max-w-3xl">
         <div className="relative mx-auto max-w-3xl space-y-4 rounded-3xl border border-white/10 bg-white/5 p-8 text-white">
         <GradientText
           as="h2"
@@ -23,12 +23,6 @@ export default function ContactSection() {
         <p className="text-sm text-white/70 mt-4">
           N’hésitez pas à me contacter pour travailler sur un projet, poser une question ou simplement échanger.
         </p>
-        {/* <a
-          href={Contacts.EmailAdressWithTo}
-          className="inline-flex items-center justify-center rounded-full text-md font-semibold undercase text-blue-200 transition hover:border-blue-300"
-        >
-          {Contacts.Email}
-        </a> */}
           <a
             href={Contacts.EmailAdressWithTo}
             className="inline-flex flex-col items-center"
@@ -38,8 +32,6 @@ export default function ContactSection() {
             </span>
             <span className="block w-full h-px bg-blue-200 mt-0.5"></span>
           </a>
-
-
 
         <div className="flex gap-4 text-white/60">
           {Object.entries(contacts).map(([key, entry]) => (
