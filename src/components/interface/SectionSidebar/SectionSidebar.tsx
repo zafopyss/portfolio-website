@@ -21,7 +21,7 @@ export default function SectionSidebar() {
   const indicatorClasses = (active: boolean) =>
     `block h-[3px] origin-left rounded-full transition-all duration-300 ${
       active
-        ? 'w-9 bg-blue-400'
+        ? 'w-9 bg-blue-python'
         : 'w-6 bg-white/60 group-hover:w-7.5'
     }`;
 

@@ -46,24 +46,6 @@ const experiences: Experience[] = [
       "Accompagnement de PME et startups sur la création d’expériences web premium : prototypes, animations scrollytelling et intégration React.",
     techStack: [techMap.Tailwind, techMap.React, techMap.JavaScript],
   },
-  {
-    company: 'Studio Nova',
-    role: 'Lead Front-end Engineer',
-    date: '2025 — Présent',
-    location: 'Strasbourg, France',
-    description:
-      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
-    techStack: [techMap.React, techMap.PostgreSQL, techMap.AWS],
-  },
-  {
-    company: 'Freelance',
-    role: 'Lead Front-end Designer',
-    date: '2020 — 2023',
-    location: 'Remote — Europe',
-    description:
-      "Accompagnement de PME et startups sur la création d’expériences web premium : prototypes, animations scrollytelling et intégration React.",
-    techStack: [techMap.Tailwind, techMap.Django, techMap.Python],
-  },
 ];
 
 const LINE_MARGIN_TOP = -20;
@@ -216,7 +198,7 @@ export default function ExperienceSection() {
                 ref={(node) => (articleRefs.current[index] = node)}
                 className={`rounded-3xl border transition-all duration-300 p-6 relative ${
                   index === activeExperienceIndex
-                    ? 'border-blue-400/50 bg-black/40 shadow-lg shadow-blue-500/10'
+                    ? 'border-blue-python/50 bg-black/40 shadow-lg shadow-blue-python/10'
                     : 'border-white/10 bg-black/30'
                 }`}
               >
@@ -241,9 +223,9 @@ export default function ExperienceSection() {
                           index === 0
                             ? 'bg-green-active'
                             : index === activeExperienceIndex
-                            ? 'bg-blue-400'
+                            ? 'bg-blue-python'
                             : index < activeExperienceIndex
-                            ? 'bg-blue-400'
+                            ? 'bg-blue-python'
                             : 'bg-gray-600'
                         }`} 
                       />
@@ -252,7 +234,7 @@ export default function ExperienceSection() {
                 </div>
 
                 <div className="flex flex-col text-white/70">
-                  <span className="text-sm uppercase tracking-[0.4em] text-blue-400">
+                  <span className="text-sm uppercase tracking-[0.4em] text-blue-python">
                     {experience.role}
                   </span>
                   <h3 className="text-2xl font-semibold text-white">{experience.company}</h3>

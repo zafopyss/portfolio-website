@@ -39,9 +39,9 @@ export default function AboutSection() {
               rel="noopener noreferrer"
               download="Walter-Eliot-CV.pdf"
               aria-label="Télécharger mon CV"
-              className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/5 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:border-blue-400 hover:text-blue-400"
+              className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/5 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:border-blue-python hover:text-blue-python"
             >
-              Résumé
+              Télécharger mon CV
             </a>
           </div>
           {/* <div className="grid gap-3">
@@ -73,5 +73,6 @@ export default function AboutSection() {
         </div>
       </div>
     </section>
+    
   );
 }

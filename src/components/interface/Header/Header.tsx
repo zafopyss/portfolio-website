@@ -36,11 +36,11 @@ export default function Header({ logo = personmodel }: HeaderProps) {
             <a
               key={link.hash}
               href={link.hash}
-              className={`group relative inline-block text-md font-medium focus-visible:outline-none transition text-white/70 hover:text-blue-400`}
+              className={`group relative inline-block text-md font-medium focus-visible:outline-none transition text-white/70 hover:text-blue-python`}
               onClick={(event) => handleNavClick(event, link.hash)}
             >
               {link.label}
-              <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-blue-400 transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100" />
+              <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-blue-python transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100" />
             </a>
           ))}
         </nav>

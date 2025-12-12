@@ -52,7 +52,7 @@ export default function ContactSidebar() {
                 rel="noreferrer"
                 aria-label={action.ariaLabel}
                 onMouseEnter={() => setActiveIndex(index)}
-                className="text-md font-semibold text-white transition-colors duration-200 hover:text-blue-400"
+                className="text-md font-semibold text-white transition-colors duration-200 hover:text-blue-python"
               >
                 {action.label}
               </a>
