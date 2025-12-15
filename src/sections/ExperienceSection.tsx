@@ -52,14 +52,17 @@ const LINE_MARGIN_TOP = -20;
 const LINE_LEFT_PX = 32;
 const DOT_SIZE = 32;
 const TEXT_OFFSET = LINE_LEFT_PX + DOT_SIZE + 12;
+const DATE_OFFSET = 8; // ajustement vertical pour descendre légèrement les dates
 
 export default function ExperienceSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const lineRef = useRef<HTMLDivElement | null>(null);
   const articleRefs = useRef<(HTMLElement | null)[]>([]);
+  const roleRefs = useRef<(HTMLElement | null)[]>([]);
   const articlesColumnRef = useRef<HTMLDivElement | null>(null);
   const [activeExperienceIndex, setActiveExperienceIndex] = useState(0);
   const [entryMetrics, setEntryMetrics] = useState<{ offset: number; height: number }[]>([]);
+  const [roleMetrics, setRoleMetrics] = useState<{ offset: number; height: number }[]>([]);
   const estimatedSpacing = 150;
 
   const timelineContainerHeight = entryMetrics.length
@@ -70,7 +73,7 @@ export default function ExperienceSection() {
     const measureEntries = () => {
       if (!articlesColumnRef.current) return;
       const columnTop = articlesColumnRef.current.getBoundingClientRect().top + window.scrollY;
-      const metrics = articleRefs.current.map((article) => {
+      const metrics = articleRefs.current.map((article, i) => {
         if (!article) return { offset: 0, height: estimatedSpacing };
         const rect = article.getBoundingClientRect();
         const articleTop = rect.top + window.scrollY;
@@ -79,7 +82,19 @@ export default function ExperienceSection() {
           height: rect.height,
         };
       });
+      const roles = roleRefs.current.map((roleEl, i) => {
+        if (!roleEl || !articleRefs.current[i]) return { offset: 0, height: 0 };
+        const roleRect = roleEl.getBoundingClientRect();
+        const articleRect = articleRefs.current[i]!.getBoundingClientRect();
+        const roleTop = roleRect.top + window.scrollY;
+        const articleTop = articleRect.top + window.scrollY;
+        return {
+          offset: roleTop - articleTop,
+          height: roleRect.height,
+        };
+      });
       setEntryMetrics(metrics);
+      setRoleMetrics(roles);
     };
 
     const frame = requestAnimationFrame(() => {
@@ -166,12 +181,14 @@ export default function ExperienceSection() {
                 {/* date and location */}
                 {experiences.map((experience, index) => {
                   const startOffset = entryMetrics[index]?.offset ?? index * estimatedSpacing;
+                  const roleMetric = roleMetrics[index] ?? { offset: 0, height: 0 };
                   const isActive = index === activeExperienceIndex;
+                  const topPosition = startOffset + roleMetric.offset + roleMetric.height / 2 - DOT_SIZE / 2 + DATE_OFFSET;
                   return (
                     <div
                       key={`${experience.company}-${index}`}
                       className="absolute left-0 w-full"
-                      style={{ top: `${startOffset - DOT_SIZE / 2}px` }}
+                      style={{ top: `${topPosition}px` }}
                     >
                       <div
                         className="flex flex-col text-sm whitespace-nowrap uppercase"
@@ -234,7 +251,7 @@ export default function ExperienceSection() {
                 </div>
 
                 <div className="flex flex-col text-white/70">
-                  <span className="text-sm uppercase tracking-[0.4em] text-blue-python">
+                  <span ref={(el) => (roleRefs.current[index] = el)} className="text-sm uppercase tracking-[0.4em] text-blue-python">
                     {experience.role}
                   </span>
                   <h3 className="text-2xl font-semibold text-white">{experience.company}</h3>
