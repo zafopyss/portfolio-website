@@ -12,6 +12,7 @@ import reactLogo from '../assets/react-logo.svg';
 import tailwindLogo from '../assets/tailwind-logo.svg';
 import terraformLogo from '../assets/terraform-logo.svg';
 import typescriptLogo from '../assets/Typescript-logo.svg';
+import viteLogo from '../assets/vite-logo.svg';
 
 export const techs = [
     { name: "Python", icon: pythonLogo },
@@ -27,4 +28,5 @@ export const techs = [
     { name: "AWS", icon: awsLogo },
     { name: "Terraform", icon: terraformLogo },
     { name: "Ansible", icon: ansibleLogo },
+    {name : "Vite", icon: viteLogo },
 ];

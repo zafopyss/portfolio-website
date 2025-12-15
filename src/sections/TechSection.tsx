@@ -5,7 +5,7 @@ import { techs } from "../data/techs";
 
 export default function TechSection() {
     return (
-        <section id="projects" className="scroll-mt-24 flex flex-col border rounded-lg shadow-lg px-6 py-12 lg:px-15 lg:py-10">
+        <section id="technologies" className="scroll-mt-24 flex flex-col border rounded-lg shadow-lg px-6 py-12 lg:px-15 lg:py-10">
             <GradientText as="h2" text="Technologies" sizeClass="text-3xl font-bold mb-10" gradientStart="var(--color-silver)" gradientEnd="var(--color-blue-python)" className="text-center" />
 
             <div className="flex flex-wrap gap-6 justify-center pb-10">

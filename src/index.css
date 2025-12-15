@@ -8,14 +8,12 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #1a1a1a;
   --color-silver: #D0C9C4;
   --color-silver-rgb: 208 201 196;
-
-  --color-green-active: #22c55e;
-  --color-blue-python: #3776AB;
+  --color-green-active: #03c44a;
+  --color-blue-python: #4F8DF9;
   --color-yellow-python: #FFD43B;
-
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -41,7 +39,7 @@ body::-webkit-scrollbar {
 
 @theme{
   --color-green-active: #22c55e;
-  --color-blue-python: #3776AB;
+  --color-blue-python: #4F8DF9;
   --color-yellow-python: #FFD43B;
   --color-silver: #D0C9C4;
 
@@ -76,8 +74,6 @@ body::-webkit-scrollbar {
 .text-gradient-silver-blue:hover {
   background-image: linear-gradient(90deg, var(--color-silver), var(--color-blue-python));
 }
-
-
 
 
 .bg-gradient-blue-yellow {
