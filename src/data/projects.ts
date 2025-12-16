@@ -12,13 +12,13 @@ import mountainImage from '../assets/851-jma-montagne.jpeg';
 
 export const projects: ProjectCard[] = [
   {
-    title: 'Studio Nova Dashboard',
+    title: 'Portfolio',
     description:
       "Dashboard interne pour piloter l'activité produit : KPIs, vues consolidées et widgets modulaires.",
     highlights: [
-      'Interface React/TS ultra-performante conçue pour les équipes Produit de Studio Nova.',
-      'Layout responsive, KPIs temps réel et synchronisation d’état bidirectionnelle.',
-      'Design system propre avec composants réutilisables pour chaque type de widget.',
+      'Design system modulaire avec composants réutilisables pour tous les types de widgets.',
+      'Architecture front-end React/TS ultra-performante avec Vite et Tailwind CSS.',
+      'Interface responsive adaptée à tous les écrans.',
     ],
     techs: ['React', 'TypeScript', 'Vite', 'Tailwind CSS'],
     image: mountainImage,

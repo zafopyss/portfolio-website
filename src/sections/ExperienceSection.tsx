@@ -23,28 +23,27 @@ const techMap = techs.reduce<Record<string, Tech>>((acc, tech) => {
 
 const experiences: Experience[] = [
   {
-    company: 'Studio Nova',
-    role: 'Lead Front-end Engineer',
+    company: 'Mantu',
+    role: 'Développeur Full-stack python',
     date: '2025 — Présent',
     location: 'Strasbourg, France',
     description: [
-      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
-      "test",
-      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
-      "test",
-      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
-      "test",
+      "Développement d’une application Django modulaire en clean architecture, avec utilisation de DTO, Pydantic et serializers pour assurer robustesse et maintenabilité.",
+      "Contribution active aux décisions d’architecture et évolution progressive des responsabilités au sein de l’équipe.",
+      "Travail en méthodologie agile (sprints de 2 semaines) et intégration front-end avec HTML, CSS, Tailwind et JavaScript."
     ],
     techStack: [techMap.Python, techMap.Django, techMap.Tailwind, techMap.PostgreSQL, techMap.Docker, techMap.MinIO],
   },
   {
-    company: 'Freelance',
-    role: 'Lead Front-end Designer',
-    date: '2020 — 2023',
-    location: 'Remote — Europe',
-    description:
-      "Accompagnement de PME et startups sur la création d’expériences web premium : prototypes, animations scrollytelling et intégration React.",
-    techStack: [techMap.Tailwind, techMap.React, techMap.JavaScript],
+    company: 'GEM STORE',
+    role: 'Apprenti développeur logiciel python',
+    date: '2023 — 2024',
+    location: 'Grenoble, France',
+    description: [
+      "Refonte du système de gestion des emplois du temps via une application web Python, améliorant la planification et la lisibilité des tâches.",
+      "Déploiement sécurisé de l'application sur un serveur interne, garantissant fiabilité et accessibilité pour l’équipe."
+    ],
+    techStack: [techMap.Python, techMap.PostgreSQL],
   },
 ];
 
@@ -188,7 +187,7 @@ export default function ExperienceSection() {
                     <div
                       key={`${experience.company}-${index}`}
                       className="absolute left-0 w-full"
-                      style={{ top: `${topPosition}px` }}
+                      style={{ top: `${topPosition}px`}}
                     >
                       <div
                         className="flex flex-col text-sm whitespace-nowrap uppercase"
@@ -251,17 +250,17 @@ export default function ExperienceSection() {
                 </div>
 
                 <div className="flex flex-col text-white/70">
-                  <span ref={(el) => (roleRefs.current[index] = el)} className="text-sm uppercase tracking-[0.4em] text-blue-python">
+                  <span ref={(el) => (roleRefs.current[index] = el)} className="text-xl uppercase tracking-[0.35em] text-white">
                     {experience.role}
                   </span>
-                  <h3 className="text-2xl font-semibold text-white">{experience.company}</h3>
+                  <h3 className="text-xl font-semibold text-blue-python">{experience.company}</h3>
                 </div>
                 {/* TODO : add bold part of text */}
-                <div className="mt-3 text-white/80" aria-label={`Description pour ${experience.company}`}>
+                <div className="mt-3 text-white/80 space-y-1" aria-label={`Description pour ${experience.company}`}>
                   {Array.isArray(experience.description) ? (
-                    experience.description.map((sentence) => (
+                  experience.description.map((sentence) => (
                     <p key={sentence}>{sentence}</p>
-                    ))
+                  ))
                   ) : (
                     <p>{experience.description}</p>
                   )}
