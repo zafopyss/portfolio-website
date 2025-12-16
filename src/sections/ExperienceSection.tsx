@@ -23,28 +23,27 @@ const techMap = techs.reduce<Record<string, Tech>>((acc, tech) => {
 
 const experiences: Experience[] = [
   {
-    company: 'Studio Nova',
-    role: 'Lead Front-end Engineer',
+    company: 'Mantu',
+    role: 'Développeur Full-stack python',
     date: '2025 — Présent',
     location: 'Strasbourg, France',
     description: [
-      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
-      "test",
-      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
-      "test",
-      "Pilotage de refontes React+TS pour des interfaces B2B critiques, mise en place de design systems et automatisation des livraisons front via CI.",
-      "test",
+      "Développement d’une application Django modulaire en clean architecture, avec utilisation de DTO, Pydantic et serializers pour assurer robustesse et maintenabilité.",
+      "Contribution active aux décisions d’architecture et évolution progressive des responsabilités au sein de l’équipe.",
+      "Travail en méthodologie agile (sprints de 2 semaines) et intégration front-end avec HTML, CSS, Tailwind et JavaScript."
     ],
     techStack: [techMap.Python, techMap.Django, techMap.Tailwind, techMap.PostgreSQL, techMap.Docker, techMap.MinIO],
   },
   {
-    company: 'Freelance',
-    role: 'Lead Front-end Designer',
-    date: '2020 — 2023',
-    location: 'Remote — Europe',
-    description:
-      "Accompagnement de PME et startups sur la création d’expériences web premium : prototypes, animations scrollytelling et intégration React.",
-    techStack: [techMap.Tailwind, techMap.React, techMap.JavaScript],
+    company: 'GEM STORE',
+    role: 'Apprenti développeur logiciel python',
+    date: '2023 — 2024',
+    location: 'Grenoble, France',
+    description: [
+      "Refonte du système de gestion des emplois du temps via une application web Python, améliorant la planification et la lisibilité des tâches.",
+      "Déploiement sécurisé de l'application sur un serveur interne, garantissant fiabilité et accessibilité pour l’équipe."
+    ],
+    techStack: [techMap.Python, techMap.PostgreSQL],
   },
 ];
 
@@ -52,14 +51,17 @@ const LINE_MARGIN_TOP = -20;
 const LINE_LEFT_PX = 32;
 const DOT_SIZE = 32;
 const TEXT_OFFSET = LINE_LEFT_PX + DOT_SIZE + 12;
+const DATE_OFFSET = 8; // ajustement vertical pour descendre légèrement les dates
 
 export default function ExperienceSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const lineRef = useRef<HTMLDivElement | null>(null);
   const articleRefs = useRef<(HTMLElement | null)[]>([]);
+  const roleRefs = useRef<(HTMLElement | null)[]>([]);
   const articlesColumnRef = useRef<HTMLDivElement | null>(null);
   const [activeExperienceIndex, setActiveExperienceIndex] = useState(0);
   const [entryMetrics, setEntryMetrics] = useState<{ offset: number; height: number }[]>([]);
+  const [roleMetrics, setRoleMetrics] = useState<{ offset: number; height: number }[]>([]);
   const estimatedSpacing = 150;
 
   const timelineContainerHeight = entryMetrics.length
@@ -70,7 +72,7 @@ export default function ExperienceSection() {
     const measureEntries = () => {
       if (!articlesColumnRef.current) return;
       const columnTop = articlesColumnRef.current.getBoundingClientRect().top + window.scrollY;
-      const metrics = articleRefs.current.map((article) => {
+      const metrics = articleRefs.current.map((article, i) => {
         if (!article) return { offset: 0, height: estimatedSpacing };
         const rect = article.getBoundingClientRect();
         const articleTop = rect.top + window.scrollY;
@@ -79,7 +81,19 @@ export default function ExperienceSection() {
           height: rect.height,
         };
       });
+      const roles = roleRefs.current.map((roleEl, i) => {
+        if (!roleEl || !articleRefs.current[i]) return { offset: 0, height: 0 };
+        const roleRect = roleEl.getBoundingClientRect();
+        const articleRect = articleRefs.current[i]!.getBoundingClientRect();
+        const roleTop = roleRect.top + window.scrollY;
+        const articleTop = articleRect.top + window.scrollY;
+        return {
+          offset: roleTop - articleTop,
+          height: roleRect.height,
+        };
+      });
       setEntryMetrics(metrics);
+      setRoleMetrics(roles);
     };
 
     const frame = requestAnimationFrame(() => {
@@ -166,12 +180,14 @@ export default function ExperienceSection() {
                 {/* date and location */}
                 {experiences.map((experience, index) => {
                   const startOffset = entryMetrics[index]?.offset ?? index * estimatedSpacing;
+                  const roleMetric = roleMetrics[index] ?? { offset: 0, height: 0 };
                   const isActive = index === activeExperienceIndex;
+                  const topPosition = startOffset + roleMetric.offset + roleMetric.height / 2 - DOT_SIZE / 2 + DATE_OFFSET;
                   return (
                     <div
                       key={`${experience.company}-${index}`}
                       className="absolute left-0 w-full"
-                      style={{ top: `${startOffset - DOT_SIZE / 2}px` }}
+                      style={{ top: `${topPosition}px`}}
                     >
                       <div
                         className="flex flex-col text-sm whitespace-nowrap uppercase"
@@ -234,17 +250,17 @@ export default function ExperienceSection() {
                 </div>
 
                 <div className="flex flex-col text-white/70">
-                  <span className="text-sm uppercase tracking-[0.4em] text-blue-python">
+                  <span ref={(el) => (roleRefs.current[index] = el)} className="text-xl uppercase tracking-[0.35em] text-white">
                     {experience.role}
                   </span>
-                  <h3 className="text-2xl font-semibold text-white">{experience.company}</h3>
+                  <h3 className="text-xl font-semibold text-blue-python">{experience.company}</h3>
                 </div>
                 {/* TODO : add bold part of text */}
-                <div className="mt-3 text-white/80" aria-label={`Description pour ${experience.company}`}>
+                <div className="mt-3 text-white/80 space-y-1" aria-label={`Description pour ${experience.company}`}>
                   {Array.isArray(experience.description) ? (
-                    experience.description.map((sentence) => (
+                  experience.description.map((sentence) => (
                     <p key={sentence}>{sentence}</p>
-                    ))
+                  ))
                   ) : (
                     <p>{experience.description}</p>
                   )}

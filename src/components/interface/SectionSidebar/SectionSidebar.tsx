@@ -8,6 +8,10 @@ export default function SectionSidebar() {
   const { activeHash, goToSection } = useSectionNavigation();
   const [showScrollHint, setShowScrollHint] = useState(true);
   const activeIndex = sectionTargets.findIndex((section) => section.hash === activeHash);
+  const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const handle = () => {
@@ -27,7 +31,12 @@ export default function SectionSidebar() {
 
   return (
     <aside className="hidden lg:flex fixed left-6 top-0 bottom-0 z-40 flex-col items-center">
-      <Link to="/" aria-label="Home" className="mt-8 inline-flex rounded-full bg-white/80 p-2 shadow-lg shadow-black/40 transition hover:-translate-y-0.5 hover:bg-neutral-800">
+      <Link
+        to="/"
+        aria-label="Home"
+        className="mt-8 inline-flex rounded-full bg-white/80 p-2 shadow-lg shadow-black/40 transition hover:-translate-y-0.5 hover:bg-neutral-800"
+        onClick={handleLogoClick}
+      >
         <img src={personmodel} alt="logo" className="w-15 h-15" />
       </Link>
 

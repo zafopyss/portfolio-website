@@ -162,15 +162,16 @@ export default function ProjectsSection() {
               </div>
 
               {(activeProject.github || activeProject.live) && (
-                <div className="border-t border-white/10 pt-3 text-xs uppercase tracking-[0.3em] text-blue-200">
+                <div className="border-t border-white/10 pt-3 text-xs uppercase tracking-[0.3em] text-blue-python flex flex-wrap items-center gap-3">
                   {activeProject.github && (
                     <a
                       href={activeProject.github}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1 px-3 py-1"
+                      className="group relative inline-block text-md font-medium focus-visible:outline-none transition text-white/70 hover:text-blue-python"
                     >
                       GitHub
+                      <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-blue-python transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100" />
                     </a>
                   )}
                   {activeProject.live && (
@@ -178,14 +179,16 @@ export default function ProjectsSection() {
                       href={activeProject.live}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1 px-3 py-1"
+                      className="group relative inline-block text-md font-medium focus-visible:outline-none transition text-white/70 hover:text-blue-python"
                     >
                       Lien
+                      <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-blue-python transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100" />
                     </a>
                   )}
                 </div>
               )}
             </div>
+
           </div>
         </article>
       </div>

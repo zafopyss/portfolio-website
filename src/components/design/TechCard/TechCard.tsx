@@ -1,4 +1,5 @@
 import CursorSpotlight from '@components/design/CursorSpotlight';
+import { useEffect, useState } from 'react';
 
 type TechCardProps = {
     name: string;
@@ -6,9 +7,21 @@ type TechCardProps = {
 };
 
 export default function TechCard({ name, icon }: TechCardProps) {
-    return (
-        <CursorSpotlight clipBorderRadius="rounded-xl">
-            <div className="relative flex flex-col items-center justify-center
+    const [canUseSpotlight, setCanUseSpotlight] = useState(() =>
+        typeof window === 'undefined' ? false : window.matchMedia('(min-width: 1024px)').matches
+    );
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const media = window.matchMedia('(min-width: 1024px)');
+        const listener = (event: MediaQueryListEvent) => setCanUseSpotlight(event.matches);
+        media.addEventListener('change', listener);
+        setCanUseSpotlight(media.matches);
+        return () => media.removeEventListener('change', listener);
+    }, []);
+
+    const content = (
+        <div className="relative flex flex-col items-center justify-center
                 h-30 w-30 rounded-xl bg-neutral-900
                 transition-all duration-200
                 hover:bg-neutral-800
@@ -57,7 +70,11 @@ export default function TechCard({ name, icon }: TechCardProps) {
                 )}
                 <p className="text-sm font-medium" style={{ cursor: "default" }}>{name}</p>
             </div>
-        </CursorSpotlight>
+    );
 
+    return canUseSpotlight ? (
+        <CursorSpotlight clipBorderRadius="rounded-xl">{content}</CursorSpotlight>
+    ) : (
+        content
     );
 }

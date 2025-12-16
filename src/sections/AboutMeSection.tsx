@@ -1,10 +1,10 @@
 import GradientText from '@components/design/GradientText';
 import montagne from '../assets/851-jma-montagne.jpeg';
 const personalCopy = [
-  "Depuis début 2025, je travaille chez Mantu d' pour architecturer des expériences digitales qui tiennent autant au détail visuel qu'à la fiabilité du back-end.",
-  "Je suis actuellement ingénieur logiciel chez M.",
-  "Mes domaines d'intérêt comprennent la résolution de problèmes, l'infrastructure cloud.",
-  "Soucieux du détail, j'aime créer des solutions simples mais efficaces pour améliorer les performances des applications, faciliter la maintenance et améliorer l'expérience utilisateur."
+  "Depuis début 2025, je travaille chez Mantu en tant que développeur full-stack Python, avec un focus sur des architectures back-end robustes et maintenables.",
+  "J’interviens sur la conception et l’évolution d’applications Django en clean architecture, en lien étroit avec les enjeux produit.",
+  "Mes principaux centres d’intérêt techniques sont la résolution de problèmes complexes, la qualité du code et la création d'architectures évolutives.",
+  "J’attache une importance particulière à la simplicité des solutions, à la maintenabilité et à l’expérience utilisateur."
 ];
 
 const profileFacts = [

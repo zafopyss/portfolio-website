@@ -18,4 +18,7 @@ export default defineConfig({
       '@sections': path.resolve(__dirname, 'src/sections'),
     },
   },
+  server: {
+    host: true,
+  }
 });
