@@ -13,17 +13,17 @@ const profileFacts = [
 
 export default function AboutSection() {
   return (
-    <section id="profile" className="scroll-mt-24 px-6 sm:py-12 lg:px-15 lg:py-10">
+    <section id="profile" className="scroll-mt-24 px-5 sm:py-12 lg:px-15 lg:py-10">
       <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:items-center">
-        <div className="space-y-8 text-white">
+        <div className="space-y-4 sm:space-y-8 text-white">
           <div>
-            <h1 className="mt-2 text-4xl font-semibold text-white sm:text-3xl">Walter Eliot</h1>
+            <h1 className="text-3xl font-semibold text-white sm:text-3xl">Walter Eliot</h1>
             <GradientText
               as="h2"
               text="Full Stack Software Engineer"
               gradientStart="var(--color-silver)"
               gradientEnd="var(--color-blue-python)"
-              sizeClass="text-5xl font-bold"
+              sizeClass="text-4xl sm:text-5xl font-bold"
               className="mt-2 pb-4"
             />
           </div>
@@ -59,17 +59,17 @@ export default function AboutSection() {
         </div>
 
         <div className="flex items-center justify-center">
-          <div className="relative aspect-square w-full max-w-sm border border-white/20 bg-gradient-to-br from-neutral-900/90 to-neutral-900/30 shadow-2xl">
+            <div className="relative aspect-square w-full max-w-[220px] sm:max-w-sm border border-white/20 bg-gradient-to-br from-neutral-900/90 to-neutral-900/30 shadow-2xl">
             <div
-              className="absolute inset-0 translate-x-20 translate-y-22 bg-white/5 z-0 pointer-events-none"
+              className="absolute inset-0 translate-x-8 translate-y-10 sm:translate-x-20 sm:translate-y-22 bg-white/5 z-0 pointer-events-none"
               aria-hidden
             />
             <img
               src={montagne}
               alt="Illustration of Walter Eliot"
-              className="relative h-full w-full z-10"
+              className="relative h-full w-full z-10 object-cover"
             />
-          </div>
+            </div>
         </div>
       </div>
     </section>
