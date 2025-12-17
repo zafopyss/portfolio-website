@@ -1,11 +1,8 @@
 import CursorSpotlight from '@components/design/CursorSpotlight';
 import GradientText from '@components/design/GradientText/GradientText';
+import TechTagList from '@components/functional/TechTagList';
 import { projects } from '@data/projects';
-import { techs } from '@data/techs';
 import { useMemo, useState } from 'react';
-
-const normalizeTechName = (name: string) =>
-  name.toLowerCase().replace(/[^a-z0-9]/g, '');
 
 export default function ProjectsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -18,27 +15,10 @@ export default function ProjectsSection() {
     () => Array.from(new Set(activeProject?.techs ?? [])),
     [activeProject?.techs]
   );
-  const techIconRepository = useMemo(() => {
-    const map = new Map<string, string>();
-    techs.forEach((tech) => map.set(normalizeTechName(tech.name), tech.icon));
-    return map;
-  }, []);
-  const findTechIcon = (label: string) => {
-    const normalized = normalizeTechName(label);
-    if (techIconRepository.has(normalized)) {
-      return techIconRepository.get(normalized);
-    }
-    for (const [key, icon] of techIconRepository.entries()) {
-      if (normalized.includes(key) || key.includes(normalized)) {
-        return icon;
-      }
-    }
-    return undefined;
-  };
   return (
     <section
       id="projects"
-      className="scroll-mt-24 px-6 py-12 lg:px-20"
+      className="scroll-mt-24 px-6 sm:py-12 lg:px-20"
       aria-label="Projets"
     >
       <div className="text-center">
@@ -138,28 +118,7 @@ export default function ProjectsSection() {
             </div>
 
             <div className="mt-6 p-4 flex flex-col gap-4 rounded-2xl">
-              <div className="flex flex-wrap gap-2">
-                {techTags.map((tech) => {
-                  const icon = findTechIcon(tech);
-
-                  return (
-                    <span
-                      key={tech}
-                      className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-white/80"
-                    >
-                      {icon && (
-                        <img
-                          src={icon}
-                          alt={`${tech} logo`}
-                          className="h-4 w-4 object-contain"
-                          loading="lazy"
-                        />
-                      )}
-                      {tech}
-                    </span>
-                  );
-                })}
-              </div>
+              <TechTagList tags={techTags} />
 
               {(activeProject.github || activeProject.live) && (
                 <div className="border-t border-white/10 pt-3 text-xs uppercase tracking-[0.3em] text-blue-python flex flex-wrap items-center gap-3">

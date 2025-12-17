@@ -9,7 +9,7 @@ export default function ContactSection() {
     <section
       id="contact"
       aria-label="Contact"
-      className="scroll-mt-24 px-6 py-12 lg:px-20 lg:py-14"
+      className="scroll-mt-24 px-6 sm:py-12 lg:px-20 lg:py-14"
     >
       <CursorSpotlight size={52} opacity={0.25} borderRadius="rounded-3xl" className="mx-auto max-w-3xl">
         <div className="relative mx-auto max-w-3xl space-y-4 rounded-3xl border border-white/10 bg-white/5 p-8 text-white">
