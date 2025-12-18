@@ -96,7 +96,7 @@ export default function ProjectsSection() {
           gradientStart="var(--color-silver)"
           gradientEnd="var(--color-blue-python)"
           sizeClass="text-4xl sm:text-5xl font-bold"
-          className="pb-6"
+          className="pb-4 sm:pb-8"
         />
       </div>
 
@@ -187,7 +187,7 @@ export default function ProjectsSection() {
           })}
         </div>
         
-        <article ref={articleRef} className="rounded-2xl border border-white/10 bg-white/5 p-6">
+        <article ref={articleRef} className="rounded-2xl border border-white/10 bg-white/5 px-6  pb-4 pt-6">
           <div className="flex flex-col gap-6 h-full">
             <div className="hidden lg:flex flex-col gap-6 h-full">
               <div className={'flex gap-6 ' + (activeHasImage ? 'md:flex-row' : 'flex-col h-full')}>

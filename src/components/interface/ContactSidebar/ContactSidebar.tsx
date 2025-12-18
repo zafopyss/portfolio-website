@@ -36,7 +36,7 @@ export default function ContactSidebar() {
 
   return (
     <aside className="hidden lg:block">
-      <div className="fixed right-4 top-[40%] flex flex-col items-end">
+      <div className="fixed right-4 top-[45%] flex flex-col items-end">
         <div className="relative pr-6">
           <span
             className="pointer-events-none absolute -left-4 h-1.5 w-1.5 rounded-full bg-white transition-all duration-600 ease-in-out"

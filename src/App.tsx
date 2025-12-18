@@ -71,7 +71,7 @@ function App() {
         </div> */}
 
         <ProjectsSection />
-        <div className="mx:auto sm:mx-60 sm:py-2gi border-t border-white/20 text-center text-xs text-white/60"></div>
+        <div className="mx:auto sm:mx-60 border-t border-white/20 text-center text-xs text-white/60"></div>
 
         <ContactSection />
 
