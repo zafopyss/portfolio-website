@@ -38,4 +38,5 @@ export const projects: ProjectCard[] = [
     github: 'https://github.com/zafopyss/portfolio',
     live: '',
   },
+  
 ];
