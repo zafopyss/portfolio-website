@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 
 interface CursorSpotlightProps {
     children: React.ReactNode;
@@ -19,6 +19,21 @@ export default function CursorSpotlight({
     clipBorderRadius,
     className,
 }: CursorSpotlightProps) {
+    const [canUseSpotlight, setCanUseSpotlight] = useState(() =>
+        typeof window === 'undefined' ? false : window.matchMedia('(min-width: 1024px)').matches
+    );
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const media = window.matchMedia('(min-width: 1024px)');
+        const update = (event?: MediaQueryListEvent) => {
+            setCanUseSpotlight(event ? event.matches : media.matches);
+        };
+        media.addEventListener('change', update);
+        update();
+        return () => media.removeEventListener('change', update);
+    }, []);
+
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [isHovering, setIsHovering] = useState(false);
 
@@ -33,6 +48,14 @@ export default function CursorSpotlight({
     const sizePx = size * 2; 
 
     const maskRadius = clipBorderRadius ?? borderRadius;
+
+    if (!canUseSpotlight) {
+        return (
+            <div className={`relative overflow-hidden ${maskRadius} ${className ?? ''}`}>
+                {children}
+            </div>
+        );
+    }
 
     return (
         <div

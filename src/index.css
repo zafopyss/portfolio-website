@@ -42,7 +42,7 @@ body::-webkit-scrollbar {
   --color-blue-python: #4F8DF9;
   --color-yellow-python: #FFD43B;
   --color-silver: #D0C9C4;
-
+  --color-theme-background: #1a1a1a;
 }
 
 .text-silver {
@@ -78,5 +78,56 @@ body::-webkit-scrollbar {
 
 .bg-gradient-blue-yellow {
   background-image: linear-gradient(90deg, var(--color-blue-python), var(--color-yellow-python));
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-overlay-appear {
+  opacity: 0;
+  animation: modalFadeIn 380ms ease-out forwards;
+}
+
+@keyframes modalTextPop {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-modal-item {
+  opacity: 0;
+  animation: modalTextPop 420ms ease-out forwards;
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+.modal-overlay-leave {
+  animation: modalFadeOut 380ms ease-in forwards;
+}
+
+.modal-item-leave {
+  animation: modalTextPop 420ms ease-in reverse forwards;
 }
 

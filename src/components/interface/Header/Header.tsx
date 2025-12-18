@@ -1,6 +1,7 @@
 import { sectionTargets } from '@data/sections';
+import { Contacts } from '@enums/ContactsEnum';
 import { useSectionNavigation } from '@hooks/SectionNavigationContext';
-import { MouseEvent } from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 import personmodel from '../../../assets/person_model.svg';
 
 type HeaderProps = {
@@ -8,30 +9,83 @@ type HeaderProps = {
 };
 
 export default function Header({ logo = personmodel }: HeaderProps) {
+  const [open, setOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { activeHash, goToSection } = useSectionNavigation();
   const navLinks = sectionTargets;
+  const getModalDelay = (index: number, offset = 0) => ({ animationDelay: `${offset + index * 80}ms` });
+
+  const openModal = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+    setIsClosing(false);
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    if (!open && !isClosing) return;
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+    }
+    setOpen(false);
+    setIsClosing(true);
+    closeTimer.current = setTimeout(() => {
+      setIsClosing(false);
+      closeTimer.current = null;
+    }, 360);
+  };
+
+  const handleBurgerClick = () => {
+    if (open && !isClosing) {
+      closeModal();
+      return;
+    }
+    openModal();
+  };
+
+  const shouldRenderModal = open || isClosing;
+  const shouldPreventScroll = shouldRenderModal;
+  const overlayAnimationClass = isClosing ? 'modal-overlay-leave' : 'modal-overlay-appear';
+
+  useEffect(() => {
+    const handler = () => setIsAtTop(window.scrollY <= 20);
+    handler();
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
 
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, hash: string) => {
     event.preventDefault();
+    closeModal();
     goToSection(hash);
   };
 
-  return (
-    <header className="w-full py-4">
-      {/* justify between */}
-      <div className="px-3 lg:px-8 flex items-center justify-end">
-          {/* <Link to="/" aria-label="Home">
-            <img src={logo} alt="logo" className="w-10 h-10" />
-          </Link>
-          <a
-            href={`${Contacts.EmailAdressWithTo}`}
-            className="inline-block text-xs font-medium text-neutral-200 border-b-2 border-transparent hover:border-blue-400 hover:text-blue-400 transition-all duration-200 transform focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-            aria-label={`Envoyer un mail à ${Contacts.Email}`}
-          >
-            {Contacts.Email}
-          </a> */}
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    if (!shouldPreventScroll) return undefined;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [shouldPreventScroll]);
 
-        <nav className="hidden md:flex items-center gap-6">
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) {
+        clearTimeout(closeTimer.current);
+      }
+    };
+  }, []);
+
+  return (
+    <header className="sticky top-0 z-50 w-full md:static">
+      <div className="hidden md:flex items-center justify-end px-3 lg:px-8 py-4">
+        <nav className="flex items-center gap-6">
           {navLinks.map((link) => (
             <a
               key={link.hash}
@@ -44,47 +98,108 @@ export default function Header({ logo = personmodel }: HeaderProps) {
             </a>
           ))}
         </nav>
-          {/* <Link
-            to="/contact"
-            aria-label="Contact me"
-            onClick={() => setOpen(false)}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-blue-400 text-sm font-medium text-neutral-900 hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 transition"
-          >
-            Contact me
-          </Link> */}
-
-
-      {/* Mobile to refacto */}
-        {/* <div className="md:hidden">
-          <button
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            onClick={() => setOpen((s) => !s)}
-            className="p-2 rounded-md hover:bg-neutral-800"
-          >
-            {open ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
-        </div> */}
       </div>
 
-      {/* {open && (
-        <div className="md:hidden bg-neutral-900 border-t border-neutral-700">
-          <div className="flex flex-col p-3 gap-2">
-            {navLinks.map((l) => (
-              <Link key={l.to} to={l.to} className="p-2 rounded-md hover:bg-neutral-800" onClick={() => setOpen(false)}>
-                {l.label}
-              </Link>
-            ))}
+        {/* mobile */}
+      <div
+        className={`md:hidden transition-colors duration-300 ${
+          isAtTop ? '' : 'bg-transparent'
+        }`}
+      >
+        <div className="px-3 py-3 flex items-center justify-between">
+          <div
+            className={`flex-1 flex items-center gap-3 transition-all duration-300 ${
+              isAtTop ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            <a
+              href={Contacts.EmailAdressWithTo}
+              aria-label={`Envoyer un mail à ${Contacts.Email}`}
+              className="text-sm font-medium text-white/70 transition"
+            >
+              {Contacts.Email}
+            </a>
+          </div>
+          <button
+            type="button"
+            aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
+            className="group relative inline-flex p-2 focus-visible:outline-none"
+            onClick={handleBurgerClick}
+          >
+            {/* faire un bg adaptatif en fonction des items, qu'il soit blanc et qu'il devient transparent ou autre s'il recouvre une image etc */}
+            <div className="z-41 flex flex-col cursor-pointer justify-between w-6 h-6 transform transition-all duration-300 origin-center overflow-hidden">
+              <span
+                className={`bg-silver h-[2px] md:h-[1.5px] w-10 transform transition-all origin-left ${
+                  open ? 'rotate-[42deg] duration-300' : 'duration-300'
+                }`}
+              />
+              <span
+                className={`bg-silver h-[2px] md:h-[1.5px] w-1/2 rounded transform transition-all ${
+                  open ? '-translate-x-10 opacity-0 duration-300' : 'opacity-100 duration-300'
+                }`}
+              />
+              <span
+                className={`bg-silver h-[2px] md:h-[1.5px] w-10 transform transition-all origin-left ${
+                  open ? '-rotate-[42deg] duration-300' : 'duration-300'
+                }`}
+              />
+            </div>
+          </button>
+        </div>
+      </div>
+
+      {/* modal for navigation links on mobile */}
+      {shouldRenderModal && (
+        <div className={`md:hidden fixed inset-0 z-40 flex items-center justify-center bg-theme-background/90 backdrop-blur-sm px-6 py-10 ${overlayAnimationClass}`}>
+          <div className="w-full max-w-xl text-center relative">
+            <div className="flex flex-col gap-6">
+              {navLinks.map((link, index) => (
+                <a
+                  key={link.hash}
+                  href={link.hash}
+                  aria-label={link.label}
+                  className={`text-3xl font-semibold text-white transition hover:text-blue-python ${
+                    isClosing ? 'modal-item-leave' : 'animate-modal-item'
+                  }`}
+                  style={getModalDelay(index, 100)}
+                  onClick={(event) => handleNavClick(event, link.hash)}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+            <div className={`mt-12 border-t border-white/20 pt-6 text-sm text-white/80 ${isClosing ? 'modal-item-leave' : 'animate-modal-item'}`}>
+              <div className="flex flex-col gap-2">
+                <a
+                  href={Contacts.GitHub}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`hover:text-blue-python ${isClosing ? 'modal-item-leave' : 'animate-modal-item'}`}
+                  style={getModalDelay(0, 350)}
+                >
+                  GitHub
+                </a>
+                <a
+                  href={Contacts.LinkedIn}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`hover:text-blue-python ${isClosing ? 'modal-item-leave' : 'animate-modal-item'}`}
+                  style={getModalDelay(1, 360)}
+                >
+                  LinkedIn
+                </a>
+                <a
+                  href={Contacts.EmailAdressWithTo}
+                  className={`hover:text-blue-python ${isClosing ? 'modal-item-leave' : 'animate-modal-item'}`}
+                  style={getModalDelay(2, 420)}
+                >
+                  Mail
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-      )} */}
+      )}
     </header>
   );
 }

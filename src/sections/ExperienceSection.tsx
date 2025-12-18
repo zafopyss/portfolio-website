@@ -1,5 +1,6 @@
 import GradientText from '@components/design/GradientText';
 import TechCard from '@components/design/TechCard/TechCard';
+import TechTagList from '@components/functional/TechTagList';
 import { techs } from '@data/techs';
 import { useEffect, useRef, useState } from 'react';
 
@@ -145,8 +146,8 @@ export default function ExperienceSection() {
 
 
   return (
-    <section id="experiences" ref={sectionRef} className="scroll-mt-28" aria-label="Expériences professionnelles">
-      <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6">
+    <section id="experiences" ref={sectionRef} className="scroll -mt-24 px-3 sm:py-12 lg:px-15 lg:py-10" aria-label="Expériences professionnelles">
+      <div className="max-w-6xl mx-auto sm:px-4 sm:px-6">
         <div className="text-center">
           <GradientText
             as="h2"
@@ -159,7 +160,7 @@ export default function ExperienceSection() {
         </div>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[180px_minmax(0,1fr)] items-start">
-          <div className="relative">
+          <div className="relative hidden lg:block">
             <div className="relative">
               {/* timeline */}
               <div
@@ -212,7 +213,7 @@ export default function ExperienceSection() {
               <article
                 key={`${experience.company}-${index}`}
                 ref={(node) => (articleRefs.current[index] = node)}
-                className={`rounded-3xl border transition-all duration-300 p-6 relative ${
+                className={`rounded-3xl border transition-all duration-300 p-3 sm:p-6 relative ${
                   index === activeExperienceIndex
                     ? 'border-blue-python/50 bg-black/40 shadow-lg shadow-blue-python/10'
                     : 'border-white/10 bg-black/30'
@@ -221,13 +222,13 @@ export default function ExperienceSection() {
                 {/* Sticky dot container */}
                 {/* TODO: enlever -205 en dur et faire un calcul taille écran */}
                 <div 
-                  className="absolute left-0 top-5 bottom-5 "
+                  className="absolute left-0 top-5 bottom-5 hidden lg:block"
                   style={{ 
                     marginLeft: `calc(-205px + ${LINE_LEFT_PX - DOT_SIZE}px)`,
                   }}
                 >
                   <div 
-                    className="sticky flex items-center justify-center"
+                    className="sticky hidden lg:flex items-center justify-center"
                     style={{ 
                       top: '50vh',
                       height: `${DOT_SIZE}px`,
@@ -250,10 +251,17 @@ export default function ExperienceSection() {
                 </div>
 
                 <div className="flex flex-col text-white/70">
-                  <span ref={(el) => (roleRefs.current[index] = el)} className="text-xl uppercase tracking-[0.35em] text-white">
+                  <span
+                    ref={(el) => (roleRefs.current[index] = el)}
+                    className="text-xl uppercase tracking-[0.35em] text-white flex items-center justify-center lg:justify-start text-center pb-2 border-b border-white/10 lg:border-0"
+                  >
                     {experience.role}
                   </span>
-                  <h3 className="text-xl font-semibold text-blue-python">{experience.company}</h3>
+                  <h3 className="text-xl font-semibold text-blue-python mt-2">{experience.company}</h3>
+                </div>
+                <div className="mt-2 flex flex-col gap-1 text-xs uppercase tracking-[0.35em] text-white/70 lg:hidden">
+                  <span className="text-white/80 text-sm font-semibold tracking-[0.4em]">{experience.date}</span>
+                  <span className="text-white/60 tracking-[0.2em] text-[0.65rem]">{experience.location}</span>
                 </div>
                 {/* TODO : add bold part of text */}
                 <div className="mt-3 text-white/80 space-y-1" aria-label={`Description pour ${experience.company}`}>
@@ -266,15 +274,23 @@ export default function ExperienceSection() {
                   )}
                 </div>
 
-                <div className="mt-6 flex gap-4 flex-wrap w-full" aria-label={`Technologies utilisées chez ${experience.company}`}>
-                  {experience.techStack.map((tech) => (
-                    <TechCard
-                      key={`${experience.company}-${tech.name}`}
-                      name={tech.name}
-                      icon={tech.icon}
-                    />
-                  ))}
-                </div>
+                <div className="mt-6 rounded-2xl" aria-label={`Technologies utilisées chez ${experience.company}`}>
+                  <div className="hidden lg:flex gap-4 flex-wrap w-full">
+                    {experience.techStack.map((tech) => (
+                      <TechCard
+                        key={`${experience.company}-${tech.name}`}
+                        name={tech.name}
+                        icon={tech.icon}
+                      />
+                    ))}
+                  </div>
+                  </div>
+                  <div className='flex gap-4 rounded-2xl lg:hidden'>
+                  <TechTagList
+                    className="flex flex-wrap gap-2 "
+                    tags={experience.techStack.map((tech) => tech.name)}
+                  />
+                  </div>
               </article>
             ))}
           </div>

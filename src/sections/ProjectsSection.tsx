@@ -1,11 +1,8 @@
 import CursorSpotlight from '@components/design/CursorSpotlight';
 import GradientText from '@components/design/GradientText/GradientText';
+import TechTagList from '@components/functional/TechTagList';
 import { projects } from '@data/projects';
-import { techs } from '@data/techs';
-import { useMemo, useState } from 'react';
-
-const normalizeTechName = (name: string) =>
-  name.toLowerCase().replace(/[^a-z0-9]/g, '');
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export default function ProjectsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -18,27 +15,78 @@ export default function ProjectsSection() {
     () => Array.from(new Set(activeProject?.techs ?? [])),
     [activeProject?.techs]
   );
-  const techIconRepository = useMemo(() => {
-    const map = new Map<string, string>();
-    techs.forEach((tech) => map.set(normalizeTechName(tech.name), tech.icon));
-    return map;
+  const [isCompactView, setIsCompactView] = useState(false);
+  const articleRef = useRef<HTMLElement | null>(null);
+  const mobileListRef = useRef<HTMLDivElement | null>(null);
+  const [visibleIndex, setVisibleIndex] = useState(0);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const media = window.matchMedia('(max-width: 1023px)');
+    const handle = () => setIsCompactView(media.matches);
+    handle();
+    media.addEventListener('change', handle);
+    return () => media.removeEventListener('change', handle);
   }, []);
-  const findTechIcon = (label: string) => {
-    const normalized = normalizeTechName(label);
-    if (techIconRepository.has(normalized)) {
-      return techIconRepository.get(normalized);
-    }
-    for (const [key, icon] of techIconRepository.entries()) {
-      if (normalized.includes(key) || key.includes(normalized)) {
-        return icon;
+
+  useEffect(() => {
+    if (!isCompactView || typeof window === 'undefined' || !articleRef.current) return;
+    const frame = window.requestAnimationFrame(() => {
+      const node = articleRef.current;
+      if (!node) return;
+      const { top } = node.getBoundingClientRect();
+      const targetTop = window.scrollY + top;
+      const scrollOffset = 20;
+      window.scrollTo({ top: Math.max(targetTop - scrollOffset, 0), behavior: 'smooth' });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeIndex, isCompactView]);
+
+  useEffect(() => {
+    if (!isCompactView || !mobileListRef.current) return;
+    const container = mobileListRef.current;
+    let frame: number;
+
+    const updateVisibleIndex = () => {
+      const rect = container.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      let bestIndex = -1;
+      let minDist = Infinity;
+      Array.from(container.children).forEach((child) => {
+        if (!(child instanceof HTMLElement)) return;
+        const dataIndex = child.dataset.projectIndex;
+        if (!dataIndex) return;
+        const childRect = child.getBoundingClientRect();
+        const childCenter = childRect.left + childRect.width / 2;
+        const dist = Math.abs(childCenter - centerX);
+        if (dist < minDist) {
+          minDist = dist;
+          bestIndex = Number(dataIndex);
+        }
+      });
+      if (bestIndex !== -1) {
+        setVisibleIndex(bestIndex);
       }
-    }
-    return undefined;
-  };
+    };
+
+    const handleScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updateVisibleIndex);
+    };
+
+    handleScroll();
+    container.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      container.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [isCompactView]);
   return (
     <section
-      id="projects"
-      className="scroll-mt-24 px-6 py-12 lg:px-20"
+      id="projets"
+      className="scroll -mt-24 px-3 sm:py-12 lg:px-15 lg:py-10"
       aria-label="Projets"
     >
       <div className="text-center">
@@ -52,8 +100,50 @@ export default function ProjectsSection() {
         />
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[320px_1fr] items-stretch">
-        <div className="flex flex-col gap-4">
+      <div className="lg:hidden mb-4">
+        <div
+          ref={mobileListRef}
+          className="flex gap-2 overflow-x-auto px-4 py-3 scroll-smooth"
+        >
+          <span aria-hidden className="w-[10px] flex-shrink-0" />
+          {projects.map((project, index) => {
+            const isActive = index === activeIndex;
+            const hasImage = Boolean(project.image);
+            const isVisibleItem = visibleIndex === index && !isActive;
+            return (
+              <button
+                data-project-index={index}
+                key={`mobile-${project.title}`}
+                type="button"
+                onClick={() => setActiveIndex(index)}
+                aria-pressed={isActive}
+                className={`shrink-0 w-36 rounded-2xl border p-3 text-center transform transition duration-300 ${
+                  isActive
+                    ? 'border-blue-python/60 bg-white/10 scale-105'
+                    : isVisibleItem
+                    ? 'border-white/60 bg-white/15 scale-98'
+                    : 'border-white/10 bg-white/5 scale-95'
+                }`}
+              >
+                <div className="h-16 w-full overflow-hidden rounded-xl border border-white/10 bg-white/5">
+                  {hasImage && (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="h-full w-full object-cover"
+                    />
+                  )}
+                </div>
+                <p className="mt-2 text-sm font-semibold text-white">{project.title}</p>
+              </button>
+            );
+          })}
+          <span aria-hidden className="w-[10px] flex-shrink-0" />
+        </div>
+      </div>
+
+        <div className="grid gap-8 lg:grid-cols-[320px_1fr] items-stretch">
+        <div className="hidden lg:flex flex-col gap-1 sm:gap-4">
           {projects.map((project, index) => {
             const isActive = index === activeIndex;
             const hasImage = Boolean(project.image);
@@ -68,7 +158,7 @@ export default function ProjectsSection() {
                     'group rounded-2xl border bg-white/5 p-3 text-left transition ' +
                     (isActive
                       ? 'border-blue-python/60 bg-white/10 border-1'
-                      : 'border-white/10 hover:border-python/60 hover:bg-white/10 scale-98')
+                      : 'border-white/10 hover:border-python/60 hover:bg-white/10 scale-95 sm:scale-98')
                   }
                 >
                   <div className="flex items-center gap-4">
@@ -97,69 +187,69 @@ export default function ProjectsSection() {
           })}
         </div>
         
-        <article
-          className="rounded-2xl border border-white/10 bg-white/5 p-6"
-          aria-live="polite"
-        >
+        <article ref={articleRef} className="rounded-2xl border border-white/10 bg-white/5 p-6">
           <div className="flex flex-col gap-6 h-full">
-            <div className={'flex gap-6 ' + (activeHasImage ? 'md:flex-row' : 'flex-col h-full')}>
+            <div className="hidden lg:flex flex-col gap-6 h-full">
+              <div className={'flex gap-6 ' + (activeHasImage ? 'md:flex-row' : 'flex-col h-full')}>
+                {activeHasImage && (
+                  <div className="md:w-[320px]">
+                    <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+                      <img
+                        src={activeProject.image}
+                        alt={activeProject.title}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-2xl font-semibold text-white">{activeProject.title}</h3>
+                    <p className="mt-2 text-base leading-relaxed text-white/70">
+                      {activeProject.description}
+                    </p>
+
+                    <ul className="mt-5 px-1 space-y-2">
+                      {activeProject.highlights.map((item) => (
+                        <li
+                          key={item}
+                          className="text-base font-normal text-white/80 leading-relaxed"
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+              {/* on mobile */}
+            <div className="lg:hidden space-y-4 text-center">
+              <h3 className="text-3xl font-semibold text-white">{activeProject.title}</h3>
               {activeHasImage && (
-                <div className="md:w-[320px]">
+                <div className="mx-auto w-full max-w-[360px]">
                   <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-white/5">
                     <img
                       src={activeProject.image}
                       alt={activeProject.title}
                       className="h-full w-full object-cover"
-                      loading="lazy"
                     />
                   </div>
                 </div>
               )}
-
-              <div className="flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-2xl font-semibold text-white">{activeProject.title}</h3>
-                  <p className="mt-2 text-base leading-relaxed text-white/70">
-                    {activeProject.description}
-                  </p>
-
-                  <ul className="mt-5 px-1 space-y-2">
-                    {activeProject.highlights.map((item) => (
-                      <li
-                        key={item}
-                        className="text-base font-normal text-white/80 leading-relaxed"
-                      >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              <p className="text-start text-white">
+              {activeProject.description}
+              </p>
+              <ul className="mt-2 text-start space-y-2 text-base font-normal text-white/80 leading-relaxed">
+                {activeProject.highlights.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </div>
 
-            <div className="mt-6 p-4 flex flex-col gap-4 rounded-2xl">
-              <div className="flex flex-wrap gap-2">
-                {techTags.map((tech) => {
-                  const icon = findTechIcon(tech);
-
-                  return (
-                    <span
-                      key={tech}
-                      className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-white/80"
-                    >
-                      {icon && (
-                        <img
-                          src={icon}
-                          alt={`${tech} logo`}
-                          className="h-4 w-4 object-contain"
-                          loading="lazy"
-                        />
-                      )}
-                      {tech}
-                    </span>
-                  );
-                })}
-              </div>
+            <div className="sm:p-4 flex flex-col gap-4 sm:rounded-2xl">
+              <TechTagList tags={techTags} />
 
               {(activeProject.github || activeProject.live) && (
                 <div className="border-t border-white/10 pt-3 text-xs uppercase tracking-[0.3em] text-blue-python flex flex-wrap items-center gap-3">
@@ -187,8 +277,8 @@ export default function ProjectsSection() {
                   )}
                 </div>
               )}
-            </div>
 
+            </div>
           </div>
         </article>
       </div>

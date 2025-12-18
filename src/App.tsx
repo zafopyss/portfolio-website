@@ -1,28 +1,53 @@
 import ContactSidebar from '@components/interface/ContactSidebar';
 import SectionSidebar from '@components/interface/SectionSidebar';
 import { SectionNavigationProvider } from '@hooks/SectionNavigationContext';
-import Lenis from 'lenis';
 import { useEffect } from 'react';
 import { Header } from './components';
-import { AboutSection, ContactSection, ExperienceSection, ProjectsSection } from './sections';
+import { AboutMeSection, ContactSection, ExperienceSection, ProjectsSection } from './sections';
+type LenisType = import('lenis').default;
 
 function App() {
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
+    if (typeof window === 'undefined') return;
+    const media = window.matchMedia('(min-width: 1024px)');
+    let lenisInstance: LenisType | null = null;
+    let frameId: number | null = null;
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    const animate = (time: number) => {
+      lenisInstance?.raf(time);
+      frameId = requestAnimationFrame(animate);
+    };
 
-    requestAnimationFrame(raf);
+    const startLenis = async () => {
+      if (!media.matches || lenisInstance) return;
+      const { default: LoadedLenis } = await import('lenis');
+      if (!media.matches) return;
+      lenisInstance = new LoadedLenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      });
+      frameId = requestAnimationFrame(animate);
+    };
 
+    const stopLenis = () => {
+      if (frameId !== null) {
+        cancelAnimationFrame(frameId);
+        frameId = null;
+      }
+      if (lenisInstance) {
+        lenisInstance.destroy();
+        lenisInstance = null;
+      }
+    };
+
+    const handleChange = () => (media.matches ? startLenis() : stopLenis());
+
+    handleChange();
+    media.addEventListener('change', handleChange);
     return () => {
-      lenis.destroy();
+      media.removeEventListener('change', handleChange);
+      stopLenis();
     };
   }, []);
 
@@ -34,23 +59,23 @@ function App() {
         {/* <CursorTrail /> */}
         <Header />
 
-        <AboutSection />
+        <AboutMeSection />
         <div style={{ height: '50px' }}></div>
-        <div className="mx-60 pb-12 pt-12 border-t border-white/20 text-center text-xs text-white/60" style={{ height: '20px' }}></div>
+        <div className="mx:auto sm:mx-60 py-12 border-t border-white/20 text-center text-xs text-white/60" style={{ height: '20px' }}></div>
 
         <ExperienceSection />
-        <div className="mx-60 pb-12 pt-12 border-t border-white/20 text-center text-xs text-white/60" style={{ height: '20px' }}></div>
+        <div className="mx:auto sm:mx-60 py-12 border-t border-white/20 text-center text-xs text-white/60" style={{ height: '20px' }}></div>
 
         {/* <div className="mb-15">
           <TechSection />
         </div> */}
 
         <ProjectsSection />
-        <div className="mx-60 pb-12 pt-12 border-t border-white/20 text-center text-xs text-white/60" style={{ height: '50px' }}></div>
+        <div className="mx:auto sm:mx-60 sm:py-2gi border-t border-white/20 text-center text-xs text-white/60"></div>
 
         <ContactSection />
 
-        <footer className="mx-60 pb-12 pt-12 border-t border-white/20 text-center text-xs text-white/60">
+        <footer className="mx:auto sm:mx-60 py-12 border-t border-white/20 text-center text-xs text-white/60">
           Handcrafted by Walter Eliot — © 2025.
         </footer>
 
