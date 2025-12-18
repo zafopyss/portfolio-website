@@ -6,6 +6,6 @@ export type SectionTarget = {
 export const sectionTargets: SectionTarget[] = [
   { label: 'Profile', hash: '#profile' },
   { label: 'Experiences', hash: '#experiences' },
-  { label: 'Projets', hash: '#Projets' },
+  { label: 'projets', hash: '#projets' },
   { label: 'Contact', hash: '#contact' },
 ];

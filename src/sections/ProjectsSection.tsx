@@ -85,7 +85,7 @@ export default function ProjectsSection() {
   }, [isCompactView]);
   return (
     <section
-      id="projects"
+      id="projets"
       className="scroll -mt-24 px-3 sm:py-12 lg:px-15 lg:py-10"
       aria-label="Projets"
     >
