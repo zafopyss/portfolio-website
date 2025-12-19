@@ -14,7 +14,6 @@
   --color-green-active: #03c44a;
   --color-blue-python: #4F8DF9;
   --color-yellow-python: #FFD43B;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -43,6 +42,8 @@ body::-webkit-scrollbar {
   --color-yellow-python: #FFD43B;
   --color-silver: #D0C9C4;
   --color-theme-background: #1a1a1a;
+  --color-black-particule: #01030aCC;
+
 }
 
 .text-silver {

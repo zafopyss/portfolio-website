@@ -83,7 +83,7 @@ export default function Header({ logo = personmodel }: HeaderProps) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full md:static">
+    <header className="sticky top-0 z-20 w-full md:static">
       <div className="hidden md:flex items-center justify-end px-3 lg:px-8 py-4">
         <nav className="flex items-center gap-6">
           {navLinks.map((link) => (

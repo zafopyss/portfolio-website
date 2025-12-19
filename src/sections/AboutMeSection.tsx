@@ -1,5 +1,6 @@
 import GradientText from '@components/design/GradientText';
 import montagne from '../assets/851-jma-montagne.jpeg';
+
 const personalCopy = [
   "Depuis début 2025, je travaille chez Mantu en tant que développeur full-stack Python, avec un focus sur des architectures back-end robustes et maintenables.",
   "J’interviens sur la conception et l’évolution d’applications Django en clean architecture, en lien étroit avec les enjeux produit.",
@@ -13,7 +14,10 @@ const profileFacts = [
 
 export default function AboutSection() {
   return (
-    <section id="profile" className="scroll-mt-24 px-5 sm:py-12 lg:px-15 lg:py-10">
+    <section
+      id="profile"
+      className="scroll-mt-24 px-5 sm:py-12 lg:px-15 lg:py-10"
+    >
       <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:items-center">
         <div className="space-y-4 sm:space-y-8 text-white">
           <div>
@@ -27,7 +31,7 @@ export default function AboutSection() {
               className="mt-2 pb-4"
             />
           </div>
-          <div className="space-y-2 text-sm leading-relaxed text-slate-100">
+          <div className="space-y-2 text-sm leading-relaxed text-slate-100 ">
             {personalCopy.map((sentence) => (
               <p key={sentence}>{sentence}</p>
             ))}
@@ -44,35 +48,21 @@ export default function AboutSection() {
               Télécharger mon CV
             </a>
           </div>
-          {/* <div className="grid gap-3">
-            {profileFacts.map((fact) => (
-              <div
-                key={fact.label}
-                className="rounded-2xl border border-white/20 bg-black/50 p-4 text-sm"
-                aria-label={`${fact.label}: ${fact.value}`}
-              >
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{fact.label}</p>
-                <p className="text-base font-semibold text-white">{fact.value}</p>
-              </div>
-            ))}
-          </div> */}
         </div>
 
         <div className="flex items-center justify-center">
-            <div className="relative aspect-square w-full max-w-[220px] sm:max-w-sm border border-white/20 bg-gradient-to-br from-neutral-900/90 to-neutral-900/30 shadow-2xl">
+          <div className="relative aspect-square w-full max-w-[220px] sm:max-w-sm border border-white/20 bg-gradient-to-br from-neutral-900/90 to-neutral-900/30 shadow-2xl">
             <div
               className="absolute inset-0 translate-x-8 translate-y-10 sm:translate-x-20 sm:translate-y-22 bg-white/5 z-0 pointer-events-none"
-              aria-hidden
             />
             <img
               src={montagne}
               alt="Illustration of Walter Eliot"
               className="relative h-full w-full z-10 object-cover"
             />
-            </div>
+          </div>
         </div>
       </div>
     </section>
-    
   );
 }
