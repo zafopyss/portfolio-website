@@ -4,11 +4,13 @@ import awsLogo from '../assets/aws-logo.svg';
 import djangoLogo from '../assets/django-logo.svg';
 import dockerLogo from '../assets/docker-logo.svg';
 import fastapiLogo from '../assets/FastAPI-logo.svg';
+import goLogo from '../assets/go-logo.svg';
 import javascriptLogo from '../assets/js-logo.svg';
 import minioLogo from '../assets/minio-logo.svg';
 import postgresqlLogo from '../assets/PostgreSQL-logo.svg';
 import pythonLogo from '../assets/python-logo.svg';
 import reactLogo from '../assets/react-logo.svg';
+import rustLogo from '../assets/rust-logo.svg';
 import tailwindLogo from '../assets/tailwind-logo.svg';
 import terraformLogo from '../assets/terraform-logo.svg';
 import typescriptLogo from '../assets/Typescript-logo.svg';
@@ -29,4 +31,6 @@ export const techs = [
     { name: "Terraform", icon: terraformLogo },
     { name: "Ansible", icon: ansibleLogo },
     {name : "Vite", icon: viteLogo },
+    { name: "Go", icon: goLogo },
+    { name: "Rust", icon: rustLogo },
 ];

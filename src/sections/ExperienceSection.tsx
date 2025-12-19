@@ -33,7 +33,7 @@ const experiences: Experience[] = [
       "Contribution active aux décisions d’architecture et évolution progressive des responsabilités au sein de l’équipe.",
       "Travail en méthodologie agile (sprints de 2 semaines) et intégration front-end avec HTML, CSS, Tailwind et JavaScript."
     ],
-    techStack: [techMap.Python, techMap.Django, techMap.Tailwind, techMap.PostgreSQL, techMap.Docker, techMap.MinIO],
+    techStack: [techMap.Python, techMap.Django,techMap.JavaScript , techMap.Docker, techMap.MinIO,techMap.PostgreSQL ,techMap.Tailwind],
   },
   {
     company: 'GEM STORE',
@@ -275,7 +275,7 @@ export default function ExperienceSection() {
                 </div>
 
                 <div className="mt-6 rounded-2xl" aria-label={`Technologies utilisées chez ${experience.company}`}>
-                  <div className="hidden lg:flex gap-4 w-full">
+                  <div className="hidden flex-wrap lg:flex gap-4 w-full">
                     {experience.techStack.map((tech) => (
                       <TechCard
                         key={`${experience.company}-${tech.name}`}

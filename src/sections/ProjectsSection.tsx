@@ -10,6 +10,7 @@ export default function ProjectsSection() {
     () => projects[Math.min(Math.max(activeIndex, 0), projects.length - 1)],
     [activeIndex]
   );
+  const projectDescription = activeProject?.description ?? 'Description à venir.';
   const activeHasImage = Boolean(activeProject?.image);
   const techTags = useMemo(
     () => Array.from(new Set(activeProject?.techs ?? [])),
@@ -22,15 +23,26 @@ export default function ProjectsSection() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const media = window.matchMedia('(max-width: 1023px)');
+    const media = window.matchMedia('(max-width: 1279px)');
     const handle = () => setIsCompactView(media.matches);
     handle();
     media.addEventListener('change', handle);
     return () => media.removeEventListener('change', handle);
   }, []);
 
+  const prevActiveIndexRef = useRef(activeIndex);
+  const hasScrolledRef = useRef(false);
+
   useEffect(() => {
     if (!isCompactView || typeof window === 'undefined' || !articleRef.current) return;
+    if (!hasScrolledRef.current) {
+      hasScrolledRef.current = true;
+      prevActiveIndexRef.current = activeIndex;
+      return;
+    }
+    if (prevActiveIndexRef.current === activeIndex) return;
+    prevActiveIndexRef.current = activeIndex;
+
     const frame = window.requestAnimationFrame(() => {
       const node = articleRef.current;
       if (!node) return;
@@ -100,7 +112,7 @@ export default function ProjectsSection() {
         />
       </div>
 
-      <div className="lg:hidden mb-4">
+      <div className="xl:hidden mb-4">
         <div
           ref={mobileListRef}
           className="flex gap-2 overflow-x-auto px-4 py-3 scroll-smooth"
@@ -142,8 +154,8 @@ export default function ProjectsSection() {
         </div>
       </div>
 
-        <div className="grid gap-8 lg:grid-cols-[320px_1fr] items-stretch">
-        <div className="hidden lg:flex flex-col gap-1 sm:gap-4">
+        <div className="grid gap-8 xl:grid-cols-[320px_1fr] items-stretch">
+        <div className="hidden xl:flex flex-col gap-1 sm:gap-4">
           {projects.map((project, index) => {
             const isActive = index === activeIndex;
             const hasImage = Boolean(project.image);
@@ -177,7 +189,7 @@ export default function ProjectsSection() {
                         {project.title}
                       </div>
                       <div className="mt-1 line-clamp-2 text-sm text-white/60">
-                        {project.description}
+                        {project.description ?? 'Description à venir.'}
                       </div>
                     </div>
                   </div>
@@ -189,7 +201,7 @@ export default function ProjectsSection() {
         
         <article ref={articleRef} className="rounded-2xl border border-white/10 bg-white/5 px-6  pb-4 pt-6">
           <div className="flex flex-col gap-6 h-full">
-            <div className="hidden lg:flex flex-col gap-6 h-full">
+            <div className="hidden xl:flex flex-col gap-6 h-full">
               <div className={'flex gap-6 ' + (activeHasImage ? 'md:flex-row' : 'flex-col h-full')}>
                 {activeHasImage && (
                   <div className="md:w-[320px]">
@@ -207,7 +219,7 @@ export default function ProjectsSection() {
                   <div>
                     <h3 className="text-2xl font-semibold text-white">{activeProject.title}</h3>
                     <p className="mt-2 text-base leading-relaxed text-white/70">
-                      {activeProject.description}
+                      {projectDescription}
                     </p>
 
                     <ul className="mt-5 px-1 space-y-2">
@@ -225,7 +237,7 @@ export default function ProjectsSection() {
               </div>
             </div>
               {/* on mobile */}
-            <div className="lg:hidden space-y-4 text-center">
+            <div className="xl:hidden space-y-4 text-center">
               <h3 className="text-3xl font-semibold text-white">{activeProject.title}</h3>
               {activeHasImage && (
                 <div className="mx-auto w-full max-w-[360px]">
