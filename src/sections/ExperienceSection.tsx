@@ -275,7 +275,7 @@ export default function ExperienceSection() {
                 </div>
 
                 <div className="mt-6 rounded-2xl" aria-label={`Technologies utilisées chez ${experience.company}`}>
-                  <div className="hidden lg:flex gap-4 flex-wrap w-full">
+                  <div className="hidden lg:flex gap-4 w-full">
                     {experience.techStack.map((tech) => (
                       <TechCard
                         key={`${experience.company}-${tech.name}`}

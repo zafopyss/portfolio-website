@@ -55,8 +55,9 @@ function App() {
 
   return (
     <SectionNavigationProvider>
-      <div className="flex flex-col">
-        <div className="relative overflow-hidden bg-black-particule/80">
+      <div className="flex flex-col bg-black-particule/80 ">
+        <Header />
+        <div className="relative overflow-hidden gap-6 px-5 py-6 sm:px-22 sm:py-4">
           <Particles
             className="absolute inset-0 h-full w-full"
             quantity={90}
@@ -64,11 +65,10 @@ function App() {
             ease={60}
             color="#D0C9C4"
           />
-          <div className="relative z-10 flex flex-col gap-6 px-5 py-6 sm:px-20 sm:py-8">
+          <div className="relative z-10 flex flex-col ">
             <ContactSidebar />
             <SectionSidebar />
             {/* <CursorTrail /> */}
-            <Header />
 
             <AboutMeSection />
             <div style={{ height: '50px' }}></div>
@@ -89,13 +89,13 @@ function App() {
           <div className="mx:auto sm:mx-60 text-center text-xs text-white/60"></div>
         </div>
         <WavyBackground 
-        backgroundFill="#0d0d0fb3"
+        backgroundFill="#0e0e13b3"
         colors={["#4F8DF9", "#D0C9C4"]}
         waveWidth={30}
         blur={7}
         speed="slow"
         waveOpacity={0.45}
-        containerClassName="h-full w-full bottom-"
+        containerClassName="h-full w-full"
         className="">
           <ContactSection />
 

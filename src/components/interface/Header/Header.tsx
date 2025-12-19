@@ -12,6 +12,7 @@ export default function Header({ logo = personmodel }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { activeHash, goToSection } = useSectionNavigation();
   const navLinks = sectionTargets;
@@ -52,7 +53,12 @@ export default function Header({ logo = personmodel }: HeaderProps) {
   const overlayAnimationClass = isClosing ? 'modal-overlay-leave' : 'modal-overlay-appear';
 
   useEffect(() => {
-    const handler = () => setIsAtTop(window.scrollY <= 20);
+    const fadeDistance = 160;
+    const handler = () => {
+      const scrollY = window.scrollY;
+      setIsAtTop(scrollY <= 20);
+      setScrollProgress(Math.min(Math.max(scrollY / fadeDistance, 0), 1));
+    };
     handler();
     window.addEventListener('scroll', handler, { passive: true });
     return () => window.removeEventListener('scroll', handler);
@@ -83,8 +89,8 @@ export default function Header({ logo = personmodel }: HeaderProps) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-20 w-full md:static">
-      <div className="hidden md:flex items-center justify-end px-3 lg:px-8 py-4">
+    <header className="sticky top-0 z-20 w-3/4 mx-auto md:static px-5 sm:px-20 sm:py-8 py-4">
+      <div className="hidden md:flex items-center justify-end px-3 lg:pr-0 lg:pl-8 py-4">
         <nav className="flex items-center gap-6">
           {navLinks.map((link) => (
             <a
@@ -102,14 +108,16 @@ export default function Header({ logo = personmodel }: HeaderProps) {
 
         {/* mobile */}
       <div
-        className={`md:hidden transition-colors duration-300 ${
-          isAtTop ? '' : 'bg-transparent'
-        }`}
+        className={`md:hidden mb-2 fixed inset-x-0 top-0 z-[9999] transition-colors duration-300 ${
+          isAtTop ? '' : ''
+        } pointer-events-none`}
       >
-        <div className="px-3 py-3 flex items-center justify-between">
+        <div className="px-3 py-3 flex items-center justify-between pointer-events-auto">
           <div
-            className={`flex-1 flex items-center gap-3 transition-all duration-300 ${
-              isAtTop ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            className={`flex-1 flex items-center gap-3 transition-all duration-200 ${
+              isAtTop && !open
+                ? 'opacity-100 pointer-events-auto'
+                : 'opacity-0 pointer-events-none -translate-y-1'
             }`}
           >
             <a
@@ -123,7 +131,7 @@ export default function Header({ logo = personmodel }: HeaderProps) {
           <button
             type="button"
             aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
-            className="group relative inline-flex p-2 focus-visible:outline-none"
+            className="group relative inline-flex p-2 focus-visible:outline-none z-50"
             onClick={handleBurgerClick}
           >
             {/* faire un bg adaptatif en fonction des items, qu'il soit blanc et qu'il devient transparent ou autre s'il recouvre une image etc */}
