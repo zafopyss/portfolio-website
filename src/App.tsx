@@ -1,6 +1,7 @@
 import ContactSidebar from '@components/interface/ContactSidebar';
 import SectionSidebar from '@components/interface/SectionSidebar';
 import { Particles } from '@components/ui/shadcn-io/particles';
+import { WavyBackground } from '@components/ui/shadcn-io/wavy-background';
 import { SectionNavigationProvider } from '@hooks/SectionNavigationContext';
 import { useEffect } from 'react';
 import { Header } from './components';
@@ -75,25 +76,33 @@ function App() {
         </div>
 
 
-        <div className="lg:px-20 flex flex-col gap-6 bg-gradient-to-b from-[var(--color-black-particule)]/80 to-[#01030a]/70">
+        <div className="lg:px-20 flex flex-col gap-6 bg-gradient-to-b from-[var(--color-black-particule)]/80 to-[var(--color-black-gradient)]/60">
           <div
             className="mx:auto sm:mx-60 py-12 text-center text-xs text-white/60"
             style={{ height: '20px' }}
           ></div>
           <ExperienceSection />
-          <div className="mx:auto sm:mx-60 py-12 border-t border-white/20 text-center text-xs text-white/60" style={{ height: '20px' }}></div>
+          <div className="mx:auto sm:mx-60 py-12 text-center text-xs text-white/60" style={{ height: '20px' }}></div>
 
 
           <ProjectsSection />
-          <div className="mx:auto sm:mx-60 border-t border-white/20 text-center text-xs text-white/60"></div>
+          <div className="mx:auto sm:mx-60 text-center text-xs text-white/60"></div>
         </div>
-
+        <WavyBackground 
+        backgroundFill="#0d0d0fb3"
+        colors={["#4F8DF9", "#D0C9C4"]}
+        waveWidth={30}
+        blur={7}
+        speed="slow"
+        waveOpacity={0.45}
+        containerClassName="h-full w-full bottom-"
+        className="">
           <ContactSection />
 
-          <footer className="mx:auto sm:mx-60 py-12 border-t border-white/20 text-center text-xs text-white/60">
+          <footer className="mx:auto sm:mx-60 py-12 sm:border-t sm:border-white/20 text-center text-xs text-white/60">
             Handcrafted by Walter Eliot — © 2025.
           </footer>
-
+      </WavyBackground>  
       </div>
       {/* to delete */}
           {/* <ScrollToTop /> */}

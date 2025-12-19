@@ -1,8 +1,10 @@
 'use client';
 
-import { cn } from "@repo/shadcn-ui/lib/utils";
 import React, { useEffect, useRef, useState } from "react";
 import { createNoise3D } from "simplex-noise";
+
+const cn = (...classes: (string | undefined | false | null)[]) =>
+  classes.filter(Boolean).join(" ")
 
 export interface WavyBackgroundProps {
   children?: React.ReactNode;
