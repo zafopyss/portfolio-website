@@ -220,7 +220,6 @@ export default function ExperienceSection() {
                 }`}
               >
                 {/* Sticky dot container */}
-                {/* TODO: enlever -205 en dur et faire un calcul taille écran */}
                 <div 
                   className="absolute left-0 top-5 bottom-5 hidden lg:block"
                   style={{ 
@@ -263,7 +262,7 @@ export default function ExperienceSection() {
                   <span className="text-white/80 text-sm font-semibold tracking-[0.4em]">{experience.date}</span>
                   <span className="text-white/60 tracking-[0.2em] text-[0.65rem]">{experience.location}</span>
                 </div>
-                {/* TODO : add bold part of text */}
+                {/* need bold part of text ?  */}
                 <div className="mt-3 text-white/80 space-y-1" aria-label={`Description pour ${experience.company}`}>
                   {Array.isArray(experience.description) ? (
                   experience.description.map((sentence) => (

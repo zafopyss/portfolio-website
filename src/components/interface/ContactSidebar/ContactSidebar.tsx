@@ -30,7 +30,6 @@ export default function ContactSidebar() {
     if (!element) {
       return;
     }
-    // center the dot vertically next to the hovered label
     setIndicatorTop(element.offsetTop + element.offsetHeight / 2 - INDICATOR_SIZE / 2);
   }, [activeIndex]);
 

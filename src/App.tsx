@@ -4,7 +4,7 @@ import { Particles } from '@components/ui/shadcn-io/particles';
 import { WavyBackground } from '@components/ui/shadcn-io/wavy-background';
 import { SectionNavigationProvider } from '@hooks/SectionNavigationContext';
 import { useEffect } from 'react';
-import { Header } from './components';
+import { CursorTrail, Header } from './components';
 import { AboutMeSection, ContactSection, ExperienceSection, ProjectsSection } from './sections';
 type LenisType = import('lenis').default;
 
@@ -68,7 +68,7 @@ function App() {
           <div className="relative z-10 flex flex-col ">
             <ContactSidebar />
             <SectionSidebar />
-            {/* <CursorTrail /> */}
+            <CursorTrail />
 
             <AboutMeSection />
             <div style={{ height: '50px' }}></div>
@@ -104,12 +104,6 @@ function App() {
           </footer>
       </WavyBackground>  
       </div>
-      {/* to delete */}
-          {/* <ScrollToTop /> */}
-
-          {/* <div className="mb-15">
-            <TechSection />
-          </div> */}
     </SectionNavigationProvider>
   );
 }

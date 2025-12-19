@@ -134,7 +134,6 @@ export default function Header({ logo = personmodel }: HeaderProps) {
             className="group relative inline-flex p-2 focus-visible:outline-none z-50"
             onClick={handleBurgerClick}
           >
-            {/* faire un bg adaptatif en fonction des items, qu'il soit blanc et qu'il devient transparent ou autre s'il recouvre une image etc */}
             <div className="z-41 flex flex-col cursor-pointer justify-between w-6 h-6 transform transition-all duration-300 origin-center overflow-hidden">
               <span
                 className={`bg-silver h-[2px] md:h-[1.5px] w-10 transform transition-all origin-left ${
