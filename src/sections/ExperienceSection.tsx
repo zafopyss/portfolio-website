@@ -26,7 +26,7 @@ const experiences: Experience[] = [
   {
     company: 'Mantu',
     role: 'Développeur Full-stack python',
-    date: '2025 — Maintenant',
+    date: '2025 — Actuellement',
     location: 'Strasbourg, France',
     description: [
       "Développement d’une application Django modulaire en clean architecture, avec utilisation de DTO, Pydantic et serializers pour assurer robustesse et maintenabilité.",
@@ -147,7 +147,7 @@ export default function ExperienceSection() {
 
   return (
     <section id="experiences" ref={sectionRef} className="scroll -mt-24 px-3 sm:py-12 lg:px-15 lg:py-10" aria-label="Expériences professionnelles">
-      <div className="max-w-6xl mx-auto sm:px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto sm:px-0">
         <div className="text-center">
           <GradientText
             as="h2"
@@ -159,8 +159,8 @@ export default function ExperienceSection() {
           />
         </div>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-[180px_minmax(0,1fr)] items-start">
-          <div className="relative hidden lg:block">
+        <div className="mt-10 grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)] items-start lg:items-stretch lg:gap-12">
+          <div className="relative hidden lg:block h-full">
             <div className="relative">
               {/* timeline */}
               <div
@@ -208,12 +208,12 @@ export default function ExperienceSection() {
             </div>
           </div>
 
-          <div className="space-y-5" ref={articlesColumnRef}>
+          <div className="space-y-5 lg:space-y-8" ref={articlesColumnRef}>
             {experiences.map((experience, index) => (
               <article
                 key={`${experience.company}-${index}`}
                 ref={(node) => (articleRefs.current[index] = node)}
-                className={`rounded-3xl border transition-all duration-300 p-3 sm:p-6 relative ${
+                className={`rounded-3xl border transition-all duration-300 p-3 sm:p-6 relative lg:min-h-[340px] ${
                   index === activeExperienceIndex
                     ? 'border-blue-python/50 bg-black/40 shadow-lg shadow-blue-python/10'
                     : 'border-white/10 bg-black/30'
@@ -223,7 +223,7 @@ export default function ExperienceSection() {
                 <div 
                   className="absolute left-0 top-5 bottom-5 hidden lg:block"
                   style={{ 
-                    marginLeft: `calc(-205px + ${LINE_LEFT_PX - DOT_SIZE}px)`,
+                    marginLeft: `calc(-255px + ${LINE_LEFT_PX - DOT_SIZE}px)`,
                   }}
                 >
                   <div 
