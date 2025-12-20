@@ -23,7 +23,6 @@
     cursor: pointer;
   }
 
-  
 }
 
 body {
@@ -44,18 +43,9 @@ body::-webkit-scrollbar {
   --color-theme-background: #1a1a1a;
   --color-black-particule: #01030aCC;
   --color-black-gradient: #01030a;
-
 }
 
-.text-silver {
-  color: rgb(var(--color-silver-rgb) / var(--tw-text-opacity, 1));
-}
 
-.text-blue-python { color: var(--color-blue-python); }
-.text-yellow-python { color: var(--color-yellow-python); }
-.bg-blue-python { background-color: var(--color-blue-python); }
-.bg-yellow-python { background-color: var(--color-yellow-python); }
-.bg-silver { background-color: var(--color-silver); color: rgba(0,0,0,0.87); }
 
 .text-gradient-blue-yellow {
   background-image: linear-gradient(90deg, var(--color-blue-python), var(--color-yellow-python));

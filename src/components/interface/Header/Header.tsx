@@ -2,13 +2,9 @@ import { sectionTargets } from '@data/sections';
 import { Contacts } from '@enums/ContactsEnum';
 import { useSectionNavigation } from '@hooks/SectionNavigationContext';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
-import personmodel from '../../../assets/person_model.svg';
 
-type HeaderProps = {
-  logo?: string;
-};
 
-export default function Header({ logo = personmodel }: HeaderProps) {
+export default function Header() {
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);

@@ -26,7 +26,7 @@ const experiences: Experience[] = [
   {
     company: 'Mantu',
     role: 'Développeur Full-stack python',
-    date: '2025 — Présent',
+    date: '2025 — Maintenant',
     location: 'Strasbourg, France',
     description: [
       "Développement d’une application Django modulaire en clean architecture, avec utilisation de DTO, Pydantic et serializers pour assurer robustesse et maintenabilité.",
