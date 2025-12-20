@@ -26,14 +26,14 @@ const experiences: Experience[] = [
   {
     company: 'Mantu',
     role: 'Développeur Full-stack python',
-    date: '2025 — Présent',
+    date: '2025 — Actuellement',
     location: 'Strasbourg, France',
     description: [
       "Développement d’une application Django modulaire en clean architecture, avec utilisation de DTO, Pydantic et serializers pour assurer robustesse et maintenabilité.",
       "Contribution active aux décisions d’architecture et évolution progressive des responsabilités au sein de l’équipe.",
       "Travail en méthodologie agile (sprints de 2 semaines) et intégration front-end avec HTML, CSS, Tailwind et JavaScript."
     ],
-    techStack: [techMap.Python, techMap.Django, techMap.Tailwind, techMap.PostgreSQL, techMap.Docker, techMap.MinIO],
+    techStack: [techMap.Python, techMap.Django,techMap.JavaScript , techMap.Docker, techMap.MinIO,techMap.PostgreSQL ,techMap.Tailwind],
   },
   {
     company: 'GEM STORE',
@@ -147,7 +147,7 @@ export default function ExperienceSection() {
 
   return (
     <section id="experiences" ref={sectionRef} className="scroll -mt-24 px-3 sm:py-12 lg:px-15 lg:py-10" aria-label="Expériences professionnelles">
-      <div className="max-w-6xl mx-auto sm:px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto sm:px-0">
         <div className="text-center">
           <GradientText
             as="h2"
@@ -159,8 +159,8 @@ export default function ExperienceSection() {
           />
         </div>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-[180px_minmax(0,1fr)] items-start">
-          <div className="relative hidden lg:block">
+        <div className="mt-10 grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)] items-start lg:items-stretch lg:gap-12">
+          <div className="relative hidden lg:block h-full">
             <div className="relative">
               {/* timeline */}
               <div
@@ -208,23 +208,22 @@ export default function ExperienceSection() {
             </div>
           </div>
 
-          <div className="space-y-5" ref={articlesColumnRef}>
+          <div className="space-y-5 lg:space-y-8" ref={articlesColumnRef}>
             {experiences.map((experience, index) => (
               <article
                 key={`${experience.company}-${index}`}
                 ref={(node) => (articleRefs.current[index] = node)}
-                className={`rounded-3xl border transition-all duration-300 p-3 sm:p-6 relative ${
+                className={`rounded-3xl border transition-all duration-300 p-3 sm:p-6 relative lg:min-h-[340px] ${
                   index === activeExperienceIndex
                     ? 'border-blue-python/50 bg-black/40 shadow-lg shadow-blue-python/10'
                     : 'border-white/10 bg-black/30'
                 }`}
               >
                 {/* Sticky dot container */}
-                {/* TODO: enlever -205 en dur et faire un calcul taille écran */}
                 <div 
                   className="absolute left-0 top-5 bottom-5 hidden lg:block"
                   style={{ 
-                    marginLeft: `calc(-205px + ${LINE_LEFT_PX - DOT_SIZE}px)`,
+                    marginLeft: `calc(-255px + ${LINE_LEFT_PX - DOT_SIZE}px)`,
                   }}
                 >
                   <div 
@@ -263,7 +262,7 @@ export default function ExperienceSection() {
                   <span className="text-white/80 text-sm font-semibold tracking-[0.4em]">{experience.date}</span>
                   <span className="text-white/60 tracking-[0.2em] text-[0.65rem]">{experience.location}</span>
                 </div>
-                {/* TODO : add bold part of text */}
+                {/* need bold part of text ?  */}
                 <div className="mt-3 text-white/80 space-y-1" aria-label={`Description pour ${experience.company}`}>
                   {Array.isArray(experience.description) ? (
                   experience.description.map((sentence) => (
@@ -275,7 +274,7 @@ export default function ExperienceSection() {
                 </div>
 
                 <div className="mt-6 rounded-2xl" aria-label={`Technologies utilisées chez ${experience.company}`}>
-                  <div className="hidden lg:flex gap-4 flex-wrap w-full">
+                  <div className="hidden flex-wrap lg:flex gap-4 w-full">
                     {experience.techStack.map((tech) => (
                       <TechCard
                         key={`${experience.company}-${tech.name}`}

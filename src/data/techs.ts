@@ -1,18 +1,20 @@
 
-import ansibleLogo from '../assets/ansible-logo.svg';
-import awsLogo from '../assets/aws-logo.svg';
-import djangoLogo from '../assets/django-logo.svg';
-import dockerLogo from '../assets/docker-logo.svg';
-import fastapiLogo from '../assets/FastAPI-logo.svg';
-import javascriptLogo from '../assets/js-logo.svg';
-import minioLogo from '../assets/minio-logo.svg';
-import postgresqlLogo from '../assets/PostgreSQL-logo.svg';
-import pythonLogo from '../assets/python-logo.svg';
-import reactLogo from '../assets/react-logo.svg';
-import tailwindLogo from '../assets/tailwind-logo.svg';
-import terraformLogo from '../assets/terraform-logo.svg';
-import typescriptLogo from '../assets/Typescript-logo.svg';
-import viteLogo from '../assets/vite-logo.svg';
+import ansibleLogo from '../assets/TechIcons/ansible-logo.svg';
+import awsLogo from '../assets/TechIcons/aws-logo.svg';
+import djangoLogo from '../assets/TechIcons/django-logo.svg';
+import dockerLogo from '../assets/TechIcons/docker-logo.svg';
+import fastapiLogo from '../assets/TechIcons/FastAPI-logo.svg';
+import goLogo from '../assets/TechIcons/go-logo.svg';
+import javascriptLogo from '../assets/TechIcons/js-logo.svg';
+import minioLogo from '../assets/TechIcons/minio-logo.svg';
+import postgresqlLogo from '../assets/TechIcons/PostgreSQL-logo.svg';
+import pythonLogo from '../assets/TechIcons/python-logo.svg';
+import reactLogo from '../assets/TechIcons/react-logo.svg';
+import rustLogo from '../assets/TechIcons/rust-logo.svg';
+import tailwindLogo from '../assets/TechIcons/tailwind-logo.svg';
+import terraformLogo from '../assets/TechIcons/terraform-logo.svg';
+import typescriptLogo from '../assets/TechIcons/Typescript-logo.svg';
+import viteLogo from '../assets/TechIcons/vite-logo.svg';
 
 export const techs = [
     { name: "Python", icon: pythonLogo },
@@ -29,4 +31,6 @@ export const techs = [
     { name: "Terraform", icon: terraformLogo },
     { name: "Ansible", icon: ansibleLogo },
     {name : "Vite", icon: viteLogo },
+    { name: "Go", icon: goLogo },
+    { name: "Rust", icon: rustLogo },
 ];

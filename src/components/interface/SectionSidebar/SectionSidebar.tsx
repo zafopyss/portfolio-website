@@ -2,7 +2,6 @@ import { sectionTargets } from '@data/sections';
 import { useSectionNavigation } from '@hooks/SectionNavigationContext';
 import { MouseEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import personmodel from '../../../assets/person_model.svg';
 
 export default function SectionSidebar() {
   const { activeHash, goToSection } = useSectionNavigation();
@@ -34,10 +33,10 @@ export default function SectionSidebar() {
       <Link
         to="/"
         aria-label="Home"
-        className="mt-8 inline-flex rounded-full bg-white/80 p-2 shadow-lg shadow-black/40 transition hover:-translate-y-0.5 hover:bg-neutral-800"
+        className="mt-8 inline-flex rounded-full p-3 "
         onClick={handleLogoClick}
       >
-        <img src={personmodel} alt="logo" className="w-15 h-15" />
+          <h1 className='text-xl'>EW.</h1>
       </Link>
 
       <div className="fixed flex-1 flex flex-col items-start top-[45%]">

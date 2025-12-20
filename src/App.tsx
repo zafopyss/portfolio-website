@@ -1,5 +1,7 @@
 import ContactSidebar from '@components/interface/ContactSidebar';
 import SectionSidebar from '@components/interface/SectionSidebar';
+import { Particles } from '@components/ui/shadcn-io/particles';
+import { WavyBackground } from '@components/ui/shadcn-io/wavy-background';
 import { SectionNavigationProvider } from '@hooks/SectionNavigationContext';
 import { useEffect } from 'react';
 import { Header } from './components';
@@ -53,33 +55,54 @@ function App() {
 
   return (
     <SectionNavigationProvider>
-      <div className="relative mx-5 mt-3 md:px-6 lg:px-20 md:mt-4 flex flex-col gap-6">
-        <ContactSidebar />
-        <SectionSidebar />
-        {/* <CursorTrail /> */}
+      <div className="flex flex-col bg-black-particule/80 ">
         <Header />
+        <div className="relative overflow-hidden gap-6 px-5 py-6 sm:px-22 sm:py-4">
+          <Particles
+            className="absolute inset-0 h-full w-full"
+            quantity={90}
+            staticity={90}
+            ease={60}
+            color="#D0C9C4"
+          />
+          <div className="relative z-10 flex flex-col ">
+            <ContactSidebar />
+            <SectionSidebar />
+            {/* <CursorTrail /> */}
 
-        <AboutMeSection />
-        <div style={{ height: '50px' }}></div>
-        <div className="mx:auto sm:mx-60 py-12 border-t border-white/20 text-center text-xs text-white/60" style={{ height: '20px' }}></div>
+            <AboutMeSection />
+            <div style={{ height: '50px' }}></div>
+          </div>
+        </div>
 
-        <ExperienceSection />
-        <div className="mx:auto sm:mx-60 py-12 border-t border-white/20 text-center text-xs text-white/60" style={{ height: '20px' }}></div>
 
-        {/* <div className="mb-15">
-          <TechSection />
-        </div> */}
+        <div className="lg:px-20 flex flex-col gap-6 ">
+          <div
+            className="mx:auto sm:mx-60 py-12 text-center text-xs text-white/60"
+            style={{ height: '20px' }}
+          ></div>
+          <ExperienceSection />
+          <div className="mx:auto sm:mx-60 py-12 text-center text-xs text-white/60" style={{ height: '20px' }}></div>
 
-        <ProjectsSection />
-        <div className="mx:auto sm:mx-60 sm:py-2gi border-t border-white/20 text-center text-xs text-white/60"></div>
 
-        <ContactSection />
+          <ProjectsSection />
+          <div className="mx:auto sm:mx-60 text-center text-xs text-white/60"></div>
+        </div>
+        <WavyBackground 
+        backgroundFill="#05070ecc"
+        colors={["#4F8DF9", "#D0C9C4"]}
+        waveWidth={30}
+        blur={7}
+        speed="slow"
+        waveOpacity={0.45}
+        containerClassName="h-full w-full"
+        className="">
+          <ContactSection />
 
-        <footer className="mx:auto sm:mx-60 py-12 border-t border-white/20 text-center text-xs text-white/60">
-          Handcrafted by Walter Eliot — © 2025.
-        </footer>
-
-        {/* <ScrollToTop /> */}
+          <footer className="mx:auto sm:mx-60 py-12 sm:border-t sm:border-white/20 text-center text-xs text-white/60">
+            Handcrafted by Walter Eliot — © 2025.
+          </footer>
+      </WavyBackground>  
       </div>
     </SectionNavigationProvider>
   );

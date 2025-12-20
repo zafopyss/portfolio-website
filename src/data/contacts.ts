@@ -1,6 +1,6 @@
 import { Contacts } from '@enums/ContactsEnum';
-import GithubLogo from '../assets/github-logo.svg';
-import LinkedinLogo from '../assets/linkedin-logo.svg';
+import LinkedinLogo from '../assets/OthersIcons/linkedin-logo.svg';
+import GithubLogo from '../assets/TechIcons/github-logo.svg';
 
 
 type ContactEntry = {

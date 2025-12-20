@@ -22,7 +22,8 @@ export function SectionNavigationProvider({ children }: { children: ReactNode })
       for (const section of sectionTargets) {
         const element = document.querySelector<HTMLElement>(section.hash);
         if (!element) continue;
-        const threshold = element.offsetTop - 80;
+        const elementTop = element.getBoundingClientRect().top + window.scrollY;
+        const threshold = elementTop - 80;
         if (referencePoint >= threshold) {
           candidateHash = section.hash;
         }
