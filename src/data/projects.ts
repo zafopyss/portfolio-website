@@ -22,8 +22,8 @@ export const projects: ProjectCard[] = [
     ],
     techs: ['React', 'TypeScript', 'Vite', 'Tailwind CSS'],
     image: mountainImage,
-    github: 'https://github.com/zafopyss/studio-nova-dashboard',
-    live: 'https://studio-nova-dashboard.example.com',
+    github: 'https://github.com/zafopyss/portfolio-website',
+    live: 'test.com',
   },
   // {
   // title: 'Auth Platform (Multi-language)',
