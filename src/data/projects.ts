@@ -22,22 +22,22 @@ export const projects: ProjectCard[] = [
     ],
     techs: ['React', 'TypeScript', 'Vite', 'Tailwind CSS'],
     image: mountainImage,
-    github: 'https://github.com/zafopyss/studio-nova-dashboard',
-    live: 'https://studio-nova-dashboard.example.com',
+    github: 'https://github.com/zafopyss/portfolio-website',
+    live: 'test.com',
   },
-  {
-  title: 'Auth Platform (Multi-language)',
-  description:
-    "Plateforme d’authentification inspirée de Keycloak, conçue pour explorer une architecture multi-langage et les bases DevOps d’un projet distribué.",
-  highlights: [
-    'Backend principal en FastAPI avec services complémentaires en Go ou Rust.',
-    'Architecture orientée microservices pour comparer performances et responsabilités par langage.',
-    'Mise en place d’une chaîne DevOps complète : Docker, CI/CD, gestion des environnements.',
-    'Gestion de l’authentification et des autorisations (users, roles, tokens).',
-  ],
-    techs: ['Rust', 'Go', 'FastAPI', 'Docker', 'AWS'],
-    github: 'https://github.com/zafopyss/portfolio',
-    live: '',
-  },
+  // {
+  // title: 'Auth Platform (Multi-language)',
+  // description:
+  //   "Plateforme d’authentification inspirée de Keycloak, conçue pour explorer une architecture multi-langage et les bases DevOps d’un projet distribué.",
+  // highlights: [
+  //   'Backend principal en FastAPI avec services complémentaires en Go ou Rust.',
+  //   'Architecture orientée microservices pour comparer performances et responsabilités par langage.',
+  //   'Mise en place d’une chaîne DevOps complète : Docker, CI/CD, gestion des environnements.',
+  //   'Gestion de l’authentification et des autorisations (users, roles, tokens).',
+  // ],
+  //   techs: ['Rust', 'Go', 'FastAPI', 'Docker', 'AWS'],
+  //   github: 'https://github.com/zafopyss/portfolio',
+  //   live: '',
+  // },
   
 ];
