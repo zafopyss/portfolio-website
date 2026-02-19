@@ -1,16 +1,50 @@
-# React + Vite
+# Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio website built with Vite, React, and TypeScript.
+This project showcases background, skills, projects, and resume with a modern interface and custom visual components.
 
-Currently, two official plugins are available:
+## Requirements
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 20+ recommended
+- npm
 
-## React Compiler
+## Installation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+```
 
-## Expanding the ESLint configuration
+## Available Scripts
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `npm run dev`: starts the development server (HMR)
+- `npm run build`: creates the production build
+- `npm run preview`: previews the production build locally
+- `npm run lint`: runs ESLint
+
+## Resume PDF
+
+The **View my resume** button (in the *About* section) opens:
+
+`/resume/your_cv.pdf`
+
+To make it work:
+
+1. Put your PDF file in `public/resume/your_cv.pdf`.
+2. Links inside the PDF (LinkedIn, GitHub, email, etc.) remain clickable in the browser.
+3. Useful reference: [public/resume/README.md](public/resume/README.md#L1-L8).
+
+## Main Structure
+
+- `src/components`: UI, design, interface, and functional components
+- `src/sections`: main page sections (About, Projects, Tech, Contact…)
+- `src/data`: static data (contacts, projects, tech stack, navigation)
+- `src/hooks`: shared logic (e.g., section navigation)
+- `public/resume`: public assets related to the resume
+
+## Run Locally
+
+```bash
+npm run dev
+```
+
+Then open the URL shown by Vite (usually `http://localhost:5173`).
