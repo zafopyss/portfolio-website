@@ -9,7 +9,7 @@ const personalCopy = [
 ];
 
 const profileFacts = [
-  { label: 'Métier', value: 'Full Stack Developer — React & Node.js' },
+  { label: 'Métier', value: 'Full Stack Developer — React & Python' },
 ];
 
 export default function AboutSection() {
@@ -38,14 +38,13 @@ export default function AboutSection() {
           </div>
           <div className="flex flex-wrap gap-4">
             <a
-              href="https://drive.google.com/"
+              href="/resume/20260201_CVFR_ WALTER_Eliot.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              download="Walter-Eliot-CV.pdf"
-              aria-label="Télécharger mon CV"
+              aria-label="Consulter mon CV"
               className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/5 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:border-blue-python hover:text-blue-python"
             >
-              Télécharger mon CV
+              Consulter mon CV
             </a>
           </div>
         </div>

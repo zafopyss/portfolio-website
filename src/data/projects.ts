@@ -23,7 +23,7 @@ export const projects: ProjectCard[] = [
     techs: ['React', 'TypeScript', 'Vite', 'Tailwind CSS'],
     image: mountainImage,
     github: 'https://github.com/zafopyss/portfolio-website',
-    live: 'test.com',
+    live: 'https://eliotwalter.dev/',
   },
   // {
   // title: 'Auth Platform (Multi-language)',
