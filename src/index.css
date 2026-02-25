@@ -122,4 +122,12 @@ body::-webkit-scrollbar {
 .modal-item-leave {
   animation: modalTextPop 420ms ease-in reverse forwards;
 }
+body[data-cv-modal-open='true'] .background-shell {
+  background-color: black;
+}
+
+body[data-cv-modal-open='true'] .header-shell {
+  opacity: 0;
+  pointer-events: none;
+}
 

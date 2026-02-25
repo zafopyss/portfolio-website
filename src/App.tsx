@@ -55,7 +55,7 @@ function App() {
 
   return (
     <SectionNavigationProvider>
-      <div className="flex flex-col bg-black-particule/80 ">
+      <div className="flex flex-col bg-black-particule/80 background-shell">
         <Header />
         <div className="relative overflow-hidden gap-6 px-5 py-6 sm:px-22 sm:py-4">
           <Particles
@@ -74,7 +74,6 @@ function App() {
             <div style={{ height: '50px' }}></div>
           </div>
         </div>
-
 
         <div className="lg:px-20 flex flex-col gap-6 ">
           <div
