@@ -1,4 +1,5 @@
 import GradientText from '@components/design/GradientText';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import montagne from '../assets/851-jma-montagne.jpeg';
 
 const personalCopy = [
@@ -13,6 +14,83 @@ const profileFacts = [
 ];
 
 export default function AboutSection() {
+  const [isCvModalOpen, setIsCvModalOpen] = useState(false);
+  const [isCvModalClosing, setIsCvModalClosing] = useState(false);
+  const modalPanelRef = useRef<HTMLDivElement | null>(null);
+  const cvFrenchUrl = '/resume/20260201_CVFR_%20WALTER_Eliot.pdf';
+  const cvEnglishUrl = '/resume/20260201_CVEN_%20WALTER_Eliot.pdf';
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openCvModal = useCallback(() => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+    document.body.setAttribute('data-cv-modal-open', 'true');
+    setIsCvModalClosing(false);
+    setIsCvModalOpen(true);
+  }, []);
+
+  const closeCvModal = useCallback(() => {
+    if (!isCvModalOpen || isCvModalClosing) return;
+    document.body.removeAttribute('data-cv-modal-open');
+    setIsCvModalClosing(true);
+    closeTimer.current = setTimeout(() => {
+      setIsCvModalOpen(false);
+      setIsCvModalClosing(false);
+      closeTimer.current = null;
+    }, 380);
+  }, [isCvModalClosing, isCvModalOpen]);
+
+  useEffect(() => {
+    return () => {
+      document.body.removeAttribute('data-cv-modal-open');
+      if (closeTimer.current) {
+        clearTimeout(closeTimer.current);
+      }
+    };
+  }, []);
+
+  const shouldRenderModal = isCvModalOpen || isCvModalClosing;
+  const shouldPreventScroll = shouldRenderModal;
+  const overlayAnimationClass = isCvModalClosing ? 'modal-overlay-leave' : 'modal-overlay-appear';
+  const panelAnimationClass = isCvModalClosing ? 'modal-item-leave' : 'animate-modal-item';
+
+  useEffect(() => {
+    if (!shouldPreventScroll) return undefined;
+
+    const scrollY = window.scrollY;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousBodyPosition = document.body.style.position;
+    const previousBodyTop = document.body.style.top;
+    const previousBodyWidth = document.body.style.width;
+
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeCvModal();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+      document.body.style.position = previousBodyPosition;
+      document.body.style.top = previousBodyTop;
+      document.body.style.width = previousBodyWidth;
+      window.scrollTo(0, scrollY);
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [closeCvModal, shouldPreventScroll]);
+
   return (
     <section
       id="profile"
@@ -37,15 +115,14 @@ export default function AboutSection() {
             ))}
           </div>
           <div className="flex flex-wrap gap-4">
-            <a
-              href="/resume/20260201_CVFR_ WALTER_Eliot.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Consulter mon CV"
+            <button
+              type="button"
+              aria-label="Choisir la langue du CV"
+              onClick={openCvModal}
               className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/5 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:border-blue-python hover:text-blue-python"
             >
               Consulter mon CV
-            </a>
+            </button>
           </div>
         </div>
 
@@ -62,6 +139,55 @@ export default function AboutSection() {
           </div>
         </div>
       </div>
+
+      {shouldRenderModal && (
+        <div
+          className={`fixed inset-0 z-[10000] flex min-h-dvh w-screen items-center justify-center bg-black-particule/85 backdrop-blur-sm px-6 ${overlayAnimationClass}`}
+          onClick={closeCvModal}
+          aria-hidden="true"
+        >
+          <div
+            ref={modalPanelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="cv-language-title"
+            className={`w-full max-w-md border rounded-2xl border-white/20 bg-neutral-900/90 p-6 text-white shadow-2xl ${panelAnimationClass}`}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <h3 id="cv-language-title" className="text-xl font-semibold">
+              Choisir la langue du CV
+            </h3>
+            <p className="mt-2 text-sm text-slate-200">Souhaitez-vous la version française ou anglaise ?</p>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <a
+                href={cvFrenchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-full border border-white/40 px-4 py-2 text-sm font-semibold uppercase tracking-wide transition hover:border-blue-python hover:text-blue-python"
+              >
+                Français
+              </a>
+              <a
+                href={cvEnglishUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-full border border-white/40 px-4 py-2 text-sm font-semibold uppercase tracking-wide transition hover:border-blue-python hover:text-blue-python"
+              >
+                English
+              </a>
+            </div>
+
+            <button
+              type="button"
+              onClick={closeCvModal}
+              className="mt-4 text-sm text-slate-300 transition hover:text-white"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

@@ -85,7 +85,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-20 w-3/4 mx-auto md:static px-5 sm:px-20 sm:py-8 py-4">
+    <header className="header-shell sticky top-0 z-20 w-3/4 mx-auto md:static px-5 sm:px-20 sm:py-8 py-4">
       <div className="hidden md:flex items-center justify-end px-3 lg:pr-0 lg:pl-8 py-4">
         <nav className="flex items-center gap-6">
           {navLinks.map((link) => (
