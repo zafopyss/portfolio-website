@@ -52,7 +52,7 @@ export const fr: SiteContent = {
         summary:
           'Trois machines, k3s, Traefik en entrée, Tailscale pour y accéder de dehors, les logs dans Grafana et des sauvegardes la nuit. C’est là que tournent mes projets.',
         bullets: [],
-        stack: ['k3s', 'Traefik', 'Loki', 'Grafana', 'Tailscale'],
+        stack: ['Kubernetes', 'k3s', 'Traefik', 'Loki', 'Grafana', 'Tailscale'],
       },
       {
         kind: 'STAGE · ASSOCIATION',

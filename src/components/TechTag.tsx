@@ -24,11 +24,14 @@ const BRANDS: Record<string, Brand> = {
   Kubernetes: icons.siKubernetes,
 };
 
-// Dark brand colours vanish on the light theme, so lift them a little.
+// Dark brand colours vanish on the light theme. Lift them along their own hue
+// rather than replacing them with grey, so Django stays green.
 function accent(hex: string) {
-  const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
-  const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-  return luminance < 0.2 ? '#5b5f6b' : `#${hex}`;
+  const channels = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const lightness = (Math.max(...channels) + Math.min(...channels)) / 2;
+  if (lightness >= 0.3) return `#${hex}`;
+  const scale = 0.34 / Math.max(lightness, 0.04);
+  return `#${channels.map((c) => Math.round(Math.min(1, c * scale) * 255).toString(16).padStart(2, '0')).join('')}`;
 }
 
 export default function TechTag({ name }: { name: string }) {

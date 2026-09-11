@@ -52,7 +52,7 @@ export const en: SiteContent = {
         summary:
           'Three machines, k3s, Traefik at the door, Tailscale to reach it from outside, logs in Grafana and backups overnight. That’s where my projects run.',
         bullets: [],
-        stack: ['k3s', 'Traefik', 'Loki', 'Grafana', 'Tailscale'],
+        stack: ['Kubernetes', 'k3s', 'Traefik', 'Loki', 'Grafana', 'Tailscale'],
       },
       {
         kind: 'INTERNSHIP · STUDENT ASSOCIATION',

@@ -26,7 +26,7 @@ const ART = {
 const VINE_ORIGIN = { x: 1412, y: 232 };
 const CUP = { x: 1496, y: 662 };
 // Centre of the pot's base, on the sunlit ledge of the stone pillar.
-const WALL_POT = { x: 1041, y: 789, scale: 0.82 };
+const WALL_POT = { x: 1046, y: 780, scale: 0.82 };
 // Inner corners of the laptop screen, clockwise from top-left.
 const SCREEN = [
   [1312, 601],
