@@ -1,9 +1,8 @@
 import { useState, type MouseEvent } from 'react';
 import * as icons from 'simple-icons';
+import { azureDevOps, loki, type Brand } from './brandIcons';
 
-type Brand = { path: string; hex: string };
-
-// Stack labels to simple-icons entries. Missing ones get a plain tag.
+// Stack labels to their marks. Missing ones get a plain tag.
 const BRANDS: Record<string, Brand> = {
   Django: icons.siDjango,
   PostgreSQL: icons.siPostgresql,
@@ -22,6 +21,8 @@ const BRANDS: Record<string, Brand> = {
   TypeScript: icons.siTypescript,
   React: icons.siReact,
   Kubernetes: icons.siKubernetes,
+  Loki: loki,
+  'Azure DevOps': azureDevOps,
 };
 
 // Dark brand colours vanish on the light theme. Lift them along their own hue
