@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #fbfbfd;
-  --color-fg: #1d1d1f;
-  --color-muted: #6e6e73;
-  --color-line: #d2d2d7;
-  --color-accent: #34c759;
+  --color-bg: #f8faf6;
+  --color-fg: #172d27;
+  --color-muted: #556d60;
+  --color-line: #d9e2dc;
+  --color-accent: #6c8975;
   --color-link: #4e675b;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
 }
@@ -52,7 +52,7 @@ button:focus-visible {
 /* Stack tags: grey at rest, brand colour and a cursor spotlight on hover */
 
 .tech-tag {
-  --brand: #5b5f6b;
+  --brand: #556d60;
   position: relative;
   overflow: hidden;
   display: inline-flex;
@@ -120,7 +120,7 @@ button:focus-visible {
   transform: translateY(-2px);
 }
 .btn-light {
-  background: #fbfbfd;
+  background: #fff;
   color: var(--color-fg);
   box-shadow: 0 1px 2px rgb(13 40 35 / 0.2);
 }
@@ -140,7 +140,7 @@ a.work-item:hover {
 
 .hero {
   position: relative;
-  min-height: min(980px, 100svh);
+  min-height: 100svh;
   overflow: hidden;
   background: #198fba;
 }
@@ -171,60 +171,6 @@ a.work-item:hover {
   image-rendering: pixelated;
 }
 
-.hero-shade {
-  position: absolute;
-  inset: 0;
-}
-.backdrop {
-  overflow: hidden;
-  pointer-events: none;
-  user-select: none;
-}
-.backdrop-stage {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform-origin: 0 0;
-  will-change: transform;
-}
-.backdrop-layer {
-  position: absolute;
-  left: 0;
-  top: 0;
-  max-width: none;
-  image-rendering: pixelated;
-}
-.cloud-strip {
-  position: absolute;
-  height: 0;
-  animation: drift linear infinite;
-}
-.cloud-strip img {
-  position: absolute;
-  top: 0;
-  max-width: none;
-  image-rendering: pixelated;
-}
-@keyframes drift {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(calc(var(--drift) * -1));
-  }
-}
-.canopy {
-  transform-origin: 100% 0;
-  animation: sway 9s ease-in-out infinite alternate;
-}
-@keyframes sway {
-  from {
-    transform: rotate(-0.5deg) skewX(0.3deg);
-  }
-  to {
-    transform: rotate(0.5deg) skewX(-0.3deg);
-  }
-}
 .hero-shade {
   pointer-events: none;
   background:

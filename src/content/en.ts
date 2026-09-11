@@ -8,7 +8,7 @@ export const en: SiteContent = {
   },
   header: { contact: 'Say hello', switchTo: 'FR' },
   hero: {
-    eyebrow: 'Full-stack Python developer · Strasbourg',
+    eyebrow: 'Full Stack Software Engineer',
     title: 'Code that ships, and stays up.',
     description:
       'At Mantu I look after a Django app used by 10,000 people. In the evenings I tinker with a Kubernetes cluster in my living room. In between, I climb.',
