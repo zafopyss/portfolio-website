@@ -244,9 +244,110 @@ export function puff(size = 44): Sprite {
   return sprite(el, size, size);
 }
 
-export function petal(color: string, width = 14, height = 9): Sprite {
+// A blossom petal, base at the left and a notched tip at the right. Lit along
+// its upper edge and curling into shadow along the lower one.
+export function petal(color: string, width = 20, height = 14): Sprite {
   const { el, ctx } = canvas(width, height);
-  ellipse(ctx, width / 2, height / 2, width * 0.45, height * 0.4, 0.3, color, 'rgba(0,0,0,0.15)');
+  const base = hex(color);
+  const rgb = (c: RGB) => `rgb(${c.map(Math.round).join(',')})`;
+  const mid = height / 2;
+  const reach = height * 0.46;
+  ctx.beginPath();
+  ctx.moveTo(1.5, mid);
+  ctx.bezierCurveTo(width * 0.34, mid - reach, width * 0.74, mid - reach * 0.96, width - 1, mid - reach * 0.56);
+  ctx.quadraticCurveTo(width * 0.78, mid, width - 1, mid + reach * 0.56);
+  ctx.bezierCurveTo(width * 0.74, mid + reach * 0.96, width * 0.34, mid + reach, 1.5, mid);
+  ctx.closePath();
+  const wash = ctx.createLinearGradient(width * 0.3, 0, width * 0.5, height);
+  wash.addColorStop(0, rgb(mix(base, [255, 255, 255], 0.3)));
+  wash.addColorStop(0.45, rgb(base));
+  wash.addColorStop(1, rgb(mix(base, [104, 74, 112], 0.42)));
+  ctx.fillStyle = wash;
+  ctx.fill();
+  ctx.save();
+  ctx.clip();
+  const glow = ctx.createRadialGradient(width * 0.42, mid - reach * 0.5, 0.5, width * 0.42, mid - reach * 0.5, width * 0.45);
+  glow.addColorStop(0, 'rgba(255,255,255,0.55)');
+  glow.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, width, height);
+  ctx.strokeStyle = 'rgba(120,84,126,0.22)';
+  ctx.lineWidth = 0.6;
+  for (const spread of [-0.5, 0, 0.5]) {
+    ctx.beginPath();
+    ctx.moveTo(width * 0.1, mid);
+    ctx.quadraticCurveTo(width * 0.55, mid + reach * spread * 0.8, width * 0.92, mid + reach * spread);
+    ctx.stroke();
+  }
+  ctx.restore();
+  ctx.strokeStyle = 'rgba(96,66,104,0.3)';
+  ctx.lineWidth = 0.7;
+  ctx.stroke();
+  return sprite(el, width, height);
+}
+
+// A small oak leaf from the canopy: lobed on both edges, stalk to the left.
+export function oakLeaf(tone: number, width = 22, height = 14): Sprite {
+  const { el, ctx } = canvas(width, height);
+  const light = mix(hex('#b2d466'), hex('#6c9c38'), tone);
+  const dark = mix(hex('#5f8f2e'), hex('#2c5220'), tone);
+  const rgb = (c: RGB) => `rgb(${c.map(Math.round).join(',')})`;
+  const mid = height / 2;
+  const stalk = width * 0.14;
+  const span = width - stalk - 1;
+  const steps = 30;
+  // Half-width is a leaf envelope times a ripple, so both edges get the same
+  // lobes and the widest point sits past the middle.
+  const halfWidth = (t: number) =>
+    Math.sin(Math.PI * Math.min(1, t * 1.06)) ** 0.62 * (1 + 0.22 * Math.sin(t * Math.PI * 4.2 - 1.1)) * height * 0.42;
+  ctx.beginPath();
+  ctx.moveTo(stalk, mid);
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    ctx.lineTo(stalk + t * span, mid - halfWidth(t));
+  }
+  for (let i = steps; i >= 0; i--) {
+    const t = i / steps;
+    ctx.lineTo(stalk + t * span, mid + halfWidth(t));
+  }
+  ctx.closePath();
+  const wash = ctx.createLinearGradient(stalk, 0, width * 0.75, height);
+  wash.addColorStop(0, rgb(light));
+  wash.addColorStop(1, rgb(dark));
+  ctx.fillStyle = wash;
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(28,56,22,0.4)';
+  ctx.lineWidth = 0.7;
+  ctx.stroke();
+  ctx.save();
+  ctx.clip();
+  ctx.strokeStyle = 'rgba(222,240,180,0.3)';
+  ctx.lineWidth = 0.7;
+  ctx.beginPath();
+  ctx.moveTo(stalk * 0.3, mid);
+  ctx.lineTo(stalk + span * 0.92, mid);
+  ctx.stroke();
+  ctx.lineWidth = 0.45;
+  ctx.strokeStyle = 'rgba(222,240,180,0.2)';
+  for (let i = 1; i <= 3; i++) {
+    const t = i / 4;
+    const x = stalk + t * span;
+    const reach = halfWidth(t) * 0.65;
+    ctx.beginPath();
+    ctx.moveTo(x - span * 0.12, mid);
+    ctx.lineTo(x, mid - reach);
+    ctx.moveTo(x - span * 0.12, mid);
+    ctx.lineTo(x, mid + reach);
+    ctx.stroke();
+  }
+  ctx.restore();
+  ctx.strokeStyle = 'rgba(70,96,46,0.75)';
+  ctx.lineWidth = 1;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(0.8, mid + height * 0.06);
+  ctx.lineTo(stalk + 0.6, mid);
+  ctx.stroke();
   return sprite(el, width, height);
 }
 

@@ -25,7 +25,8 @@ const ART = {
 
 const VINE_ORIGIN = { x: 1412, y: 232 };
 const CUP = { x: 1496, y: 662 };
-const WALL_POT = { x: 1009, y: 712 };
+// Centre of the pot's base, on the sunlit ledge of the stone pillar.
+const WALL_POT = { x: 1041, y: 789, scale: 0.82 };
 // Inner corners of the laptop screen, clockwise from top-left.
 const SCREEN = [
   [1312, 601],
@@ -241,12 +242,13 @@ export async function createScene(host: HTMLElement): Promise<Scene> {
   // A stoneware pot of nasturtiums on the pillar, coffee on the desk.
   const cupShadow = billboard(paint.shadow(), 5, 1);
   cupShadow.position.set(CUP.x + 36, CUP.y + 42, 0);
-  const potShadow = billboard(paint.shadow(), 6, 0.9);
-  potShadow.position.set(WALL_POT.x + 33, WALL_POT.y + 75, 0);
-  const potMesh = billboard(paint.pot(), 7, 1, { x: 0, y: 0 });
+  // paint.pot() draws its bowl around x = 33 with the base ellipse at y = 74.
+  const potShadow = billboard(paint.shadow(), 6, WALL_POT.scale * 0.95);
+  potShadow.position.set(WALL_POT.x, WALL_POT.y + 2, 0);
+  const potMesh = billboard(paint.pot(), 7, WALL_POT.scale, { x: 33, y: 74 });
   potMesh.position.set(WALL_POT.x, WALL_POT.y, 0);
-  const blooms = billboard(plants.nasturtium(), 8, 1, plants.NASTURTIUM.crown);
-  blooms.position.set(WALL_POT.x + 33, WALL_POT.y + 6, 0);
+  const blooms = billboard(plants.nasturtium(), 8, WALL_POT.scale, plants.NASTURTIUM.crown);
+  blooms.position.set(WALL_POT.x, WALL_POT.y - 68 * WALL_POT.scale, 0);
   actors.push((seconds) => {
     blooms.rotation.z = 0.012 * Math.sin(seconds * 0.6);
   });
@@ -275,29 +277,41 @@ export async function createScene(host: HTMLElement): Promise<Scene> {
     }
   });
 
-  // Petals and leaves drifting down from the canopy.
+  // Petals and oak leaves coming down from the canopy. Each one tumbles: the
+  // sideways scale is the cosine of its own spin, so it reads as turning
+  // edge-on rather than skidding around flat.
   const random = seeded(3);
-  const petalSprites = ['#f2d6f7', '#ffd7e8', '#b9dd7f', '#e6c46c'].map((c) => paint.petal(c));
-  const petals = Array.from({ length: 8 }, (_, i) => {
-    const mesh = billboard(petalSprites[i % petalSprites.length], 7, 0.8 + random() * 0.5);
+  const fallingSprites = [
+    paint.petal('#efd2f5'),
+    paint.petal('#ffd2e4'),
+    paint.petal('#f7e2c0'),
+    paint.oakLeaf(0.25),
+    paint.oakLeaf(0.7),
+  ];
+  const falling = Array.from({ length: 12 }, (_, i) => {
+    const mesh = billboard(fallingSprites[i % fallingSprites.length], 7, 0.75 + random() * 0.45);
     return {
       mesh,
-      x: 1180 + random() * 470,
-      y: random() * 900,
-      vy: 16 + random() * 14,
-      vx: -6 - random() * 12,
-      spin: (random() - 0.5) * 2,
+      x: 1140 + random() * 510,
+      drop: random(),
+      vy: 15 + random() * 13,
+      vx: -5 - random() * 13,
+      tumble: 0.9 + random() * 1.6,
+      lean: (random() - 0.5) * 1.4,
       sway: random() * TAU,
+      swayWidth: 14 + random() * 16,
+      scale: 0.75 + random() * 0.45,
     };
   });
   actors.push((seconds) => {
-    for (const p of petals) {
-      const cycle = (STAGE.height + 60) / p.vy;
-      const age = (seconds + (p.y / p.vy)) % cycle;
-      const y = -30 + age * p.vy;
-      const x = p.x + age * p.vx + 18 * Math.sin(seconds * 1.3 + p.sway);
-      p.mesh.position.set(x, y, 0);
-      p.mesh.rotation.z = seconds * p.spin;
+    for (const p of falling) {
+      const cycle = (STAGE.height + 80) / p.vy;
+      const age = ((seconds + p.drop * cycle) % cycle);
+      const y = -40 + age * p.vy;
+      const phase = seconds * p.tumble + p.sway;
+      p.mesh.position.set(p.x + age * p.vx + p.swayWidth * Math.sin(phase * 0.55), y, 0);
+      p.mesh.rotation.z = p.lean + 0.35 * Math.sin(phase * 0.8);
+      p.mesh.scale.set(p.scale * Math.cos(phase), p.scale, 1);
       p.mesh.visible = y < STAGE.height + 20;
     }
   });

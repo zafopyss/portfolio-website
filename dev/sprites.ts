@@ -10,6 +10,8 @@ const bench: Record<string, () => paint.Sprite> = {
   shadow: () => paint.shadow(),
   passionflower: () => paint.passionflower(),
   vine: () => paint.vine(),
+  petal: () => paint.petal('#efd2f5'),
+  oakLeaf: () => paint.oakLeaf(0.3),
   nasturtium: () => plants.nasturtium(),
   bed: () => plants.bed(11),
 };

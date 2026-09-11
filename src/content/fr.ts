@@ -18,7 +18,7 @@ export const fr: SiteContent = {
     eyebrow: 'TRAVAIL',
     title: 'Ce sur quoi\nj’ai bossé.',
     intro:
-      'Deux boîtes, deux projets perso. À chaque fois la même approche : comprendre le métier avant de coder, puis rester sur ce qui tourne.',
+      'Deux boîtes, deux projets perso. À chaque fois la même approche : comprendre le besoin métier avant de coder, puis rester sur ce qui tourne.',
     items: [
       {
         kind: 'CDI · SECTEUR NAVAL',

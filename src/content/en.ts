@@ -18,7 +18,7 @@ export const en: SiteContent = {
     eyebrow: 'WORK',
     title: 'Things I’ve\nworked on.',
     intro:
-      'Two companies, two side projects. Same approach every time: understand the business before writing code, then stick around for what runs.',
+      'Two companies, two side projects. Same approach every time: understand the business need before writing code, then stick around for what runs.',
     items: [
       {
         kind: 'FULL-TIME · NAVAL SECTOR',
