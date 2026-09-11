@@ -53,6 +53,8 @@ button:focus-visible {
 
 .tech-tag {
   --brand: #5b5f6b;
+  --spot-x: 50%;
+  --spot-y: 50%;
   position: relative;
   overflow: hidden;
   display: inline-flex;
@@ -66,7 +68,7 @@ button:focus-visible {
   padding: 0.3rem 0.7rem;
   background: #fff;
   cursor: default;
-  transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  transition: color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 .tech-tag::before {
   content: '';
@@ -81,7 +83,7 @@ button:focus-visible {
   width: 0.85rem;
   height: 0.85rem;
   fill: currentColor;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), fill 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.3, 1), fill 0.3s ease;
 }
 .tech-tag > span {
   position: relative;
@@ -90,14 +92,13 @@ button:focus-visible {
   .tech-tag:hover {
     color: var(--brand);
     border-color: color-mix(in srgb, var(--brand) 55%, var(--color-line));
-    transform: translateY(-2px);
     box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--brand) 60%, transparent);
   }
   .tech-tag:hover::before {
     opacity: 1;
   }
   .tech-tag:hover .tech-tag-icon {
-    transform: scale(1.25) rotate(-8deg);
+    transform: scale(1.18) rotate(-6deg);
     fill: var(--brand);
   }
 }

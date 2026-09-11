@@ -1,4 +1,4 @@
-import { useState, type MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 import * as icons from 'simple-icons';
 import { azureDevOps, loki, type Brand } from './brandIcons';
 
@@ -37,20 +37,22 @@ function accent(hex: string) {
 
 export default function TechTag({ name }: { name: string }) {
   const brand = BRANDS[name];
-  const [spot, setSpot] = useState<{ x: number; y: number } | null>(null);
   const color = brand ? accent(brand.hex) : '#5b5f6b';
 
+  // Write the spotlight straight to the style attribute: React state here would
+  // re-render the tag on every mousemove and starve the hover transition.
   const track = (event: MouseEvent<HTMLLIElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    setSpot({ x: event.clientX - rect.left, y: event.clientY - rect.top });
+    const tag = event.currentTarget;
+    const rect = tag.getBoundingClientRect();
+    tag.style.setProperty('--spot-x', `${event.clientX - rect.left}px`);
+    tag.style.setProperty('--spot-y', `${event.clientY - rect.top}px`);
   };
 
   return (
     <li
       className="tech-tag"
-      style={{ ['--brand' as string]: color, ['--spot-x' as string]: `${spot?.x ?? 0}px`, ['--spot-y' as string]: `${spot?.y ?? 0}px` }}
+      style={{ ['--brand' as string]: color }}
       onMouseMove={track}
-      onMouseLeave={() => setSpot(null)}
     >
       {brand && (
         <svg viewBox="0 0 24 24" aria-hidden="true" className="tech-tag-icon">
