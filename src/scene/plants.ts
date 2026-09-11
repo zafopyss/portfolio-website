@@ -333,33 +333,49 @@ export const NASTURTIUM = { width: 170, height: 120, crown: { x: 85, y: 62 } };
 // back, over a short russet stem.
 function bloom(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, random: Random) {
   const rings = [
-    { r: 1, count: 9, light: '#c94d12', dark: '#9c3a0e', squash: 0.42 },
-    { r: 0.74, count: 8, light: '#f08a24', dark: '#d2600f', squash: 0.5 },
-    { r: 0.46, count: 7, light: '#ffb547', dark: '#ec8319', squash: 0.58 },
+    { r: 1, count: 9, light: '#e2711c', dark: '#b04d13', squash: 0.42 },
+    { r: 0.72, count: 8, light: '#fb9b2c', dark: '#df7318', squash: 0.5 },
+    { r: 0.44, count: 7, light: '#ffc061', dark: '#f0902f', squash: 0.58 },
   ];
   for (const ring of rings) {
     for (let i = 0; i < ring.count; i++) {
-      const a = (i / ring.count) * TAU + random() * 0.25;
-      const px = x + Math.cos(a) * size * ring.r * 0.62;
-      const py = y + Math.sin(a) * size * ring.r * 0.42;
-      ellipse(ctx, px, py, size * ring.r * 0.42, size * ring.r * ring.squash * 0.42, a, i % 2 ? ring.light : ring.dark, 'rgba(120,52,8,0.4)');
+      const a = (i / ring.count) * TAU + random() * 0.5;
+      const reach = size * ring.r * (0.6 + random() * 0.1);
+      ellipse(
+        ctx,
+        x + Math.cos(a) * reach,
+        y + Math.sin(a) * reach * 0.82,
+        size * ring.r * 0.44,
+        size * ring.r * ring.squash * 0.44,
+        a,
+        i % 2 ? ring.light : ring.dark,
+        'rgba(120,52,8,0.18)',
+      );
     }
   }
-  const heart = ctx.createRadialGradient(x - size * 0.08, y - size * 0.1, size * 0.04, x, y, size * 0.34);
-  heart.addColorStop(0, '#ffe08a');
-  heart.addColorStop(1, '#e8791a');
-  ellipse(ctx, x, y, size * 0.3, size * 0.24, 0, heart);
+  const heart = ctx.createRadialGradient(x - size * 0.08, y - size * 0.1, size * 0.04, x, y, size * 0.36);
+  heart.addColorStop(0, '#ffdb92');
+  heart.addColorStop(1, '#dd7a22');
+  ellipse(ctx, x, y, size * 0.32, size * 0.26, 0, heart);
 }
 
 export function nasturtium(): Sprite {
   const { width, height, crown } = NASTURTIUM;
   const { el, ctx } = canvas(width, height);
+  const scratch = canvas(width, height);
   const random = seeded(29);
   // Back row first so the front heads overlap it.
   const heads = [
     [-26, -4, 13], [26, -2, 13], [-11, -17, 12], [13, -18, 12], [1, -29, 11],
     [-33, 8, 12], [33, 9, 12], [-17, 7, 15], [17, 8, 15], [0, -3, 16],
   ] as const;
-  for (const [dx, dy, size] of heads) bloom(ctx, crown.x + dx, crown.y + dy, size * (0.92 + random() * 0.16), random);
-  return sprite(el, width, height, true);
+  for (const [dx, dy, size] of heads) {
+    bloom(scratch.ctx, crown.x + dx, crown.y + dy, size * (0.85 + random() * 0.3), random);
+  }
+  // Same soft blit as the pot, so the bouquet does not read as clipart on top
+  // of a painted backdrop.
+  ctx.filter = 'blur(0.6px)';
+  ctx.drawImage(scratch.el, 0, 0, width, height);
+  ctx.filter = 'none';
+  return sprite(el, width, height);
 }

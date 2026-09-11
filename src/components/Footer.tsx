@@ -21,7 +21,7 @@ export default function Footer() {
         <p className="text-muted">{footer.prompt}</p>
         <a
           href={`mailto:${links.email}`}
-          className="heading-xl flex w-fit items-baseline gap-3 transition-opacity hover:opacity-60"
+          className="heading-xl flex w-fit items-baseline gap-3 transition-colors hover:text-link"
         >
           {footer.cta}
           <Arrow className="text-3xl" />
@@ -32,7 +32,7 @@ export default function Footer() {
         <ul className="flex flex-wrap gap-x-6 gap-y-2">
           {external.map((link) => (
             <li key={link.label}>
-              <a href={link.href} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-1 text-link transition-colors hover:text-fg">
+              <a href={link.href} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-1 transition-colors hover:text-link">
                 {link.label}
                 <Arrow />
               </a>
@@ -41,7 +41,7 @@ export default function Footer() {
         </ul>
         <div className="flex items-center gap-6">
           <ViewCounter />
-          <a href="#top" onClick={(event) => scrollToSection(event, 'top')} className="transition-colors hover:text-fg">
+          <a href="#top" onClick={(event) => scrollToSection(event, 'top')} className="transition-colors hover:text-link">
             {footer.backToTop}
           </a>
         </div>

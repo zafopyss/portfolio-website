@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #f8faf6;
-  --color-fg: #172d27;
-  --color-muted: #556d60;
-  --color-line: #d9e2dc;
-  --color-accent: #6c8975;
-  --color-link: #4e675b;
+  --color-bg: #fbfbfd;
+  --color-fg: #1d1d1f;
+  --color-muted: #6e6e73;
+  --color-line: #d2d2d7;
+  --color-accent: #34c759;
+  --color-link: #3f7d5a;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
 }
 
@@ -52,7 +52,7 @@ button:focus-visible {
 /* Stack tags: grey at rest, brand colour and a cursor spotlight on hover */
 
 .tech-tag {
-  --brand: #556d60;
+  --brand: #5b5f6b;
   position: relative;
   overflow: hidden;
   display: inline-flex;
@@ -133,7 +133,7 @@ button:focus-visible {
   transition: opacity 0.2s ease;
 }
 a.work-item:hover {
-  opacity: 0.7;
+  color: var(--color-link);
 }
 
 /* Hero backdrop */

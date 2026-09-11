@@ -243,8 +243,9 @@ export async function createScene(host: HTMLElement): Promise<Scene> {
   const cupShadow = billboard(paint.shadow(), 5, 1);
   cupShadow.position.set(CUP.x + 36, CUP.y + 42, 0);
   // paint.pot() draws its bowl around x = 33 with the base ellipse at y = 74.
-  const potShadow = billboard(paint.shadow(), 6, WALL_POT.scale * 0.95);
-  potShadow.position.set(WALL_POT.x, WALL_POT.y + 2, 0);
+  // Sun is upper left, so the pot throws its shadow down and to the right.
+  const potShadow = billboard(paint.shadow(), 6, WALL_POT.scale * 1.15);
+  potShadow.position.set(WALL_POT.x + 9, WALL_POT.y + 3, 0);
   const potMesh = billboard(paint.pot(), 7, WALL_POT.scale, { x: 33, y: 74 });
   potMesh.position.set(WALL_POT.x, WALL_POT.y, 0);
   const blooms = billboard(plants.nasturtium(), 8, WALL_POT.scale, plants.NASTURTIUM.crown);

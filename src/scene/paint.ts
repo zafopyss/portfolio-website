@@ -407,37 +407,101 @@ export function coffeeCup(width = 56, height = 48): Sprite {
   return sprite(el, width, height, true);
 }
 
+// A terracotta flowerpot matching the clay already painted on the desk: a
+// flared rim over a body tapering to a narrow foot, soil at the mouth. Drawn
+// on a scratch canvas and blitted back through a small blur, because the
+// backdrop is soft at this depth and a crisp sprite sits on top of it like a
+// sticker.
 export function pot(width = 118, height = 80): Sprite {
   const { el, ctx } = canvas(width, height, 1);
+  const scratch = canvas(width, height, 1);
+  const paint = scratch.ctx;
   const cx = 33;
-  const clayLit = hex('#d9925e');
-  const clayDeep = hex('#8f4a27');
-  const glazeLit = hex('#e3d6bd');
-  const glazeDeep = hex('#b8a583');
+  const RIM = { outer: 30, top: 5, thickness: 7, drop: 11 };
+  const BODY = { top: 27, bottom: 17, y: 74 };
   const random = seeded(21);
-  const speckles = Array.from({ length: 70 }, () => [random(), random()] as const);
-  const shape = profile([[6, 17], [12, 14], [24, 27], [40, 30], [56, 27], [68, 21], [74, 20]]);
-  ellipse(ctx, cx, 74, 21, 4.2, 0, 'rgba(45,25,12,0.75)');
-  lathe(ctx, cx, 6, 74, shape, (y, nx) => {
-    const angle = Math.asin(Math.max(-1, Math.min(1, nx)));
-    const drip = 42 + Math.sin(angle * 4.2) * 4 + Math.sin(angle * 9.5 + 1) * 2.5;
-    const rings = 1 + Math.sin(y * 1.6) * 0.035;
-    if (y < drip) {
-      const glaze = mix(glazeLit, glazeDeep, (y - 6) / 60);
-      const r = shape(y);
-      const dark = speckles.some(([sx, sy]) => Math.hypot((sx * 2 - 1 - nx) * r, sy * 70 - y) < 1.1);
-      return (dark ? mix(glaze, hex('#5a3a22'), 0.7) : glaze).map((c) => c * rings) as RGB;
-    }
-    return mix(clayLit, clayDeep, (y - 40) / 40).map((c) => c * rings) as RGB;
-  }, 0.28);
-  ctx.beginPath();
-  ctx.ellipse(cx, 74, 20, 3.6, 0, 0, Math.PI);
-  ctx.fillStyle = '#4a2612';
-  ctx.fill();
-  ellipse(ctx, cx, 6, 17, 4.6, 0, '#c9b592', '#7d5a3a');
-  ellipse(ctx, cx, 6.4, 14.5, 3.4, 0, '#3a2416');
-  ellipse(ctx, cx, 7.2, 12, 2.2, 0, '#22140b');
-  return sprite(el, width, height, true);
+
+  // Sun from the upper left: the left flank turns away, the lit band sits a
+  // third in, and the right flank falls into shadow.
+  const turned = (radius: number, stops: [number, string][]) => {
+    const g = paint.createLinearGradient(cx - radius, 0, cx + radius, 0);
+    for (const [at, color] of stops) g.addColorStop(at, color);
+    return g;
+  };
+
+  paint.beginPath();
+  paint.moveTo(cx - BODY.top, RIM.drop);
+  paint.quadraticCurveTo(cx - BODY.top + 2, (RIM.drop + BODY.y) / 2, cx - BODY.bottom, BODY.y);
+  paint.ellipse(cx, BODY.y, BODY.bottom, 4.4, 0, Math.PI, 0, true);
+  paint.quadraticCurveTo(cx + BODY.top - 2, (RIM.drop + BODY.y) / 2, cx + BODY.top, RIM.drop);
+  paint.closePath();
+  paint.fillStyle = turned(BODY.top, [
+    [0, '#a85719'],
+    [0.2, '#ef a061'.replace(' ', '')],
+    [0.42, '#dd8a44'],
+    [0.74, '#a85a22'],
+    [1, '#70390f'],
+  ]);
+  paint.fill();
+  paint.save();
+  paint.clip();
+  const sink = paint.createLinearGradient(0, RIM.drop, 0, BODY.y + 6);
+  sink.addColorStop(0, 'rgba(56,26,8,0.18)');
+  sink.addColorStop(0.35, 'rgba(56,26,8,0)');
+  sink.addColorStop(1, 'rgba(56,26,8,0.5)');
+  paint.fillStyle = sink;
+  paint.fillRect(0, 0, width, height);
+  // Throwing rings and a little grit, so the clay is not a flat fill.
+  paint.strokeStyle = 'rgba(120,60,20,0.16)';
+  paint.lineWidth = 1;
+  for (let y = RIM.drop + 5; y < BODY.y; y += 7) {
+    paint.beginPath();
+    paint.ellipse(cx, y, BODY.top, 3.4, 0, 0, Math.PI);
+    paint.stroke();
+  }
+  for (let i = 0; i < 40; i++) {
+    const gx = cx - BODY.top + random() * BODY.top * 2;
+    const gy = RIM.drop + random() * (BODY.y - RIM.drop);
+    paint.fillStyle = random() > 0.5 ? 'rgba(90,44,14,0.18)' : 'rgba(255,205,150,0.16)';
+    paint.fillRect(gx, gy, 1.4, 1.1);
+  }
+  paint.restore();
+
+  // Rim: a band that overhangs the body, with its shadow cast on the shoulder.
+  paint.beginPath();
+  paint.ellipse(cx, RIM.top + RIM.thickness, RIM.outer, RIM.thickness, 0, 0, Math.PI);
+  paint.lineTo(cx - RIM.outer, RIM.top);
+  paint.ellipse(cx, RIM.top, RIM.outer, RIM.thickness, 0, Math.PI, 0);
+  paint.closePath();
+  paint.fillStyle = turned(RIM.outer, [
+    [0, '#b56220'],
+    [0.22, '#ffb madness'.replace(' madness', '77a')],
+    [0.5, '#e89550'],
+    [0.78, '#b46124'],
+    [1, '#7c3f12'],
+  ]);
+  paint.fill();
+  paint.beginPath();
+  paint.ellipse(cx, RIM.top + RIM.thickness, RIM.outer - 0.5, RIM.thickness, 0, 0.15, Math.PI - 0.15);
+  paint.strokeStyle = 'rgba(64,30,8,0.45)';
+  paint.lineWidth = 1.6;
+  paint.stroke();
+
+  // Soil sunk below the rim, with the far inner wall catching a little light.
+  ellipse(paint, cx, RIM.top, RIM.outer - 4.5, RIM.thickness - 1.6, 0, '#8a5326');
+  ellipse(paint, cx, RIM.top + 1.2, RIM.outer - 6, RIM.thickness - 2.4, 0, '#3d2a1b');
+  ellipse(paint, cx, RIM.top + 1.8, RIM.outer - 9, RIM.thickness - 3.4, 0, '#2a1d13');
+
+  paint.strokeStyle = 'rgba(255,222,180,0.55)';
+  paint.lineWidth = 1.2;
+  paint.beginPath();
+  paint.ellipse(cx, RIM.top, RIM.outer - 1, RIM.thickness - 0.5, 0, Math.PI * 1.06, Math.PI * 1.55);
+  paint.stroke();
+
+  ctx.filter = 'blur(0.45px)';
+  ctx.drawImage(scratch.el, 0, 0);
+  ctx.filter = 'none';
+  return sprite(el, width, height);
 }
 
 // Contact shadow: stacked ellipses, dense in the middle. The wall and desk are
