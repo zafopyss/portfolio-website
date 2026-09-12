@@ -38,7 +38,7 @@ export const links = {
   linkedin: 'https://fr.linkedin.com/in/eliot-walter-2b9305273',
   source: 'https://github.com/zafopyss/portfolio-website',
   resume: {
-    fr: '/resume/20260201_CVFR_%20WALTER_Eliot.pdf',
-    en: '/resume/20260201_CVEN_%20WALTER_Eliot.pdf',
+    fr: '/resume/CV_Eliot_WALTER_2026.pdf',
+    en: '/resume/Resume_Eliot_WALTER_2026.pdf',
   },
 } as const;
