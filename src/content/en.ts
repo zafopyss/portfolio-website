@@ -11,14 +11,14 @@ export const en: SiteContent = {
     eyebrow: 'Full Stack Software Engineer',
     title: 'Code that ships, and stays up.',
     description:
-      'At Mantu I look after a Django app used by 10,000 people. In the evenings I tinker with a Kubernetes cluster in my living room. In between, I climb.',
+      'At Mantu I look after a Django app used by 10,000 people. In the evenings I dig into new technology and keep up with where it is going. In between, I climb.',
     cta: 'See my work',
   },
   work: {
     eyebrow: 'WORK',
     title: 'Things I’ve\nworked on.',
     intro:
-      'Two companies, two side projects. Same approach every time: understand the business need before writing code, then stick around for what runs.',
+      'Two companies, two side projects, one philosophy: understand the business need before writing code, and build things that last.',
     items: [
       {
         kind: 'FULL-TIME · NAVAL SECTOR',
@@ -38,10 +38,11 @@ export const en: SiteContent = {
         kind: 'SIDE PROJECT',
         title: 'Job application tracker',
         summary:
-          'A Chrome extension grabs the job posting in one click, a kanban tracks the status. A Celery worker reads my inbox, spots the replies and moves the cards for me.',
+          'A Chrome extension grabs the job posting in one click and fills in the application forms, a kanban tracks the status. A Celery worker reads my Gmail, spots the replies with some fifty rules — an LLM only gets a second opinion when they hesitate — and moves the cards for me.',
         bullets: [
-          'TypeScript front end: drag and drop, a dashboard, an interview calendar synced with Google Calendar.',
-          'Every push runs lint and pytest on GitHub, builds the images and deploys to my k3s cluster.',
+          'Next.js front end: drag and drop, a dashboard, and interviews pushed to Google Calendar with an ICS feed to subscribe to.',
+          'On the security side: rotating refresh tokens that revoke the whole session on replay, Google tokens encrypted at rest, and an SSRF guard on the company sites the app fetches.',
+          'Every push runs ruff, 700 pytest tests against a real Postgres and a secret scan on GitHub, builds the images and deploys to the k3s cluster on my VPS. Playwright then checks the live app.',
         ],
         stack: ['FastAPI', 'Next.js', 'Celery', 'Redis', 'PostgreSQL', 'k3s'],
         href: 'https://github.com/zafopyss',
@@ -71,9 +72,9 @@ export const en: SiteContent = {
     title: 'What I’m\ninto.',
     entries: [
       { label: 'Learning', text: 'Kubernetes for real, by breaking and fixing my own cluster.' },
-      { label: 'Exploring', text: 'Coding with AI agents without letting go of the architecture.' },
+      { label: 'Exploring', text: 'What’s new in the agentic world, and software architecture.' },
       { label: 'Education', text: 'IMT Atlantique and Grenoble École de Management, dual engineering and management degree.' },
-      { label: 'Off screen', text: 'Bouldering and routes. Running when it’s too hot to climb.' },
+      { label: 'Off screen', text: 'Bouldering and routes. Running.' },
     ],
   },
   footer: {

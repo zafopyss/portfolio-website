@@ -1,6 +1,6 @@
 import type { MouseEvent } from 'react';
 import * as icons from 'simple-icons';
-import { azureDevOps, loki, type Brand } from './brandIcons';
+import { azureDevOps, type Brand } from './brandIcons';
 
 // Stack labels to their marks. Missing ones get a plain tag.
 const BRANDS: Record<string, Brand> = {
@@ -21,7 +21,6 @@ const BRANDS: Record<string, Brand> = {
   TypeScript: icons.siTypescript,
   React: icons.siReact,
   Kubernetes: icons.siKubernetes,
-  Loki: loki,
   'Azure DevOps': azureDevOps,
 };
 

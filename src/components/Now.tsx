@@ -6,7 +6,10 @@ export default function Now() {
   return (
     <section className="section grid gap-14 border-t border-line lg:grid-cols-[1fr_1.4fr] lg:gap-[8%]" aria-labelledby="now-heading">
       <Reveal>
-        <p className="eyebrow mb-7">{now.eyebrow}</p>
+        <p className="eyebrow mb-7 flex items-center gap-2">
+          <span className="live-dot" aria-hidden="true" />
+          {now.eyebrow}
+        </p>
         <h2 id="now-heading" className="heading-xl whitespace-pre-line">
           {now.title}
         </h2>

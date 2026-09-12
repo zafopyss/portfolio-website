@@ -11,14 +11,14 @@ export const fr: SiteContent = {
     eyebrow: 'Full Stack Software Engineer',
     title: 'Du code qui part en prod, et qui y reste.',
     description:
-      'Chez Mantu, je m’occupe d’une appli Django utilisée par 10 000 personnes. Le soir, je bricole un cluster Kubernetes dans mon salon. Entre les deux, je grimpe.',
+      'Chez Mantu, je m’occupe d’une appli Django utilisée par 10 000 personnes. Le soir, je découvre de nouvelles technologies et je teste les tendances. Entre les deux, je grimpe.',
     cta: 'Voir mon travail',
   },
   work: {
     eyebrow: 'TRAVAIL',
     title: 'Ce sur quoi\nj’ai bossé.',
     intro:
-      'Deux boîtes, deux projets perso. À chaque fois la même approche : comprendre le besoin métier avant de coder, puis rester sur ce qui tourne.',
+      'Deux boîtes, deux projets perso, une seule philosophie : cerner le besoin métier avant de coder, et construire des solutions qui tiennent dans la durée.',
     items: [
       {
         kind: 'CDI · SECTEUR NAVAL',
@@ -38,10 +38,11 @@ export const fr: SiteContent = {
         kind: 'PROJET PERSO',
         title: 'Suivi de candidatures',
         summary:
-          'Une extension Chrome capture l’offre en un clic, un kanban suit les statuts. Un worker Celery lit ma boîte mail, reconnaît les réponses et déplace les cartes à ma place.',
+          'Une extension Chrome capture l’offre en un clic et remplit les formulaires de candidature, un kanban suit les statuts. Un worker Celery lit ma boîte Gmail, reconnaît les réponses avec une cinquantaine de règles — l’IA ne donne qu’un second avis quand elles hésitent — et déplace les cartes à ma place.',
         bullets: [
-          'Front en TypeScript : drag & drop, tableau de bord, calendrier d’entretiens synchronisé avec Google Calendar.',
-          'À chaque push, GitHub lance lint et pytest, construit les images et déploie sur mon cluster k3s.',
+          'Front Next.js : drag & drop, tableau de bord, et les entretiens poussés vers Google Calendar avec un flux ICS pour s’y abonner.',
+          'Côté sécurité : jeton de rafraîchissement à rotation qui révoque toute la session au moindre rejeu, jetons Google chiffrés en base, et garde-fou SSRF sur les sites d’entreprise que l’appli va lire.',
+          'À chaque push, GitHub lance ruff, 700 tests pytest sur un vrai Postgres et un scan de secrets, construit les images et déploie sur le k3s de mon VPS. Des tests Playwright vérifient ensuite l’appli en ligne.',
         ],
         stack: ['FastAPI', 'Next.js', 'Celery', 'Redis', 'PostgreSQL', 'k3s'],
         href: 'https://github.com/zafopyss',
@@ -71,9 +72,9 @@ export const fr: SiteContent = {
     title: 'Ce que\nj’explore.',
     entries: [
       { label: 'J’apprends', text: 'Kubernetes pour de vrai, en cassant et réparant mon propre cluster.' },
-      { label: 'J’explore', text: 'Coder avec des agents IA sans lâcher l’architecture.' },
+      { label: 'J’explore', text: 'Les nouveautés du monde agentique et l’architecture logicielle.' },
       { label: 'Formation', text: 'IMT Atlantique et Grenoble École de Management, double diplôme ingénieur et manager.' },
-      { label: 'Hors écran', text: 'Bloc et voie. Course à pied quand il fait trop chaud pour grimper.' },
+      { label: 'Hors écran', text: 'Bloc et voie. Course à pied.' },
     ],
   },
   footer: {

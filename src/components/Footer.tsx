@@ -5,14 +5,16 @@ import Reveal from './Reveal';
 import ViewCounter from './ViewCounter';
 import { scrollToSection } from './scrollToSection';
 
+// Both resumes stay on offer whichever language the page is in.
+const RESUMES = ['fr', 'en'] as const;
+
 export default function Footer() {
-  const { content, locale } = useLocale();
-  const { footer } = content;
+  const { footer } = useLocale().content;
   const external = [
     { label: 'GitHub', href: links.github },
     { label: 'LinkedIn', href: links.linkedin },
     { label: 'Email', href: `mailto:${links.email}` },
-    { label: `${footer.resume} ${locale.toUpperCase()}`, href: links.resume[locale] },
+    ...RESUMES.map((code) => ({ label: `${footer.resume} ${code.toUpperCase()}`, href: links.resume[code] })),
     { label: footer.source, href: links.source },
   ];
   return (

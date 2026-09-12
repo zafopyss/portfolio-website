@@ -3,15 +3,9 @@ import * as THREE from 'three';
 // Fake code editor shown on the laptop screen. Types a snippet, rests, clears.
 const SNIPPET = [
   '# permits/services.py',
-  'from dataclasses import dataclass',
-  'from .models import Permit, Template',
+  'from .models import Permit',
   '',
-  '@dataclass',
-  'class PermitDraft:',
-  '    template: Template',
-  '    site: str',
-  '',
-  'def create_permit(draft: PermitDraft) -> Permit:',
+  'def create_permit(draft: Draft) -> Permit:',
   '    permit = Permit.objects.create(',
   '        template=draft.template,',
   '        site=draft.site,',
@@ -21,7 +15,7 @@ const SNIPPET = [
   '    return permit',
 ];
 
-const CHARS_PER_SECOND = 16;
+const CHARS_PER_SECOND = 14;
 const REST_SECONDS = 5;
 const TOTAL_CHARS = SNIPPET.reduce((n, line) => n + line.length + 1, 0);
 const CYCLE = TOTAL_CHARS / CHARS_PER_SECOND + REST_SECONDS;
@@ -58,7 +52,14 @@ function paintLine(ctx: CanvasRenderingContext2D, line: string, x: number, y: nu
   }
 }
 
-export function createEditor(width = 232, height = 176) {
+// The screen quad is about 100 by 80 artwork pixels; the canvas is drawn at
+// 2.4x so the text stays crisp on retina screens. Bezel edges are feathered so
+// the quad blends into the painted frame instead of cutting a hard aliased line.
+const LINE_HEIGHT = 14;
+const TOP = 26;
+const EDGE_FADE = 3;
+
+export function createEditor(width = 240, height = 194) {
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
@@ -73,35 +74,63 @@ export function createEditor(width = 232, height = 176) {
   let cursorOn = true;
 
   function draw(chars: number, cursor: boolean) {
+    ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = COLORS.bg;
     ctx.fillRect(0, 0, width, height);
     ctx.fillStyle = '#262a38';
-    ctx.fillRect(0, 0, width, 16);
+    ctx.fillRect(0, 0, width, 18);
     for (const [i, color] of ['#ff5f57', '#febc2e', '#28c840'].entries()) {
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.arc(10 + i * 11, 8, 3.2, 0, Math.PI * 2);
+      ctx.arc(11 + i * 12, 9, 3.6, 0, Math.PI * 2);
       ctx.fill();
     }
-    ctx.font = 'bold 9.5px ui-monospace, Menlo, Consolas, monospace';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.textBaseline = 'top';
     let remaining = chars;
-    let y = 22;
+    let y = TOP;
     for (const [index, line] of SNIPPET.entries()) {
       if (remaining < 0) break;
       const visible = line.slice(0, Math.max(0, Math.min(line.length, remaining)));
       ctx.fillStyle = COLORS.gutter;
-      ctx.fillText(String(index + 1).padStart(2, ' '), 4, y);
-      paintLine(ctx, visible, 20, y);
+      ctx.fillText(String(index + 1).padStart(2, ' '), 5, y);
+      paintLine(ctx, visible, 24, y);
       const lineDone = remaining > line.length;
       if (!lineDone && cursor) {
         ctx.fillStyle = COLORS.text;
-        ctx.fillRect(20 + ctx.measureText(visible).width + 1, y - 1, 5, 11);
+        ctx.fillRect(24 + ctx.measureText(visible).width + 1, y - 1, 6, 13);
       }
       remaining -= line.length + 1;
-      y += 11;
+      y += LINE_HEIGHT;
     }
+    feather();
     texture.needsUpdate = true;
+  }
+
+  // Fade the outermost pixels to transparent on all four sides. destination-out
+  // only erases under the drawn strip; destination-in would wipe the rest.
+  function feather() {
+    ctx.globalCompositeOperation = 'destination-out';
+    const strips: [number, number, number, number][] = [
+      [0, 0, 0, EDGE_FADE],
+      [0, height, 0, height - EDGE_FADE],
+      [0, 0, EDGE_FADE, 0],
+      [width, 0, width - EDGE_FADE, 0],
+    ];
+    for (const [x0, y0, x1, y1] of strips) {
+      const fade = ctx.createLinearGradient(x0, y0, x1, y1);
+      fade.addColorStop(0, 'rgba(0,0,0,1)');
+      fade.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = fade;
+      const vertical = x0 === x1;
+      ctx.fillRect(
+        vertical ? 0 : Math.min(x0, x1),
+        vertical ? Math.min(y0, y1) : 0,
+        vertical ? width : EDGE_FADE,
+        vertical ? EDGE_FADE : height,
+      );
+    }
+    ctx.globalCompositeOperation = 'source-over';
   }
 
   return {

@@ -42,6 +42,36 @@ button:focus-visible {
   text-transform: uppercase;
 }
 
+/* Live dot: a green pulse that says the "now" section is current */
+
+.live-dot {
+  position: relative;
+  width: 0.4rem;
+  height: 0.4rem;
+  flex: none;
+  border-radius: 999px;
+  background: var(--color-accent);
+}
+.live-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: live-pulse 2.4s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+}
+@keyframes live-pulse {
+  0% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(2.8);
+  }
+}
+
 .heading-xl {
   font-size: clamp(2.1rem, 4vw, 3.6rem);
   font-weight: 600;
@@ -197,5 +227,8 @@ a.work-item:hover {
 @media (prefers-reduced-motion: reduce) {
   :root {
     scroll-behavior: auto;
+  }
+  .live-dot::after {
+    animation: none;
   }
 }

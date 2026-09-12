@@ -29,11 +29,14 @@ const CUP = { x: 1496, y: 662 };
 const WALL_POT = { x: 1046, y: 780, scale: 0.82 };
 // Inner corners of the laptop screen, clockwise from top-left.
 const SCREEN = [
-  [1312, 601],
-  [1403, 599],
-  [1383, 680],
-  [1290, 672],
+  [1306, 597],
+  [1407, 596],
+  [1391, 679],
+  [1284, 678],
 ] as const;
+// Cells per side of the screen mesh: a single quad maps the texture affinely
+// per triangle and kinks the code along the diagonal.
+const SCREEN_CELLS = 6;
 const DOG_AT = { x: 1118, ground: 938, scale: 0.85 };
 // The joiner's mark, on the lit face of the desk's right leg under the coffee.
 const MARK = { src: '/art/mark-bois.svg', x: 1512, y: 784, width: 24 };
@@ -244,13 +247,18 @@ export async function createScene(host: HTMLElement): Promise<Scene> {
 
   // The laptop is writing Django.
   const editor = createEditor();
-  const screenGeometry = new THREE.BufferGeometry();
-  screenGeometry.setAttribute(
-    'position',
-    new THREE.Float32BufferAttribute(SCREEN.flatMap(([x, y]) => [x, y, 0]), 3),
-  );
-  screenGeometry.setAttribute('uv', new THREE.Float32BufferAttribute([0, 1, 1, 1, 1, 0, 0, 0], 2));
-  screenGeometry.setIndex([0, 1, 2, 0, 2, 3]);
+  const screenGeometry = new THREE.PlaneGeometry(1, 1, SCREEN_CELLS, SCREEN_CELLS);
+  const screenPosition = screenGeometry.attributes.position;
+  const [tl, tr, br, bl] = SCREEN;
+  for (let i = 0; i < screenPosition.count; i++) {
+    // PlaneGeometry runs x left to right and y bottom to top; the camera's y
+    // points down, so v = 0 is the top row of the bezel.
+    const u = screenPosition.getX(i) + 0.5;
+    const v = 0.5 - screenPosition.getY(i);
+    const top = [tl[0] + (tr[0] - tl[0]) * u, tl[1] + (tr[1] - tl[1]) * u];
+    const bottom = [bl[0] + (br[0] - bl[0]) * u, bl[1] + (br[1] - bl[1]) * u];
+    screenPosition.setXYZ(i, top[0] + (bottom[0] - top[0]) * v, top[1] + (bottom[1] - top[1]) * v, 0);
+  }
   disposables.push(screenGeometry, editor.texture);
   const screen = new THREE.Mesh(screenGeometry, material(editor.texture, 0.92));
   screen.renderOrder = 6;
