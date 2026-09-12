@@ -35,6 +35,8 @@ const SCREEN = [
   [1290, 672],
 ] as const;
 const DOG_AT = { x: 1118, ground: 938, scale: 0.85 };
+// The joiner's mark, on the lit face of the desk's right leg under the coffee.
+const MARK = { src: '/art/mark-bois.svg', x: 1512, y: 784, width: 24 };
 const LAKE = { x: 540, y: 700, width: 400, height: 70 };
 
 export type Scene = {
@@ -56,6 +58,13 @@ export async function createScene(host: HTMLElement): Promise<Scene> {
       }),
     ),
   ) as Record<keyof typeof ART, THREE.Texture>;
+
+  const markImage = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const img = new Image();
+    img.addEventListener('load', () => resolve(img));
+    img.addEventListener('error', () => reject(new Error(`cannot load ${MARK.src}`)));
+    img.src = MARK.src;
+  });
 
   const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false, powerPreference: 'low-power' });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -113,6 +122,16 @@ export async function createScene(host: HTMLElement): Promise<Scene> {
   }
 
   quad(textures.backdrop, STAGE.width, STAGE.height, 0);
+
+  // Burned into the leg rather than laid on top of it: multiply darkens the
+  // wood the mark covers and leaves everything else exactly as painted.
+  const markSprite = paint.engraved(markImage, MARK.width);
+  const mark = quad(markSprite.texture, markSprite.width, markSprite.height, 1);
+  mark.position.set(MARK.x, MARK.y, 0);
+  const markMaterial = mark.material as THREE.MeshBasicMaterial;
+  markMaterial.blending = THREE.MultiplyBlending;
+  markMaterial.premultipliedAlpha = true;
+  disposables.push(markSprite.texture);
 
   // Mont Blanc behind the city, built in three.js and clipped to the sky.
   const mountain = createMountain(textures.backdrop);

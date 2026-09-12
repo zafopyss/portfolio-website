@@ -518,3 +518,26 @@ export function shadow(width = 60, height = 16): Sprite {
   }
   return sprite(el, width, height);
 }
+
+// The joiner's mark burned into the desk leg: a near-black char with a faint
+// scorch halo on a white ground. The scene multiplies it over the wood, so the
+// grain and the sun raking across the leg still read through the burn.
+export function engraved(image: HTMLImageElement, width: number): Sprite {
+  const height = (width * image.naturalHeight) / image.naturalWidth;
+  const ink = canvas(width, height, 8);
+  ink.ctx.drawImage(image, 0, 0, width, height);
+  ink.ctx.globalCompositeOperation = 'source-in';
+  ink.ctx.fillStyle = '#191009';
+  ink.ctx.fillRect(0, 0, width, height);
+
+  const { el, ctx } = canvas(width, height, 8);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, width, height);
+  ctx.globalAlpha = 0.2;
+  ctx.filter = 'blur(0.5px)';
+  ctx.drawImage(ink.el, 0, 0, width, height);
+  ctx.filter = 'none';
+  ctx.globalAlpha = 0.74;
+  ctx.drawImage(ink.el, 0, 0, width, height);
+  return sprite(el, width, height);
+}
