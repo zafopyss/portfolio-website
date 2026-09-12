@@ -1,62 +1,16 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "strict": true,
-    "moduleResolution": "node",
+    "noEmit": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types"
-    ],
-    "baseUrl": "./src",
-    "paths": {
-      "@components": [
-        "components"
-      ],
-      "@components/*": [
-        "components/*"
-      ],
-      "@hooks": [
-        "hooks"
-      ],
-      "@hooks/*": [
-        "hooks/*"
-      ],
-      "@pages": [
-        "pages"
-      ],
-      "@pages/*": [
-        "pages/*"
-      ],
-      "@enums": [
-        "enums"
-      ],
-      "@enums/*": [
-        "enums/*"
-      ],
-      "@data": [
-        "data"
-      ],
-      "@data/*": [
-        "data/*"
-      ],
-      "@utils": [
-        "utils"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ]
-    }
+    "types": ["vite/client"]
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src", "api"]
 }
